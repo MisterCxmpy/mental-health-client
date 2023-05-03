@@ -28,7 +28,7 @@ export default function Navbar() {
             </div>
           </div>
         </div>
-        <div className={styles["navigation"]}>
+        <div className={styles["navigation"]} role="navigation-btns">
           <NavButton to={"/"} icon={<BiHome />} name={"Home"} />
           <NavButton to={"/activities"} icon={<HiOutlinePuzzle />} name={"Activities"}/>
           <NavButton to={"/chatrooms"} icon={<HiOutlineChat />} name={"Chatrooms"} />

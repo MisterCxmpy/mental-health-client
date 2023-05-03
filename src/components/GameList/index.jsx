@@ -15,7 +15,7 @@ export default function GameList() {
   ];
 
   return (
-    <div className={styles["game-list"]}>
+    <div className={styles["game-list"]} role="game-list">
       {gameTypes.map((type, i) => {
         return <Game gameType={type} index={i} />;
       })}

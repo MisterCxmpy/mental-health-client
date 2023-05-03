@@ -11,7 +11,7 @@ export default function MeditationList() {
   ];
 
   return (
-    <div className={styles["meditation-list"]}>
+    <div className={styles["meditation-list"]} role="meditation-list">
       {meditationTypes.map((type, i) => {
         return <Meditation meditationType={type} index={i} />;
       })}
