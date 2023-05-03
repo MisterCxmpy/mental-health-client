@@ -140,6 +140,18 @@ function moveDown(grid) {
 
 export default function GameOne() {
   const [grid, setGrid] = useState(getInitialGrid());
+  const [scoreInt, setScoreInt] = useState(score);
+
+  useEffect(() => {
+    setScoreInt(score)
+  }, [score])
+
+
+  const handleStashPoints = () => { // add fetch request here
+    console.log(score);
+    setScoreInt(0)
+    score = 0;
+  }
 
   function handleKeyDown(event) {
     let hasChanged = false;
@@ -173,7 +185,7 @@ export default function GameOne() {
 
   return (
     <div className={styles["container"]}>
-      <h1>{Math.floor(score)}</h1>
+      <h1>{Math.floor(scoreInt)}</h1>
       <div className={styles["game-container"]}>
         {grid.map((row, rowIndex) => (
           <div key={rowIndex} className={styles["row-container"]}>
@@ -185,7 +197,7 @@ export default function GameOne() {
           </div>
         ))}
       </div>
-      <button className="btn">Stash Points</button>
+      <button className="btn" onClick={() => handleStashPoints()}>Stash Points</button>
     </div>
   );
 }

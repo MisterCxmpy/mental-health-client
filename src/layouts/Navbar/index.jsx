@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { NavLink, Outlet } from "react-router-dom";
+import useQuote from "../../hooks/useQuote.js";
 import { useAuth } from "../../contexts/authContext";
 import styles from "./index.module.css";
 
@@ -10,6 +11,7 @@ import { FiSettings } from "react-icons/fi";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
+  const { quote } = useQuote();
 
   return (
     <>
@@ -27,8 +29,7 @@ export default function Navbar() {
             <div className={styles["progress"]}>40% Completed</div>
             <div className={styles["points"]}>0 Dabloons</div>
             <div className={styles["inspiration-message"]}>
-              Keep smiling, because life is a beautiful thing and there's so
-              much to smile about.
+              {quote.q}
             </div>
           </div>
 
