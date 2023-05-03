@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
 
     if (!response.ok) throw new Error(user.message); // if theres any error, throw one and with that data
 
-    saveUser() // save and cache user
+    saveUser(user) // save and cache user
     return user;
   }
 
