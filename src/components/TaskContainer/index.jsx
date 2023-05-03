@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import styles from "./index.module.css"
 
 export default function TaskContainer() {
