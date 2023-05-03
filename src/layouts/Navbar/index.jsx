@@ -1,5 +1,12 @@
 import { NavLink, Outlet } from "react-router-dom";
 import styles from "./index.module.css";
+import { BiHome, BiGlassesAlt, BiLeaf } from "react-icons/bi/";
+import {
+  HiOutlinePuzzle,
+  HiOutlineChat,
+  HiOutlineBookOpen,
+} from "react-icons/hi";
+import { AiOutlineDollarCircle } from "react-icons/ai";
 
 export default function Navbar() {
   return (
@@ -21,13 +28,13 @@ export default function Navbar() {
           </div>
         </div>
         <div className={styles["navigation"]}>
-          <NavButton to={"/"} name={"Home"} />
-          <NavButton to={"/activities"} name={"Activities"} />
-          <NavButton to={"/chatrooms"} name={"Chatrooms"} />
-          <NavButton to={"/guides"} name={"Guides"} />
-          <NavButton to={"/my-ai-mentor"} name={"My AIMentor"} />
-          <NavButton to={"/meditations"} name={"Meditations"} />
-          <NavButton to={"/mind-store"} name={"MindStore"} />
+          <NavButton to={"/"} icon={<BiHome />} name={"Home"} />
+          <NavButton to={"/activities"} icon={<HiOutlinePuzzle />} name={"Activities"}/>
+          <NavButton to={"/chatrooms"} icon={<HiOutlineChat />} name={"Chatrooms"} />
+          <NavButton to={"/guides"} icon={<HiOutlineBookOpen />} name={"Guides"} />
+          <NavButton to={"/my-ai-mentor"} icon={<BiGlassesAlt />} name={"My AIMentor"} />
+          <NavButton to={"/meditations"} icon={<BiLeaf />} name={"Meditations"} />
+          <NavButton to={"/mind-store"} icon={<AiOutlineDollarCircle />} name={"MindStore"} />
         </div>
       </nav>
       <Outlet />
@@ -35,7 +42,7 @@ export default function Navbar() {
   );
 }
 
-function NavButton({ to, name }) {
+function NavButton({ to, icon, name }) {
   return (
     <NavLink
       to={to}
@@ -43,11 +50,16 @@ function NavButton({ to, name }) {
       style={({ isActive }) =>
         isActive
           ? {
+              color: "#ffffff",
               background: "#9A9FDD",
             }
-          : { background: "none" }
+          : {
+              color: "#202020",
+              background: "none",
+            }
       }
     >
+      {icon}
       {name}
     </NavLink>
   );
