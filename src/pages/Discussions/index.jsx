@@ -1,4 +1,4 @@
-import styles from "./index.module.css"
+import styles from "./index.module.css";
 
 export default function Discussions() {
   return (
@@ -8,49 +8,52 @@ export default function Discussions() {
           <div className={styles["profile-picture"]}></div>
           <form className={styles["search-form"]}>
             <div className={styles["input"]}>
-              <input className={styles["search-bar"]} type="text" placeholder="Search Discussion" required/>
+              <input
+                className={styles["search-bar"]}
+                type="text"
+                placeholder="Search Discussion"
+                required
+              />
             </div>
           </form>
         </div>
         <div className={styles["tags"]}>
-          <div className={styles["tag"]}>
-            <p>Self Help</p>
-          </div>
-          <div className={styles["tag"]}>
-            <p>Stoicism</p>
-          </div>
-          <div className={styles["tag"]}>
-            <p>Fitness</p>
-          </div>
-          <div className={styles["tag"]}>
-            <p>DietBros</p>
-          </div>
+          <CreateTag tag={"Self Help"}/>
         </div>
         <div className={styles["posts"]}>
-          <div className={styles["post"]}>
-            <div className={styles["content"]}>
-              <h1>This is a test discussion</h1>
-              <p className={styles["post-op"]}>Username</p>
-              <p>In this section we’ll have text pertaining to the actual discussion at hand, maybe the first question posted but cut...</p>
-            </div>
-            <div className={styles["options"]}>
-              <p>81 Comments</p>
-              <p>Favourite</p>
-            </div>
-          </div>
-          <div className={styles["post"]}>
-            <div className={styles["content"]}>
-              <h1>This is a test discussion</h1>
-              <p className={styles["post-op"]}>Username</p>
-              <p>In this section we’ll have text pertaining to the actual discussion at hand, maybe the first question posted but cut...</p>
-            </div>
-            <div className={styles["options"]}>
-              <p>81 Comments</p>
-              <p>Favourite</p>
-            </div>
-          </div>
+          <CreatePostEl
+            title={"This is a test discussion"}
+            summary={
+              "In this section we’ll have text pertaining to the actual discussion at hand, maybe the first question posted but cut..."
+            }
+            comments={81}
+          />
         </div>
       </div>
     </div>
-  )
+  );
+}
+
+function CreatePostEl({ title, summary, comments }) {
+  return (
+    <div className={styles["post"]}>
+      <div className={styles["content"]}>
+        <h1>{title}</h1>
+        <p className={styles["post-op"]}>Username</p>
+        <p>{summary}</p>
+      </div>
+      <div className={styles["options"]}>
+        <p>{`${comments} Comments`}</p>
+        <p>Favourite</p>
+      </div>
+    </div>
+  );
+}
+
+function CreateTag({ tag }) {
+  return (
+    <div className={styles["tag"]}>
+      <p>{tag}</p>
+    </div>
+  );
 }
