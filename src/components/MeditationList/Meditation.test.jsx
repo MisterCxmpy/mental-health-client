@@ -1,28 +1,25 @@
-import React from 'react';
-import { describe, expect, beforeEach, afterEach, it } from 'vitest';
-import { screen, render, cleanup } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
- 
-import matchers from '@testing-library/jest-dom/matchers'
-expect.extend(matchers)
+import React from "react";
+import { describe, expect, beforeEach, afterEach, it } from "vitest";
+import { screen, render, cleanup } from "@testing-library/react";
+import { BrowserRouter } from "react-router-dom";
 
-import MeditationList from '.';
+import matchers from "@testing-library/jest-dom/matchers";
+expect.extend(matchers);
 
-describe('MeditationList Component', () => {
-    beforeEach(() => {
-        render(
-          <MeditationList />
-        )
-    })
-    
-    afterEach(() => {
-        cleanup();
-    })
+import MeditationList from ".";
 
-    it("Displays a MeditationList with 5 links", () => {
-        const nav = screen.getByRole('meditation-list')
-        expect(nav).toBeInTheDocument();
-        expect(nav.childNodes.length).toBe(5)
-    })
-    
-})
+describe("MeditationList Component", () => {
+  beforeEach(() => {
+    render(<MeditationList />);
+  });
+
+  afterEach(() => {
+    cleanup();
+  });
+
+  it("Displays a MeditationList with 5 links", () => {
+    const nav = screen.getByRole("meditation-list");
+    expect(nav).toBeInTheDocument();
+    expect(nav.childNodes.length).toBe(5);
+  });
+});
