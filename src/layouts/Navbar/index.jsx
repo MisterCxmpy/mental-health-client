@@ -25,6 +25,7 @@ export default function Navbar() {
             <div className={styles["profile-picture"]} onClick={() => logout()}></div>
             <div className={styles["profile-name"]}>{user.username}</div>
             <div className={styles["progress"]}>40% Completed</div>
+            <div className={styles["points"]}>0 Dabloons</div>
             <div className={styles["inspiration-message"]}>
               Keep smiling, because life is a beautiful thing and there's so
               much to smile about.
