@@ -15,7 +15,6 @@ const mentalHealthGoals = [
   { id: 10, text: "Celebrate small victories and progress." },
 ];
 
-
 export default function Intro() {
   const intro1Ref = useRef()
   const intro2Ref = useRef()
@@ -24,6 +23,14 @@ export default function Intro() {
   const continueBtnRef = useRef();
 
   const [load, setLoad] = useState(false);
+  const [selectedGoals, setSelectedGoals] = useState([]);
+
+  const setSelected = id => {
+    let inside = selectedGoals.includes(id);
+    inside ? setSelectedGoals(p => p.filter(g => g !== id)) : setSelectedGoals(prev => ([...prev, id]));
+  }
+
+  const mapSelected = () => selectedGoals.map(id => mentalHealthGoals.find(g2 => g2.id == id));
 
   useEffect(() => {
     setTimeout(() => {
@@ -62,12 +69,11 @@ export default function Intro() {
       </div>
 
       {load ? <div ref={intro2Ref} className={styles["container"]}>
-        <GoalSelect {...{ mentalHealthGoals }} />
+        <GoalSelect {...{ mentalHealthGoals, setSelected, selectedGoals, submit: () => console.log(mapSelected(selectedGoals)) }} />
       </div> : null}
     </>
   );
 }
-
 
 function IntroPart({ message1Ref, message2Ref, continueBtnRef, switchInfo }) {
   let title = 'MHM!'.split('');
@@ -101,7 +107,7 @@ function IntroPart({ message1Ref, message2Ref, continueBtnRef, switchInfo }) {
   )
 }
 
-function GoalSelect({ mentalHealthGoals }) {
+function GoalSelect({ mentalHealthGoals, setSelected, selectedGoals, submit }) {
   return (
     <>
       <div className={styles["heading"]}>
@@ -110,15 +116,19 @@ function GoalSelect({ mentalHealthGoals }) {
       </div>
 
       <div className={styles["selection-list"]}>
-        {mentalHealthGoals.map(({ id, text }, i) => <Selection count={i} key={id} message={text} />)}
+        {mentalHealthGoals.map(({ id, text }) => <Selection key={id} id={id} message={text} select={setSelected} selected={selectedGoals.includes(id)} />)}
+      </div>
+
+      <div>
+        <button className={`btn`} onClick={() => submit()}>Continue</button>
       </div>
     </>
   )
 }
 
-function Selection({ count, message }) {
+function Selection({ message, select, id, selected }) {
   return (
-    <div className={`${styles["selection"]}`} key={count}>
+    <div className={selected ? `${styles["selection"]} ${styles["active"]}` : `${styles["selection"]}`} onClick={() => select(id)}>
       <h4>{message}</h4>
     </div>
   )
