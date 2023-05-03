@@ -1,0 +1,49 @@
+.meditation {
+  position: relative;
+  border-radius: 6px;
+  padding: 12px 24px;
+  box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.04);
+  color: var(--primary-font-color);
+}
+
+.meditation > h2 {
+  font-size: 1.7em;
+  max-width: 100px;
+  font-weight: 600;
+  opacity: 0.85;
+  text-transform: capitalize;
+}
+
+.play-btn {
+  position: absolute;
+  width: 49px;
+  height: 49px;
+  background: #9A9FDD;
+  border-radius: 50%;
+  border: none;
+  right: 24px;
+  bottom: 12px;
+  font-size: 24px;
+  color: #ffffff;
+  padding-left: 5px;
+}
+
+.color-2 {
+  background: var(--color-2);
+}
+
+.color-3 {
+  background: var(--color-3);
+}
+
+.color-4 {
+  background: var(--color-4);
+}
+
+.color-5 {
+  background: var(--color-5);
+}
+
+.color-6 {
+  background: var(--color-6);
+}
