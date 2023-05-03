@@ -22,6 +22,7 @@
   flex-direction: column;
   gap: 10px;
   overflow-y: auto;
+  color: var(--primary-font-color);
 }
 
 .task-list {
