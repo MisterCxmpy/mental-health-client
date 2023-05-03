@@ -1,4 +1,6 @@
 import styles from "./index.module.css";
+import { VscComment } from "react-icons/vsc";
+import { AiOutlineStar } from "react-icons/ai";
 
 export default function Discussions() {
   return (
@@ -43,8 +45,8 @@ function CreatePostEl({ title, summary, comments }) {
         <p>{summary}</p>
       </div>
       <div className={styles["options"]}>
-        <p>{`${comments} Comments`}</p>
-        <p>Favourite</p>
+        <p><VscComment />{`${comments} Comments`}</p>
+        <p><AiOutlineStar />Favourite</p>
       </div>
     </div>
   );
