@@ -1,10 +1,26 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import styles from "./index.module.css";
 import { useState } from "react";
+import { useAuth } from "../../contexts/authContext";
 
 export default function Signup() {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const { register } = useAuth();
+
+  const submitForm = async e => {
+    e.preventDefault()
+    let payload = { username, password }
+
+    try {
+      await register(payload)
+      navigate('/')
+    } catch (error) {
+      setError(error.message);
+    }
+  }
 
   return (
     <>
@@ -17,7 +33,7 @@ export default function Signup() {
             <h1>Register</h1>
             <p>Sign up to MHM today! Enter your details below.</p>
           </div>
-          <form>
+          <form onSubmit={submitForm}>
             <div className={styles["input"]}>
               <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
               <span>Username</span>
@@ -26,6 +42,7 @@ export default function Signup() {
               <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
               <span>Password</span>
               <div className={styles["under-text"]}>
+              {error ? <h3 style={{color: 'red', margin: '12px 0'}}>{error}</h3> : null}
               </div>
             </div>
             <div className={styles["input"]}>
