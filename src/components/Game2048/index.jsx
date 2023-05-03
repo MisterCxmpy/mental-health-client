@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import styles from "./index.module.css"
 
+let score = 0
+
 function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
@@ -54,7 +56,7 @@ function moveLeft(grid) {
           hasChanged = true;
         }
         if (k > 0 && newGrid[i][k - 1] === newGrid[i][k]) {
-          newGrid[i][k - 1] *= 2;
+          score += (newGrid[i][k - 1] *= 2) / 5
           newGrid[i][k] = null;
           hasChanged = true;
         }
@@ -78,7 +80,7 @@ function moveRight(grid) {
           hasChanged = true;
         }
         if (k < newGrid[i].length - 1 && newGrid[i][k + 1] === newGrid[i][k]) {
-          newGrid[i][k + 1] *= 2;
+          score += (newGrid[i][k + 1] *= 2) / 5
           newGrid[i][k] = null;
           hasChanged = true;
         }
@@ -102,7 +104,7 @@ function moveUp(grid) {
           hasChanged = true;
         }
         if (k > 0 && newGrid[k - 1][j] === newGrid[k][j]) {
-          newGrid[k - 1][j] *= 2;
+          score += (newGrid[k - 1][j] *= 2) / 5
           newGrid[k][j] = null;
           hasChanged = true;
         }
@@ -126,7 +128,7 @@ function moveDown(grid) {
           hasChanged = true;
         }
         if (k < newGrid.length - 1 && newGrid[k + 1][j] === newGrid[k][j]) {
-          newGrid[k + 1][j] *= 2;
+          score += (newGrid[k + 1][j] *= 2) / 5
           newGrid[k][j] = null;
           hasChanged = true;
         }
@@ -170,16 +172,20 @@ export default function GameOne() {
   }, [grid]);
 
   return (
-    <div className={styles["game-container"]}>
-      {grid.map((row, rowIndex) => (
-        <div key={rowIndex} className={styles["row-container"]}>
-          {row.map((cell, colIndex) => (
-            <div key={colIndex} className={`${styles["cell"]} ${styles[cell !== null ? `cell-${cell}` : '']}`}>
-              {cell}
-            </div>
-          ))}
-        </div>
-      ))}
+    <div className={styles["container"]}>
+      <h1>{Math.floor(score)}</h1>
+      <div className={styles["game-container"]}>
+        {grid.map((row, rowIndex) => (
+          <div key={rowIndex} className={styles["row-container"]}>
+            {row.map((cell, colIndex) => (
+              <div key={colIndex} className={`${styles["cell"]} ${styles[cell !== null ? `cell-${cell}` : '']}`}>
+                {cell}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+      <button className="btn">Stash Points</button>
     </div>
   );
 }
