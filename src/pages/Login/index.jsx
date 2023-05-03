@@ -1,10 +1,26 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./index.module.css";
 import { useState } from "react";
+import { useAuth } from "../../contexts/authContext";
 
 export default function Login() {
+  const navigate = useNavigate();
+  const { login } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+
+  const submitForm = async e => {
+    e.preventDefault()
+    let payload = { username, password }
+
+    try {
+      await login(payload)
+      navigate('/')
+    } catch (error) {
+      setError(error.message);
+    }
+  }
 
   return (
     <>
@@ -17,7 +33,7 @@ export default function Login() {
             <h1>Login</h1>
             <p>Welcome back to the MHM app</p>
           </div>
-          <form>
+          <form onSubmit={submitForm}>
             <div className={styles["input"]}>
               <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
               <span>Username</span>
@@ -32,6 +48,8 @@ export default function Login() {
                 </div>
                 <p>Forgot Password</p>
               </div>
+
+              {error ? <h3 style={{ color: 'red', margin: '12px 0' }}>{error}</h3> : null}
             </div>
             <div className={styles["input"]}>
               <button className={`${styles["submit-btn"]}`} type="submit">
