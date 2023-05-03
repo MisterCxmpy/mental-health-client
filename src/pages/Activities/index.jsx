@@ -1,3 +1,4 @@
+import { GameList } from "../../components"
 import styles from "./index.module.css"
 
 export default function Activities() {
@@ -11,7 +12,7 @@ export default function Activities() {
           </div>
           <button className="btn">Call to action</button>
         </div>
-        
+        <GameList />
       </div>
     </div>
   )
