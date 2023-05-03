@@ -1,5 +1,5 @@
-import { Outlet } from "react-router-dom"
-import styles from "./index.module.css"
+import { NavLink, Outlet } from "react-router-dom";
+import styles from "./index.module.css";
 
 export default function Navbar() {
   return (
@@ -14,19 +14,41 @@ export default function Navbar() {
             <div className={styles["profile-picture"]}></div>
             <div className={styles["profile-name"]}>Bob</div>
             <div className={styles["progress"]}>40% Completed</div>
-            <div className={styles["inspiration-message"]}>Keep smiling, because life is a beautiful thing and there's so much to smile about.</div>
+            <div className={styles["inspiration-message"]}>
+              Keep smiling, because life is a beautiful thing and there's so
+              much to smile about.
+            </div>
           </div>
         </div>
         <div className={styles["navigation"]}>
-          <button className={styles["btn"]}>Home</button>
-          <button className={styles["btn"]}>Activities</button>
-          <button className={styles["btn"]}>Chatrooms</button>
-          <button className={styles["btn"]}>My AIMentor</button>
-          <button className={styles["btn"]}>Meditations</button>
-          <button className={styles["btn"]}>MindStore</button>
+          <NavButton to={"/"} name={"Home"} />
+          <NavButton to={"/activities"} name={"Activities"} />
+          <NavButton to={"/chatrooms"} name={"Chatrooms"} />
+          <NavButton to={"/guides"} name={"Guides"} />
+          <NavButton to={"/my-ai-mentor"} name={"My AIMentor"} />
+          <NavButton to={"/meditations"} name={"Meditations"} />
+          <NavButton to={"/mind-store"} name={"MindStore"} />
         </div>
       </nav>
       <Outlet />
     </>
-  )
+  );
+}
+
+function NavButton({ to, name }) {
+  return (
+    <NavLink
+      to={to}
+      className={styles["btn"]}
+      style={({ isActive }) =>
+        isActive
+          ? {
+              background: "#9A9FDD",
+            }
+          : { background: "none" }
+      }
+    >
+      {name}
+    </NavLink>
+  );
 }

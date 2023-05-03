@@ -56,7 +56,14 @@
   text-align: center;
 }
 
+.navigation {
+  display: flex;
+  flex-direction: column;
+}
+
 .btn {
+  display: flex;
+  align-items: center;
   height: 84px;
   width: 100%;
   color: var(--primary-font-color);
@@ -65,4 +72,5 @@
   border: none;
   text-align: left;
   padding-left: 80px;
+  text-decoration: none;
 }
