@@ -1,4 +1,3 @@
-import PromptTask from "../PromptTask";
 import styles from "./index.module.css"
 
 export default function TaskContainer() {
@@ -11,8 +10,8 @@ export default function TaskContainer() {
         </div>
       </div>
       <div className={styles["control-options"]}>
-        <button className={styles["btn"]}>Have a chat</button>
-        <button className={styles["btn"]}>Reroll ideas</button>
+        <button className="btn">Have a chat</button>
+        <button className="btn">Reroll ideas</button>
       </div>
     </div>
   );

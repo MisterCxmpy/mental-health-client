@@ -1,8 +1,6 @@
-
-import { MeditationList, TaskContainer } from "../../components"
 import styles from "./index.module.css"
 
-export default function Home() {
+export default function Activities() {
   return (
     <div className="layout">
       <div className={styles["container"]}>
@@ -13,8 +11,7 @@ export default function Home() {
           </div>
           <button className="btn">Call to action</button>
         </div>
-        <MeditationList />
-        <TaskContainer />
+        
       </div>
     </div>
   )
