@@ -47,7 +47,10 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => { // check for cachedUser data to login and redirect user
     let cached = localStorage.getItem('user');
+    let path = window.location.pathname == '/authenticate/intro';
 
+    if (path && !cached) return;
+    if (path && cached) navigate('/');
     if (cached !== 'undefined') {
       let cachedUser = JSON.parse(cached)
 
@@ -56,7 +59,7 @@ export const AuthProvider = ({ children }) => {
         navigate('/')
       }
     }
-  }, [user]);
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, setUser, login, register, logout }}>
