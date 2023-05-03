@@ -1,6 +1,7 @@
+/* eslint-disable react/prop-types */
 import styles from "./index.module.css";
 
-export default function Meditation({meditationType, index}) {
+export default function Meditation({ meditationType, index }) {
 
   return (
     <div className={`${styles["meditation"]} ${styles[`color-${index + 2}`]}`}>

@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styles from "./index.module.css";
 import { useState } from "react";
 
@@ -38,9 +38,9 @@ export default function Login() {
                 Sign In
               </button>
             </div>
-            <NavLink className={styles["redirect-signup"]} to="/authenticate/signup">
+            <Link className={styles["redirect-signup"]} to="/authenticate/signup">
               Don't have an account yet? Sign Up
-            </NavLink>
+            </Link>
           </form>
         </div>
       </div>

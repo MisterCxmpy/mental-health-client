@@ -35,6 +35,15 @@
   font-size: 24px;
   color: #ffffff;
   padding-left: 5px;
+  transition: 200ms;
+}
+
+.play-btn:hover {
+  scale: 1.03;
+}
+
+.play-btn:active {
+  scale: .9;
 }
 
 .color-2 {

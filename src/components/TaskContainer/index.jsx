@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import styles from "./index.module.css"
 
 export default function TaskContainer() {
@@ -17,12 +18,11 @@ export default function TaskContainer() {
   );
 }
 
-function PromptTask({task}) {
+function PromptTask({ task = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius possimus voluptates, dolor aperiam obcaecati voluptatem!' }) {
   return (
     <div className={styles["prompt-task"]}>
       <h3>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius possimus
-        voluptates, dolor aperiam obcaecati voluptatem!
+      {task}
       </h3>
     </div>
   );
