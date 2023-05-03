@@ -7,6 +7,7 @@ import {
   HiOutlineBookOpen,
 } from "react-icons/hi";
 import { AiOutlineDollarCircle } from "react-icons/ai";
+import { FiSettings } from "react-icons/fi";
 
 export default function Navbar() {
   return (
@@ -15,7 +16,7 @@ export default function Navbar() {
         <div className={styles["profile"]}>
           <div className={styles["profile-options"]}>
             <div className={styles["profile-btn"]}>My profile</div>
-            <div className={styles["profile-btn"]}>S</div>
+            <div className={styles["profile-btn"]}><FiSettings /></div>
           </div>
           <div className={styles["profile-info"]}>
             <div className={styles["profile-picture"]}></div>
