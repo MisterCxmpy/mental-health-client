@@ -10,7 +10,7 @@ export default function AIMentor() {
     if(!input) return;
     e.preventDefault()
     handleSendUserMessage(e)
-    let options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({message: {content: input, role: 'system'}}) };
+    let options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({message: {content: input, role: 'user'}}) };
     let res = await fetch('http://localhost:3000/mentor/chat', options)
 
     let response = await res.json();
