@@ -6,14 +6,14 @@ function useQuote() {
 
     const getRandomQuote = () => {
       let quote = quotes[Math.floor(Math.random() * quotes.length)]
-      console.log(quote.q.length);
-      if(quote.q.length >= 60) getRandomQuote()
+      
+      if(quote.q.length > 60) getRandomQuote()
 
       return quote
     }
 
     useEffect(() => {
-        setQuote(getRandomQuote());
+      setQuote(getRandomQuote());
     }, [])
 
   return { quote, getRandomQuote };
