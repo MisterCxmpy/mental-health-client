@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./index.module.css"
 
 export default function AIMentor() {
@@ -10,17 +10,24 @@ export default function AIMentor() {
     if(!input) return;
     e.preventDefault()
     handleSendUserMessage(e)
-    let options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({message: input}) };
+    let options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({message: {content: input, role: 'system'}}) };
     let res = await fetch('http://localhost:3000/mentor/chat', options)
 
     let response = await res.json();
-    setHistory(prev => [...prev, {id: Math.floor(Math.random() * 7863), isYou: false, message: response.message}]);
+    let assistantMessage = {id: Math.floor(Math.random() * 7863), isYou: false, message: response.message,  role: 'assistant'} // save to db
+    setHistory(prev => [...prev, assistantMessage]);
   } 
 
   const handleSendUserMessage = async e => {
     e.target.reset()
-    setHistory(prev => [...prev, {id: Math.floor(Math.random() * 7863), isYou: true, message: input}]);
-  } 
+
+    let userMessage = {id: Math.floor(Math.random() * 7863), isYou: true, message: input, role: 'user'}; // save to db
+    setHistory(prev => [...prev, userMessage]);
+  }
+
+  useEffect(() => { // fetch chat history from db
+    console.log(history);
+  }, [history])
 
   return (
     <div className="layout">
