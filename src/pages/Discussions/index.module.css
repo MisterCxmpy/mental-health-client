@@ -30,11 +30,19 @@
 .search-form {
   width: 95%;
   height: 64px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
 }
 
 .input {
-  width: 100%;
+  flex: 2 ;
   height: 100%;
+}
+
+.create-btn {
+  height: 100% !important;
 }
 
 .search-bar {

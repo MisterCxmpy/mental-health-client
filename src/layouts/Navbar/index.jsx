@@ -47,8 +47,8 @@ function NavigationList() {
 
   return (
     <div className={styles["navigation"]} role="navigation-btns">
+      <NavButton to={"/my-ai-mentor"} icon={<BiGlassesAlt />} name={"My AIMentor"} />
       <div className={styles["content"]}>
-        <NavButton to={"/my-ai-mentor"} icon={<BiGlassesAlt />} name={"My AIMentor"} />
         <NavButton to={"/"} icon={<BiHome />} name={"Home"} />
         <NavButton to={"/activities"} icon={<HiOutlinePuzzle />} name={"Activities"} />
         <NavButton to={"/discussions"} icon={<HiOutlineChat />} name={"Discussions"} />

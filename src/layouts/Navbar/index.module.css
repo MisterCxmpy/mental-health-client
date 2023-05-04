@@ -69,6 +69,10 @@
   height: max-content;
 }
 
+.navigation > a {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.22);
+}
+
 .content {
   height: 100%;
   overflow-y: auto;
