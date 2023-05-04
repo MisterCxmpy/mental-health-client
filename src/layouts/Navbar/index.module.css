@@ -61,6 +61,7 @@
 .navigation {
   display: flex;
   flex-direction: column;
+  height: 660px;
 }
 
 .btn > svg {
@@ -80,4 +81,10 @@
   text-align: left;
   padding-left: 50px;
   text-decoration: none;
+  cursor: pointer;
+}
+
+.logout {
+  border-top: 1px solid rgba(0, 0, 0, 0.22);
+  margin-top: auto;
 }

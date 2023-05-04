@@ -148,7 +148,7 @@ export default function GameOne() {
 
 
   const handleStashPoints = () => { // add fetch request here
-    console.log(score);
+    setGrid(getInitialGrid())
     setScoreInt(0)
     score = 0;
   }
