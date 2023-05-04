@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import styles from "./index.module.css"
+import { useAuth } from '../../contexts/authContext';
 
 let score = 0
 
@@ -141,13 +142,15 @@ function moveDown(grid) {
 export default function GameOne() {
   const [grid, setGrid] = useState(getInitialGrid());
   const [scoreInt, setScoreInt] = useState(score);
+  const { updatePoints } = useAuth();
 
   useEffect(() => {
     setScoreInt(score)
   }, [score])
 
 
-  const handleStashPoints = () => { // add fetch request here
+  const handleStashPoints = async () => { // add fetch request here
+    await updatePoints(Math.floor(scoreInt))
     setGrid(getInitialGrid())
     console.log(score)
     setScoreInt(0)
