@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
-import { Game2048 } from "../../components";
+import { Game2048, BlotChart } from "../../components";
 import styles from "./index.module.css"
 
-const GameMapping = {1: <Game2048 />}
+const GameMapping = {1: <Game2048 />, 2: <BlotChart />}
 
 export default function Game() {
   
