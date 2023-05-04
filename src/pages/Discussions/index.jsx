@@ -1,6 +1,7 @@
 import styles from "./index.module.css";
 import { VscComment } from "react-icons/vsc";
 import { AiOutlineStar } from "react-icons/ai";
+import { Tag } from "../../components";
 
 export default function Discussions() {
   return (
@@ -20,7 +21,7 @@ export default function Discussions() {
           </form>
         </div>
         <div className={styles["tags"]}>
-          <CreateTag tag={"Self Help"}/>
+          <Tag tag={"Self Help"}/>
         </div>
         <div className={styles["posts"]}>
           <CreatePostEl
@@ -52,10 +53,4 @@ function CreatePostEl({ title, summary, comments }) {
   );
 }
 
-function CreateTag({ tag }) {
-  return (
-    <div className={styles["tag"]}>
-      <p>{tag}</p>
-    </div>
-  );
-}
+

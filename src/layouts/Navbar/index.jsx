@@ -52,7 +52,7 @@ function NavigationList() {
       <NavButton to={"/discussions"} icon={<HiOutlineChat />} name={"Discussions"} />
       <NavButton to={"/guides"} icon={<HiOutlineBookOpen />} name={"Guides"} />
       <NavButton to={"/my-ai-mentor"} icon={<BiGlassesAlt />} name={"My AIMentor"} />
-      <NavButton to={"/mind-store"} icon={<AiOutlineDollarCircle />} name={"MindStore"} />
+      <NavButton to={"/mindstore"} icon={<AiOutlineDollarCircle />} name={"MindStore"} />
       <button className={`${styles["btn"]} ${styles["logout"]}`} onClick={() => logout()} ><BiLogOut />Logout</button>
     </div>
   )
