@@ -4,13 +4,13 @@ import useQuote from "../../hooks/useQuote.js";
 import { useAuth } from "../../contexts/authContext";
 import styles from "./index.module.css";
 
-import { BiHome, BiGlassesAlt, BiLeaf } from "react-icons/bi/";
+import { BiHome, BiGlassesAlt, BiLogOut } from "react-icons/bi/";
 import { HiOutlinePuzzle, HiOutlineChat, HiOutlineBookOpen } from "react-icons/hi";
 import { AiOutlineDollarCircle } from "react-icons/ai";
 import { FiSettings } from "react-icons/fi";
 
 export default function Navbar() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const { quote } = useQuote();
 
   return (
@@ -24,7 +24,7 @@ export default function Navbar() {
           </div>
 
           <div className={styles["profile-info"]}>
-            <div className={styles["profile-picture"]} onClick={() => logout()}></div>
+            <div className={styles["profile-picture"]}></div>
             <div className={styles["profile-name"]}>{user.username}</div>
             <div className={styles["progress"]}>40% Completed</div>
             <div className={styles["points"]}>0 Dabloons</div>
@@ -42,6 +42,9 @@ export default function Navbar() {
 }
 
 function NavigationList() {
+
+  const { logout } = useAuth();
+
   return (
     <div className={styles["navigation"]} role="navigation-btns">
       <NavButton to={"/"} icon={<BiHome />} name={"Home"} />
@@ -49,8 +52,8 @@ function NavigationList() {
       <NavButton to={"/discussions"} icon={<HiOutlineChat />} name={"Discussions"} />
       <NavButton to={"/guides"} icon={<HiOutlineBookOpen />} name={"Guides"} />
       <NavButton to={"/my-ai-mentor"} icon={<BiGlassesAlt />} name={"My AIMentor"} />
-      <NavButton to={"/meditations"} icon={<BiLeaf />} name={"Meditations"} />
-      <NavButton to={"/mind-store"} icon={<AiOutlineDollarCircle />} name={"MindStore"} />
+      <NavButton to={"/mindstore"} icon={<AiOutlineDollarCircle />} name={"MindStore"} />
+      <button className={`${styles["btn"]} ${styles["logout"]}`} onClick={() => logout()} ><BiLogOut />Logout</button>
     </div>
   )
 }
