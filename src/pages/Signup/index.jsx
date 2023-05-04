@@ -16,7 +16,7 @@ export default function Signup() {
 
     try {
       await register(payload)
-      navigate('/')
+      navigate('/authenticate/intro')
     } catch (error) {
       setError(error.message);
     }

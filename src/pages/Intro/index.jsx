@@ -1,5 +1,7 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useRef, useState } from "react";
 import styles from "./index.module.css";
+import { useAuth } from "../../contexts/authContext";
 
 const mentalHealthGoals = [
   { id: 1, text: "Practice mindfulness for 10 minutes each day." },
@@ -20,9 +22,10 @@ export default function Intro() {
   const message1Ref = useRef();
   const message2Ref = useRef();
   const continueBtnRef = useRef();
-
-  const [load, setLoad] = useState(false);
+  
+  const [step, setStep] = useState(0);
   const [selectedGoals, setSelectedGoals] = useState([]);
+  const { completeIntro } = useAuth()
 
   const setSelected = id => {
     let inside = selectedGoals.includes(id);
@@ -52,8 +55,7 @@ export default function Intro() {
   function switchInfo() {
     intro1Ref.current.style.opacity = 0
     setTimeout(() => {
-      intro1Ref.current.remove()
-      setLoad(true);
+      setStep(1)
     }, 1000);
 
     setTimeout(() => {
@@ -63,12 +65,12 @@ export default function Intro() {
 
   return (
     <>
-      <div ref={intro1Ref} className={styles["container"]}>
+      {step == 0 ? <div ref={intro1Ref} className={styles["container"]}>
         <IntroPart {...{ message1Ref, message2Ref, continueBtnRef, switchInfo }} />
-      </div>
+      </div> : null}
 
-      {load ? <div ref={intro2Ref} className={styles["container"]}>
-        <GoalSelect {...{ mentalHealthGoals, setSelected, selectedGoals, submit: () => console.log(mapSelected(selectedGoals)) }} />
+      {step == 1 ? <div ref={intro2Ref} className={styles["container"]}>
+        <GoalSelect {...{ mentalHealthGoals, setSelected, selectedGoals, submit: () => completeIntro(mapSelected(selectedGoals)) }} />
       </div> : null}
     </>
   );

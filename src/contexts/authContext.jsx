@@ -9,11 +9,18 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const navigate = useNavigate()
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
 
   const saveUser = (user) => {
     setUser(user);
     localStorage.setItem('user', JSON.stringify(user));
+  }
+
+  const completeIntro = (goals) => {
+    let userDat = {...user, goals: goals.map(g => g.text)} // gets user selected goals and saves them in state
+
+    saveUser(userDat)
+    navigate('/');
   }
 
   const login = async ({ username, password }) => {
@@ -24,7 +31,7 @@ export const AuthProvider = ({ children }) => {
 
     if (!response.ok) throw new Error(user.message); // if theres any error, throw one and with that data
 
-    saveUser(user) // save and cache user
+    saveUser({ ...user, intro: false }) // save and cache user
     return user;
   }
 
@@ -36,12 +43,13 @@ export const AuthProvider = ({ children }) => {
 
     if (!response.ok) throw new Error(user.message); // if theres any error, throw one and with that data
 
-    saveUser(user) // save and cache user
+    saveUser({ ...user, intro: true }) // save and cache user, set registered = true
     return user;
   }
 
   const logout = () => {
     localStorage.removeItem('user');
+    setUser(null)
     navigate('/authenticate/login');
   }
 
@@ -61,8 +69,12 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
+  useEffect(() => {
+    console.log(user);
+  }, [user])
+
   return (
-    <AuthContext.Provider value={{ user, setUser, login, register, logout }}>
+    <AuthContext.Provider value={{ user, setUser, login, register, logout, completeIntro }}>
       {children}
     </AuthContext.Provider>
   );
