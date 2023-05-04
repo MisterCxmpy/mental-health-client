@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import styles from "./index.module.css";
 
-const gameTypes = [{id: 1, name: "2048"}];
+const gameTypes = [{id: 1, name: "2048"},  {id:2, name:"Blot Chart"}];
 const calcColourIndex = index => ((index % 5) + Math.floor(index / 6) * 6 + 2) % 6 || 2;
 
 export default function GameList() {
