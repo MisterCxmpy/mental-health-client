@@ -3,8 +3,8 @@ import styles from "./index.module.css"
 
 export default function CreateForum() {
 
-  const [title, setTitle] = useState()
-  const [body, setBody] = useState()
+  const [title, setTitle] = useState("")
+  const [body, setBody] = useState("")
 
   return (
     <div className={styles["forum"]}>
