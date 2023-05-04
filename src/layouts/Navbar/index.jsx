@@ -27,7 +27,7 @@ export default function Navbar() {
             <div className={styles["profile-picture"]}></div>
             <div className={styles["profile-name"]}>{user.username}</div>
             <div className={styles["progress"]}>40% Completed</div>
-            <div className={styles["points"]}>0 Dabloons</div>
+            <div className={styles["points"]}>{user.dabloons} Dabloons</div>
             <div className={styles["inspiration-message"]}>
               {quote.q}
             </div>

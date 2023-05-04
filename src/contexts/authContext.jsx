@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   const completeIntro = (goals) => {
-    let userDat = {...user, goals: goals.map(g => g.text)} // gets user selected goals and saves them in state
+    let userDat = { ...user, goals: goals.map(g => g.text) } // gets user selected goals and saves them in state,
 
     saveUser(userDat)
     navigate('/');
@@ -53,6 +53,18 @@ export const AuthProvider = ({ children }) => {
     navigate('/authenticate/login');
   }
 
+  const updatePoints = async (points) => {
+    let options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({points, user_id: user.user_id}) }
+    const res = await fetch('http://localhost:3000/user/pts', options);
+    const updatedUser = await res.json();
+
+    if (res.ok) {
+      saveUser(updatedUser)
+    } else {
+      console.log(updatedUser);
+    }
+  }
+
   useEffect(() => { // check for cachedUser data to login and redirect user
     let cached = localStorage.getItem('user');
     let path = window.location.pathname == '/authenticate/intro';
@@ -69,12 +81,13 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
+
   useEffect(() => {
     console.log(user);
   }, [user])
 
   return (
-    <AuthContext.Provider value={{ user, setUser, login, register, logout, completeIntro }}>
+    <AuthContext.Provider value={{ user, setUser, login, register, logout, completeIntro, updatePoints }}>
       {children}
     </AuthContext.Provider>
   );
