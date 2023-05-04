@@ -3,6 +3,7 @@ import { VscComment } from "react-icons/vsc";
 import { AiOutlineStar } from "react-icons/ai";
 import { CreateForum, Modal, Tag } from "../../components";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Discussions() {
 
@@ -47,17 +48,19 @@ export default function Discussions() {
 
 function CreatePostEl({ title, summary, comments }) {
   return (
-    <div className={styles["post"]}>
-      <div className={styles["content"]}>
-        <h1>{title}</h1>
-        <p className={styles["post-op"]}>Username</p>
-        <p>{summary}</p>
+    <Link to={"/discussions/1"}>
+      <div className={styles["post"]}>
+        <div className={styles["content"]}>
+          <h1>{title}</h1>
+          <p className={styles["post-op"]}>Username</p>
+          <p>{summary}</p>
+        </div>
+        <div className={styles["options"]}>
+          <p><VscComment />{`${comments} Comments`}</p>
+          <p><AiOutlineStar />Favourite</p>
+        </div>
       </div>
-      <div className={styles["options"]}>
-        <p><VscComment />{`${comments} Comments`}</p>
-        <p><AiOutlineStar />Favourite</p>
-      </div>
-    </div>
+    </Link>
   );
 }
 
