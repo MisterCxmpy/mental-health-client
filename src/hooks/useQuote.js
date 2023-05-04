@@ -4,7 +4,13 @@ import quotes from '../assets/quotes.json'
 function useQuote() {
     const [quote, setQuote] = useState(quotes[0]);
 
-    const getRandomQuote = () => quotes[Math.floor(Math.random() * quotes.length)]
+    const getRandomQuote = () => {
+      let quote = quotes[Math.floor(Math.random() * quotes.length)]
+      console.log(quote.q.length);
+      if(quote.q.length >= 60) getRandomQuote()
+
+      return quote
+    }
 
     useEffect(() => {
         setQuote(getRandomQuote());
