@@ -31,6 +31,6 @@
     "jsdom": "^22.0.0",
     "testing-library": "^0.0.2",
     "vite": "^4.3.2",
-    "vitest": "^0.27.3"
+    "vitest": "^0.31.0"
   }
 }

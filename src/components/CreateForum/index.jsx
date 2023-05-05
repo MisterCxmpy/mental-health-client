@@ -22,8 +22,6 @@ export default function CreateForum({ setOpen }) {
         content: body,
       })
     })
-    console.log(user)
-    console.log(user.user_id)
     const data = await response.json()
     console.log(data, "data")
     setOpen(false);

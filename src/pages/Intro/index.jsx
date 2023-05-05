@@ -17,33 +17,36 @@ const mentalHealthGoals = [
 ];
 
 export default function Intro() {
-  const intro1Ref = useRef()
-  const intro2Ref = useRef()
+  const intro1Ref = useRef();
+  const intro2Ref = useRef();
   const message1Ref = useRef();
   const message2Ref = useRef();
   const continueBtnRef = useRef();
-  
+
   const [step, setStep] = useState(0);
   const [error, setError] = useState(0);
   const [selectedGoals, setSelectedGoals] = useState([]);
-  const { completeIntro, updateGoals } = useAuth()
+  const { completeIntro, updateGoals } = useAuth();
 
-  const setSelected = id => {
+  const setSelected = (id) => {
     let inside = selectedGoals.includes(id);
-    inside ? setSelectedGoals(p => p.filter(g => g !== id)) : setSelectedGoals(prev => ([...prev, id]));
-  }
+    inside
+      ? setSelectedGoals((p) => p.filter((g) => g !== id))
+      : setSelectedGoals((prev) => [...prev, id]);
+  };
 
   const complete = async (goals) => {
-    if(selectedGoals.length == 0) {
-      setError('Please Select at Least 1 Goal!')
-      return
+    if (selectedGoals.length == 0) {
+      setError("Please Select at Least 1 Goal!");
+      return;
     }
-    let goalsStr = goals.map(g => g.text)
-    await updateGoals(goalsStr)
-    completeIntro(goals)
-  }
+    let goalsStr = goals.map((g) => g.text);
+    await updateGoals(goalsStr);
+    completeIntro(goals);
+  };
 
-  const mapSelected = () => selectedGoals.map(id => mentalHealthGoals.find(g2 => g2.id == id));
+  const mapSelected = () =>
+    selectedGoals.map((id) => mentalHealthGoals.find((g2) => g2.id == id));
 
   useEffect(() => {
     setTimeout(() => {
@@ -64,9 +67,9 @@ export default function Intro() {
   }, []);
 
   function switchInfo() {
-    intro1Ref.current.style.opacity = 0
+    intro1Ref.current.style.opacity = 0;
     setTimeout(() => {
-      setStep(1)
+      setStep(1);
     }, 1000);
 
     setTimeout(() => {
@@ -76,50 +79,84 @@ export default function Intro() {
 
   return (
     <>
-      {step == 0 ? <div ref={intro1Ref} className={styles["container"]}>
-        <IntroPart {...{ message1Ref, message2Ref, continueBtnRef, switchInfo }} />
-      </div> : null}
+      {step == 0 ? (
+        <div ref={intro1Ref} className={styles["container"]}>
+          <IntroPart
+            {...{ message1Ref, message2Ref, continueBtnRef, switchInfo }}
+          />
+        </div>
+      ) : null}
 
-      {step == 1 ? <div ref={intro2Ref} className={styles["container"]}>
-        <GoalSelect {...{ mentalHealthGoals, setSelected, selectedGoals, error, submit: () => complete(mapSelected(selectedGoals)) }} />
-      </div> : null}
+      {step == 1 ? (
+        <div ref={intro2Ref} className={styles["container"]}>
+          <GoalSelect
+            {...{
+              mentalHealthGoals,
+              setSelected,
+              selectedGoals,
+              error,
+              submit: () => complete(mapSelected(selectedGoals)),
+            }}
+          />
+        </div>
+      ) : null}
     </>
   );
 }
 
 function IntroPart({ message1Ref, message2Ref, continueBtnRef, switchInfo }) {
-  let title = 'MHM!'.split('');
-  const TitleBtn = ({ letter }) => <button className={styles["bounce"]} style={{ color: '#9A9FDD' }}>{letter}</button>;
+  let title = "MHM!".split("");
+  const TitleBtn = ({ letter }) => (
+    <button className={styles["bounce"]} style={{ color: "#9A9FDD" }}>
+      {letter}
+    </button>
+  );
 
   return (
     <>
       <div className={styles["heading"]}>
         <h1>
           Hello! Welcome to &#8203;
-          {title.map((l, i) => <TitleBtn key={l + i} {...{ letter: l }} />)}
+          {title.map((l, i) => (
+            <TitleBtn key={l + i} {...{ letter: l }} />
+          ))}
         </h1>
         <h3>Explain the goal of the app</h3>
       </div>
       <p ref={message1Ref} className={styles["message"]}>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum quasi
-        necessitatibus labore sapiente minus debitis maxime libero id quo
-        inventore, porro ipsa aspernatur unde modi quaerat laboriosam, deserunt
-        molestiae. Explicabo?
+        Welcome to our mental health app, designed to help you achieve your
+        goals and improve your well-being. Our home page generates tasks based
+        on a five-year plan, while our meditation soundtracks and engaging
+        activities provide a break from stress. Join our community and get
+        personalized support from your own AI mentor.
       </p>
       <p ref={message2Ref} className={styles["message"]}>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum quasi
-        necessitatibus labore sapiente minus debitis maxime libero id quo
-        inventore, porro ipsa aspernatur unde modi quaerat laboriosam, deserunt
-        molestiae. Explicabo?
+        Our app includes a forum for users to discuss progress, a store for
+        different themes and AI personas, and a point system to keep you
+        engaged. With our app, you can take charge of your mental health and
+        overcome obstacles with confidence. Start your journey
+        to a happier, healthier you.
       </p>
       <div>
-        <button ref={continueBtnRef} className={`${styles["continue-btn"]} btn`} onClick={switchInfo}>Continue</button>
+        <button
+          ref={continueBtnRef}
+          className={`${styles["continue-btn"]} btn`}
+          onClick={switchInfo}
+        >
+          Start your journey
+        </button>
       </div>
     </>
-  )
+  );
 }
 
-function GoalSelect({ mentalHealthGoals, setSelected, selectedGoals, submit, error }) {
+function GoalSelect({
+  mentalHealthGoals,
+  setSelected,
+  selectedGoals,
+  submit,
+  error,
+}) {
   return (
     <>
       <div className={styles["heading"]}>
@@ -128,22 +165,39 @@ function GoalSelect({ mentalHealthGoals, setSelected, selectedGoals, submit, err
       </div>
 
       <div className={styles["selection-list"]}>
-        {mentalHealthGoals.map(({ id, text }) => <Selection key={id} id={id} message={text} select={setSelected} selected={selectedGoals.includes(id)} />)}
+        {mentalHealthGoals.map(({ id, text }) => (
+          <Selection
+            key={id}
+            id={id}
+            message={text}
+            select={setSelected}
+            selected={selectedGoals.includes(id)}
+          />
+        ))}
       </div>
 
       <div>
-        <button className={`btn`} onClick={() => submit()}>Continue</button>
+        <button className={`btn`} onClick={() => submit()}>
+          Continue
+        </button>
       </div>
 
-      {error ? <p style={{ color: 'red' }} >{error}</p> : null}
+      {error ? <p style={{ color: "red" }}>{error}</p> : null}
     </>
-  )
+  );
 }
 
 function Selection({ message, select, id, selected }) {
   return (
-    <div className={selected ? `${styles["selection"]} ${styles["active"]}` : `${styles["selection"]}`} onClick={() => select(id)}>
+    <div
+      className={
+        selected
+          ? `${styles["selection"]} ${styles["active"]}`
+          : `${styles["selection"]}`
+      }
+      onClick={() => select(id)}
+    >
       <h4>{message}</h4>
     </div>
-  )
+  );
 }

@@ -51,6 +51,7 @@
 .content > p {
   font-size: 20px;
   opacity: 0.79;
+  overflow-wrap: anywhere;
 }
 
 .options {
@@ -71,7 +72,7 @@
 .comment {
   display: flex;
   flex-direction: row;
-  gap: 24px;
+  gap: 24px; 
 }
 
 .profile {
