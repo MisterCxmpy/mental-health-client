@@ -24,12 +24,23 @@ export default function Intro() {
   const continueBtnRef = useRef();
   
   const [step, setStep] = useState(0);
+  const [error, setError] = useState(0);
   const [selectedGoals, setSelectedGoals] = useState([]);
-  const { completeIntro } = useAuth()
+  const { completeIntro, updateGoals } = useAuth()
 
   const setSelected = id => {
     let inside = selectedGoals.includes(id);
     inside ? setSelectedGoals(p => p.filter(g => g !== id)) : setSelectedGoals(prev => ([...prev, id]));
+  }
+
+  const complete = async (goals) => {
+    if(selectedGoals.length == 0) {
+      setError('Please Select at Least 1 Goal!')
+      return
+    }
+    let goalsStr = goals.map(g => g.text)
+    await updateGoals(goalsStr)
+    completeIntro(goals)
   }
 
   const mapSelected = () => selectedGoals.map(id => mentalHealthGoals.find(g2 => g2.id == id));
@@ -70,7 +81,7 @@ export default function Intro() {
       </div> : null}
 
       {step == 1 ? <div ref={intro2Ref} className={styles["container"]}>
-        <GoalSelect {...{ mentalHealthGoals, setSelected, selectedGoals, submit: () => completeIntro(mapSelected(selectedGoals)) }} />
+        <GoalSelect {...{ mentalHealthGoals, setSelected, selectedGoals, error, submit: () => complete(mapSelected(selectedGoals)) }} />
       </div> : null}
     </>
   );
@@ -108,7 +119,7 @@ function IntroPart({ message1Ref, message2Ref, continueBtnRef, switchInfo }) {
   )
 }
 
-function GoalSelect({ mentalHealthGoals, setSelected, selectedGoals, submit }) {
+function GoalSelect({ mentalHealthGoals, setSelected, selectedGoals, submit, error }) {
   return (
     <>
       <div className={styles["heading"]}>
@@ -123,6 +134,8 @@ function GoalSelect({ mentalHealthGoals, setSelected, selectedGoals, submit }) {
       <div>
         <button className={`btn`} onClick={() => submit()}>Continue</button>
       </div>
+
+      {error ? <p style={{ color: 'red' }} >{error}</p> : null}
     </>
   )
 }
