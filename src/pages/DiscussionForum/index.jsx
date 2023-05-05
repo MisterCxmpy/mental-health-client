@@ -3,11 +3,14 @@ import styles from "./index.module.css";
 import { AiOutlineStar } from "react-icons/ai";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useAuth } from "../../contexts/authContext";
 
 export default function DiscussionForum() {
   const [forum, setForum] = useState({});
   const [comments, setComments] = useState([]);
   const [username, setUsername] = useState("");
+  const [comment, setComment] = useState("");
+  const { user } = useAuth();
 
   const { id } = useParams();
 
@@ -50,6 +53,37 @@ export default function DiscussionForum() {
     }
   }
 
+  async function createComment(e) {
+    e.preventDefault();
+    const options = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        comment: comment,
+        user_id: user.user_id,
+        forum_id: id,
+      }),
+    };
+
+    const response = await fetch(
+      `http://localhost:3000/comments/${id}`,
+      options
+    );
+
+    const data = await response.json();
+
+    console.log(data);
+
+    if (response.ok) {
+      setComments((prev) => [...prev, data.comment]);
+    } else {
+      console.log("Failed to create comment!");
+    }
+
+    setComment("");
+    e.target.reset();
+  }
+
   useEffect(() => {
     getForum();
   }, []);
@@ -75,24 +109,25 @@ export default function DiscussionForum() {
           </div>
         </div>
         <div className={styles["create-comment"]}>
-          <form className={styles["create-form"]}>
+          <form onSubmit={createComment} className={styles["create-form"]}>
             <textarea
               maxLength={500}
               placeholder="What are your thoughts?"
+              onChange={(e) => setComment(e.target.value)}
+              required
             ></textarea>
-            <button className={`${styles["submit-btn"]} btn`}>Comment</button>
+            <button type="submit" className={`${styles["submit-btn"]} btn`}>
+              Comment
+            </button>
           </form>
         </div>
-        <div className={styles["comment-section"]}>
-          {comments.length > 0
-            ? comments.map((c, i) => (
-                <CreateComment
-                  username={c.username}
-                  comment={c.comment}
-                />
-              ))
-            : null}
-        </div>
+        {comments.length > 0 ? (
+          <div className={styles["comment-section"]}>
+            {comments.map((c, i) => (
+              <CreateComment username={c.username} comment={c.comment} />
+            ))}
+          </div>
+        ) : null}
       </div>
     </div>
   );
@@ -101,7 +136,12 @@ export default function DiscussionForum() {
 function CreateComment({ username, comment }) {
   return (
     <div className={styles["comment"]}>
-      <div className={styles["profile-picture"]}></div>
+      <div className={styles["profile"]}>
+        <div className={styles["profile-picture"]}></div>
+        <div
+          className={`${styles["divider"]} ${styles["divider-not-last"]}`}
+        ></div>
+      </div>
       <div className={styles["content"]}>
         <p className={styles["username"]}>{username}</p>
         <p>{comment}</p>

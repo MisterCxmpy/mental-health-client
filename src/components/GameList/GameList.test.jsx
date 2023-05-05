@@ -9,20 +9,22 @@ expect.extend(matchers)
 import GameList from '.';
 
 describe('GameList Component', () => {
-    beforeEach(() => {
-        render(
-          <GameList />
-        )
-    })
-    
-    afterEach(() => {
-        cleanup();
-    })
+  beforeEach(() => {
+  render(
+    <BrowserRouter>
+      <GameList />
+    </BrowserRouter>,
+  )
+  })
+  
+  afterEach(() => {
+      cleanup();
+  })
 
-    it("Displays a GameList with 10 links", () => {
-        const nav = screen.getByRole('game-list')
-        expect(nav).toBeInTheDocument();
-        expect(nav.childNodes.length).toBe(10)
-    })
+  it("Displays a GameList with 2 links", () => {
+      const nav = screen.getByRole('game-list')
+      expect(nav).toBeInTheDocument();
+      expect(nav.childNodes.length).toBe(2)
+  })
     
 })

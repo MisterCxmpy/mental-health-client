@@ -1,0 +1,46 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.card {
+  height: 300px;
+  width: 255px;
+  border-radius: 6px;
+}
+
+.card-image {
+  height: 175px;
+  background: white;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.content {
+  padding: 12px;
+}
+
+.content > p {
+  font-size: 18px;
+}
+
+.color-2 {
+  background: var(--color-2);
+}
+
+.color-3 {
+  background: var(--color-3);
+}
+
+.color-4 {
+  background: var(--color-4);
+}
+
+.color-5 {
+  background: var(--color-5);
+}
+
+.color-6 {
+  background: var(--color-6);
+}

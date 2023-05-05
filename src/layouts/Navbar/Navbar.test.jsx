@@ -7,13 +7,11 @@ import matchers from "@testing-library/jest-dom/matchers";
 expect.extend(matchers);
 
 import Navbar from ".";
-import { AuthProvider, AuthContext } from "../../contexts/authContext";
+import { AuthProvider, AuthContext, useAuth } from "../../contexts/authContext";
 
 describe("Navbar Component", () => {
   beforeEach(() => {
-    vi.spyOn(AuthContext, "useContext").mockReturnValue({
-      currentUser: { username: "banana" },
-    });
+    const { setUser } = useAuth();
 
     render(
       <BrowserRouter>
@@ -26,7 +24,6 @@ describe("Navbar Component", () => {
 
   afterEach(() => {
     cleanup();
-    jest.restoreAllMocks();
   });
 
   it("Displays a nav bar with 5 links", () => {
