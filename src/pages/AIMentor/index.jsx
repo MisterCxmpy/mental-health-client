@@ -38,9 +38,7 @@ export default function AIMentor() {
   return (
     <div className="layout">
       <div className={styles["container"]}>
-        <div className={styles["messages-container"]}>
-          {history.map(m => <Message key={m.id} isYou={m.isYou} message={m.content} />)}
-        </div>
+       <Conversation {...{ history }} />
         <div className={styles["input-box"]} onSubmit={handleSendMessage}>
           <div className={styles["options"]}></div>
           <form className={styles["input-form"]}>
@@ -57,6 +55,14 @@ export default function AIMentor() {
           </form>
         </div>
       </div>
+    </div>
+  )
+}
+
+function Conversation({history}) {
+  return (
+    <div className={styles["messages-container"]}>
+      {history.map(m => <Message key={m.id} isYou={m.isYou} message={m.content} />)}
     </div>
   )
 }

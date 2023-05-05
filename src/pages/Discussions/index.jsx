@@ -11,7 +11,6 @@ export default function Discussions() {
     async function fetchForums() {
       const response = await fetch('http://localhost:3000/forums');
       const data = await response.json();
-      console.log(data)
       setForums(data);
     }
     fetchForums();
@@ -48,9 +47,7 @@ export default function Discussions() {
             <Tag tag={"Self Help"} />
           </div>
           <div className={styles["posts"]}>
-            {forums.map((forum) => (
-              <ForumCard key={forum.id} title={forum.title} content={forum.content} />
-            ))}
+            {forums.map((forum) => (<ForumCard key={forum.id} title={forum.title} content={forum.content} />))}
           </div>
         </div>
       </div>
