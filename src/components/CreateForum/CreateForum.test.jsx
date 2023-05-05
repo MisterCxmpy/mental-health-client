@@ -3,10 +3,18 @@ import { describe, expect, beforeEach, afterEach, it, vi } from "vitest";
 import { screen, render, cleanup, fireEvent } from "@testing-library/react";
 
 import CreateForum from ".";
+import { AuthProvider } from "../../contexts/authContext";
+import { BrowserRouter } from "react-router-dom";
 
 describe("CreateForum Component", () => {
   beforeEach(() => {
-    render(<CreateForum />);
+    render(
+      <BrowserRouter>
+        <AuthProvider>
+          <CreateForum />
+        </AuthProvider>
+      </BrowserRouter>
+    );
   });
 
   afterEach(() => {
@@ -34,10 +42,7 @@ describe("CreateForum Component", () => {
     expect(bodyInput.value).toBe("Test Body");
   });
 
-  it("Calls the onSubmit function when the form is submitted", () => {
-    const onSubmit = vi.fn();
-    render(<CreateForum onSubmit={onSubmit} />);
-
+  it("Calls the onSubmit button to be on page", () => {
     const submitButton = screen.getAllByRole("button", { name: "Post" });
     expect(submitButton[0]).toBeInTheDocument();
   });

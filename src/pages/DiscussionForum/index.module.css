@@ -46,12 +46,12 @@
   position: relative;
   width: 100%;
   height: 80%;
-  margin-bottom: 30px;
 }
 
 .content > p {
   font-size: 20px;
   opacity: 0.79;
+  overflow-wrap: anywhere;
 }
 
 .options {
@@ -72,7 +72,13 @@
 .comment {
   display: flex;
   flex-direction: row;
-  gap: 24px;
+  gap: 24px; 
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .profile-picture {
@@ -94,4 +100,12 @@
 .username {
   color: var(--primary-font-color) !important;
   opacity: 1 !important;
+}
+
+.divider {
+  width: 2px;
+  height: 100%;
+  background: #202020;
+  margin: 12px 0;
+  opacity: 0.5;
 }
