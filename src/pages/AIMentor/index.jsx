@@ -11,9 +11,10 @@ export default function AIMentor() {
   const messagesEndRef = useRef(null);
 
   const handleSendMessage = async e => {
-    if (!input) return;
+    if(!input) return;
     e.preventDefault()
     handleSendUserMessage(e)
+
     let options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: { content: input, role: 'system' }, mentor: user.mentor }) };
     let res = await fetch('http://localhost:3000/mentor/chat', options)
 
@@ -21,11 +22,13 @@ export default function AIMentor() {
     let assistantMessage = { id: Math.floor(Math.random() * 7863), isYou: false, message: response.message, role: 'assistant' } // save to db
     setHistory(prev => [...prev, assistantMessage]);
   }
+ 
+
 
   const handleSendUserMessage = async e => {
     e.target.reset()
-
     let userMessage = { id: Math.floor(Math.random() * 7863), isYou: true, message: input, role: 'user' }; // save to db
+
     setHistory(prev => [...prev, userMessage]);
   }
 
@@ -38,7 +41,7 @@ export default function AIMentor() {
     <div className="layout">
       <div className={styles["container"]}>
         <div className={styles["messages-container"]}>
-          {history.map(m => <Message key={m.id} isYou={m.isYou} message={m.message} />)}
+          {history.map(m => <Message key={m.id} isYou={m.isYou} message={m.message}/>)}
           <div ref={messagesEndRef} />
         </div>
         <div className={styles["input-box"]} onSubmit={handleSendMessage}>
