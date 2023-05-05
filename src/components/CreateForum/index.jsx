@@ -34,11 +34,11 @@ export default function CreateForum({ setOpen }) {
     <div className={styles["forum"]}>
       <form className={styles["forum-form"]} onSubmit={handleSubmit}>
         <div className={styles["input"]}>
-          <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
+          <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required role="titleInput"/>
           <span>Title</span>
         </div>
         <div className={styles["input"]}>
-          <textarea type="text" value={body} onChange={(e) => setBody(e.target.value)} />
+          <textarea type="text" value={body} onChange={(e) => setBody(e.target.value)} role="bodyTextarea"/>
           <span>{"Text (Optional)"}</span>
         </div>
         <div className={styles["input"]}>
