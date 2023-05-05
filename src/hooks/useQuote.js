@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import quotes from '../assets/quotes.json'
+import quotes from '../../assets/quotes.json'
 
 function useQuote() {
     const [quote, setQuote] = useState(quotes[0]);
