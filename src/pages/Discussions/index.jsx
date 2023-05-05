@@ -11,7 +11,6 @@ export default function Discussions() {
     async function fetchForums() {
       const response = await fetch('http://localhost:3000/forums');
       const data = await response.json();
-      console.log(data)
       setForums(data);
     }
     fetchForums();
