@@ -48,30 +48,12 @@ export default function Discussions() {
             <Tag tag={"Self Help"} />
           </div>
           <div className={styles["posts"]}>
-            {forums.map((forum) => (
-              <ForumCard key={forum.id} title={forum.title} content={forum.content} />
-            ))}
+            {forums.length > 0 ? forums.map((forum) => (
+              <ForumCard key={forum.forum_id} title={forum.title} content={forum.content} user_id={forum.user_id} forum_id={forum.forum_id} />
+            )) : null}
           </div>
         </div>
       </div>
     </>
   );
 }
-
-function CreatePostEl({ title, summary, comments }) {
-  return (
-    <div className={styles["post"]}>
-      <div className={styles["content"]}>
-        <h1>{title}</h1>
-        <p className={styles["post-op"]}>Username</p>
-        <p>{summary}</p>
-      </div>
-      <div className={styles["options"]}>
-        <p><VscComment />{`${comments} Comments`}</p>
-        <p><AiOutlineStar />Favourite</p>
-      </div>
-    </div>
-  );
-}
-
-

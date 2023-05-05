@@ -7,7 +7,6 @@ const personalityTypes = [
   {id: 3, name: "Lex Freidman", price: 200000},
   {id: 4, name: "Elon Musk", price: 200000},
 ];
-
 const calcColourIndex = index => ((index % 5) + Math.floor(index / 6) * 6 + 2) % 6 || 2;
 
 export default function MarketplaceList() {
