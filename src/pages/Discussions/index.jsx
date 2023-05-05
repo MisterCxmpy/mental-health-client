@@ -2,10 +2,12 @@ import styles from "./index.module.css";
 import { CreateForum, Modal, Tag } from "../../components";
 import { useEffect, useState } from "react";
 import ForumCard from "../../components/ForumCard/index";
+import useSearch from "../../hooks/useSearch";
 
 export default function Discussions() {
   const [open, setOpen] = useState(false);
   const [forums, setForums] = useState([]);
+  const { query, setQuery, result, searching } = useSearch(forums);
 
   useEffect(() => {
     async function fetchForums() {
@@ -19,7 +21,7 @@ export default function Discussions() {
   return (
     <>
       {open ? (
-        <Modal setOpen={setOpen} content={<CreateForum />} />
+        <Modal setOpen={setOpen} content={<CreateForum setOpen={setOpen} setForums={setForums} />} />
       ) : null}
       <div className="layout">
         <div className={styles["container"]}>
@@ -31,6 +33,7 @@ export default function Discussions() {
                   className={styles["search-bar"]}
                   type="text"
                   placeholder="Search Discussion"
+                  onChange={(e) => setQuery(e.target.value)}
                   required
                 />
               </div>
@@ -47,7 +50,7 @@ export default function Discussions() {
             <Tag tag={"Self Help"} />
           </div>
           <div className={styles["posts"]}>
-            {forums.length > 0 ? forums.map((forum) => (
+            {result.length > 0 ? result.map((forum) => (
               <ForumCard key={forum.forum_id} title={forum.title} content={forum.content} user_id={forum.user_id} forum_id={forum.forum_id} />
             )) : null}
           </div>

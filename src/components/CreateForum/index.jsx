@@ -2,10 +2,10 @@ import { useState, useEffect } from "react"
 import styles from "./index.module.css"
 import { useAuth } from "../../contexts/authContext"
 
-export default function CreateForum({ setOpen }) {
+export default function CreateForum({ setOpen, setForums }) {
 
-  const [title, setTitle] = useState()
-  const [body, setBody] = useState()
+  const [title, setTitle] = useState("")
+  const [body, setBody] = useState("")
   const { user } = useAuth();
 
   async function handleSubmit(e) {
@@ -23,7 +23,8 @@ export default function CreateForum({ setOpen }) {
       })
     })
     const data = await response.json()
-    console.log(data, "data")
+    
+    setForums(prev => [...prev, data])
     setOpen(false);
   }
   
