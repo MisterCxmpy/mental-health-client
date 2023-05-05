@@ -3,12 +3,16 @@ import styles from "./index.module.css";
 import { AiOutlineStar } from "react-icons/ai";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useAuth } from "../../contexts/authContext";
 
 export default function DiscussionForum() {
   const [forum, setForum] = useState({});
   const [comments, setComments] = useState([]);
   const [username, setUsername] = useState("");
+  const [comment, setComment] = useState("")
+  const { user } = useAuth()
 
+  
   const { id } = useParams();
 
   async function getForum() {
@@ -50,6 +54,30 @@ export default function DiscussionForum() {
     }
   }
 
+  async function createComment(e) {
+    e.preventDefault()
+    const options = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ comment: comment, user_id: user.user_id, forum_id: id})
+    };
+
+    const response = await fetch(`http://localhost:3000/comments/${id}`, options);
+      
+    const data = await response.json()
+
+    console.log(data)
+
+    if (response.ok) {
+      console.log("Comment created!")
+      setComments(prev => [...prev, data.comment])
+    } else {
+      console.log("Failed to create comment!");
+    }
+
+    e.target.reset()
+  }
+
   useEffect(() => {
     getForum();
   }, []);
@@ -75,12 +103,13 @@ export default function DiscussionForum() {
           </div>
         </div>
         <div className={styles["create-comment"]}>
-          <form className={styles["create-form"]}>
+          <form onSubmit={createComment} className={styles["create-form"]}>
             <textarea
               maxLength={500}
               placeholder="What are your thoughts?"
+              onChange={(e) => setComment(e.target.value)}
             ></textarea>
-            <button className={`${styles["submit-btn"]} btn`}>Comment</button>
+            <button type="submit" className={`${styles["submit-btn"]} btn`}>Comment</button>
           </form>
         </div>
         <div className={styles["comment-section"]}>
