@@ -6,28 +6,25 @@ function useSearch(forums) {
   const [searching, setSearching] = useState(false);
 
   useEffect(() => {
-    if (query === "") setResult(forums);
-
-    setResult(
-      forums.filter((forums) => {
-        const title = forums.title.toLowerCase();
-
-        return (
-          title.includes(query.toLowerCase())
-        );
-      })
-    );
-
-    if(query !== '') {
+    if (query === "") {
+      setResult(forums);
+    } else {
+      setResult(
+        forums.filter((forums) => {
+          const title = forums.title.toLowerCase();
+          return title.includes(query.toLowerCase());
+        })
+      );
+    }
+  
+    if (query !== "") {
       setSearching(true);
     }
-
+  
     return () => {
-      setSearching(false)
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [query]);
+      setSearching(false);
+    };
+  }, [query, forums]);
 
   return { query, setQuery, result, searching };
 }

@@ -18,9 +18,6 @@ export default function Discussions() {
     fetchForums();
   }, []);
 
-  useEffect(() => {
-  }, [query])
-
   return (
     <>
       {open ? (
