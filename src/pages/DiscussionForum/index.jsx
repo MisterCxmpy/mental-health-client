@@ -124,7 +124,7 @@ export default function DiscussionForum() {
         {comments.length > 0 ? (
           <div className={styles["comment-section"]}>
             {comments.map((c, i) => (
-              <CreateComment username={c.username} comment={c.comment} />
+              <CreateComment key={i} username={c.username} comment={c.comment} />
             ))}
           </div>
         ) : null}
