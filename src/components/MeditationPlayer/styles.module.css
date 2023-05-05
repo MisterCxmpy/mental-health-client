@@ -1,0 +1,8 @@
+.playButton {
+    margin: 0 auto;
+    width: 30px;
+}
+
+.playButton svg {
+    font-size: 2em;
+}

@@ -35,6 +35,8 @@ body {
   background: #9A9FDD;
   font-size: 20px;
   color: #ffffff;
+  cursor: pointer;
+  transition: 300ms;
 }
 
 a {

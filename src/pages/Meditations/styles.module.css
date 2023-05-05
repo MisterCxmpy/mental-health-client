@@ -1,0 +1,15 @@
+.content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2em;
+    height: 80vh;
+    opacity: 0;
+    transition: 700ms;
+}
+
+.times {
+    display: flex;
+    gap: 1em;
+}
