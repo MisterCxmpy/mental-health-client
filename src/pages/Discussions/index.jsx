@@ -1,17 +1,27 @@
 import styles from "./index.module.css";
-import { VscComment } from "react-icons/vsc";
-import { AiOutlineStar } from "react-icons/ai";
 import { CreateForum, Modal, Tag } from "../../components";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import ForumCard from "../../components/ForumCard/index";
 
 export default function Discussions() {
+  const [open, setOpen] = useState(false);
+  const [forums, setForums] = useState([]);
 
-  const [open, setOpen] = useState()
+  useEffect(() => {
+    async function fetchForums() {
+      const response = await fetch('http://localhost:3000/forums');
+      const data = await response.json();
+      console.log(data)
+      setForums(data);
+    }
+    fetchForums();
+  }, []);
 
   return (
     <>
-      {open ? <Modal setOpen={setOpen} content={<CreateForum />}/> : null}
+      {open ? (
+        <Modal setOpen={setOpen} content={<CreateForum />} />
+      ) : null}
       <div className="layout">
         <div className={styles["container"]}>
           <div className={styles["search"]}>
@@ -25,20 +35,22 @@ export default function Discussions() {
                   required
                 />
               </div>
-              <button type="button" className={`${styles["create-btn"]} btn`} onClick={() => setOpen(true)}>Create</button>
+              <button
+                type="button"
+                className={`${styles["create-btn"]} btn`}
+                onClick={() => setOpen(true)}
+              >
+                Create
+              </button>
             </form>
           </div>
           <div className={styles["tags"]}>
-            <Tag tag={"Self Help"}/>
+            <Tag tag={"Self Help"} />
           </div>
           <div className={styles["posts"]}>
-            <CreatePostEl
-              title={"This is a test discussion"}
-              summary={
-                "In this section we’ll have text pertaining to the actual discussion at hand, maybe the first question posted but cut..."
-              }
-              comments={81}
-            />
+            {forums.map((forum) => (
+              <ForumCard key={forum.id} title={forum.title} content={forum.content} />
+            ))}
           </div>
         </div>
       </div>
@@ -48,19 +60,17 @@ export default function Discussions() {
 
 function CreatePostEl({ title, summary, comments }) {
   return (
-    <Link to={"/discussions/1"}>
-      <div className={styles["post"]}>
-        <div className={styles["content"]}>
-          <h1>{title}</h1>
-          <p className={styles["post-op"]}>Username</p>
-          <p>{summary}</p>
-        </div>
-        <div className={styles["options"]}>
-          <p><VscComment />{`${comments} Comments`}</p>
-          <p><AiOutlineStar />Favourite</p>
-        </div>
+    <div className={styles["post"]}>
+      <div className={styles["content"]}>
+        <h1>{title}</h1>
+        <p className={styles["post-op"]}>Username</p>
+        <p>{summary}</p>
       </div>
-    </Link>
+      <div className={styles["options"]}>
+        <p><VscComment />{`${comments} Comments`}</p>
+        <p><AiOutlineStar />Favourite</p>
+      </div>
+    </div>
   );
 }
 
