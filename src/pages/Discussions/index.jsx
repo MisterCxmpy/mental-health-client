@@ -47,7 +47,9 @@ export default function Discussions() {
             <Tag tag={"Self Help"} />
           </div>
           <div className={styles["posts"]}>
-            {forums.map((forum) => (<ForumCard key={forum.id} title={forum.title} content={forum.content} />))}
+            {forums.length > 0 ? forums.map((forum) => (
+              <ForumCard key={forum.forum_id} title={forum.title} content={forum.content} user_id={forum.user_id} forum_id={forum.forum_id} />
+            )) : null}
           </div>
         </div>
       </div>

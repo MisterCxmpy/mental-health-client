@@ -152,6 +152,7 @@ export default function GameOne() {
   const handleStashPoints = async () => { // add fetch request here
     await updatePoints(Math.floor(scoreInt))
     setGrid(getInitialGrid())
+    console.log(score)
     setScoreInt(0)
     score = 0;
   }

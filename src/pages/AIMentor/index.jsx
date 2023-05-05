@@ -1,44 +1,49 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./index.module.css"
+import { useAuth } from "../../contexts/authContext";
 
 export default function AIMentor() {
+  const { user } = useAuth()
   const [history, setHistory] = useState([]);
   const [input, setInput] = useState();
 
+  const messagesEndRef = useRef(null);
+
   const handleSendMessage = async e => {
-    if (!input) return;
+    if(!input) return;
     e.preventDefault()
-    handleUserMessageState(e)
-    let options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: { content: input, role: 'user' } }) };
+    handleSendUserMessage(e)
+
+    let options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: { content: input, role: 'system' }, mentor: user.mentor }) };
     let res = await fetch('http://localhost:3000/mentor/chat', options)
 
     let response = await res.json();
-    if (res.ok) {
-      let assistantMessage = { id: Math.floor(Math.random() * 7863), isYou: false, content: response.message, role: 'assistant' } // save to db
-      setHistory(prev => [...prev, assistantMessage]);
-    } else {
-      console.log(response);
-      setHistory(prev => [...prev, { id: Math.floor(Math.random() * 7863), isYou: false, content: `Error`, role: 'system' }]);
-    }
-
+    let assistantMessage = { id: Math.floor(Math.random() * 7863), isYou: false, message: response.message, role: 'assistant' } // save to db
+    setHistory(prev => [...prev, assistantMessage]);
   }
+ 
 
-  const handleUserMessageState = async e => {
+
+  const handleSendUserMessage = async e => {
     e.target.reset()
+    let userMessage = { id: Math.floor(Math.random() * 7863), isYou: true, message: input, role: 'user' }; // save to db
 
-    let userMessage = { id: Math.floor(Math.random() * 7863), isYou: true, content: input, role: 'user' }; // save to db
     setHistory(prev => [...prev, userMessage]);
   }
 
   useEffect(() => { // fetch chat history from db
     console.log(history);
+    messagesEndRef.current.scrollIntoView()
   }, [history])
 
   return (
     <div className="layout">
       <div className={styles["container"]}>
-       <Conversation {...{ history }} />
+        <div className={styles["messages-container"]}>
+          {history.map(m => <Message key={m.id} isYou={m.isYou} message={m.message}/>)}
+          <div ref={messagesEndRef} />
+        </div>
         <div className={styles["input-box"]} onSubmit={handleSendMessage}>
           <div className={styles["options"]}></div>
           <form className={styles["input-form"]}>
@@ -59,10 +64,11 @@ export default function AIMentor() {
   )
 }
 
-function Conversation({history}) {
+function Conversation({ history, messagesEndRef }) {
   return (
     <div className={styles["messages-container"]}>
-      {history.map(m => <Message key={m.id} isYou={m.isYou} message={m.content} />)}
+      {history.map(m => <Message key={m.id} isYou={m.isYou} message={m.message} />)}
+      <div ref={messagesEndRef} />
     </div>
   )
 }
