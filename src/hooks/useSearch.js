@@ -6,15 +6,20 @@ function useSearch(forums) {
   const [searching, setSearching] = useState(false);
 
   useEffect(() => {
+
+    console.log(result)
+
     if (query === "") {
       setResult(forums);
     } else {
-      setResult(
-        forums.filter((forums) => {
-          const title = forums.title.toLowerCase();
-          return title.includes(query.toLowerCase());
-        })
-      );
+      if (forums.length) {
+        setResult(
+          forums.filter((forums) => {
+            const title = forums.title.toLowerCase();
+            return title.includes(query.toLowerCase());
+          })
+        );
+      }
     }
   
     if (query !== "") {
