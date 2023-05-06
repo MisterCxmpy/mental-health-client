@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 import { Navbar } from './layouts'
-import { Home, Activities, Login, Signup, Intro, Discussions, Game, ErrorPage, AIMentor, MindStore, DiscussionForum, Guides, Meditations } from './pages'
+import { Home, Activities, Login, Signup, Intro, Discussions, Game, ErrorPage, AIMentor, MindStore, DiscussionForum } from './pages'
 import ProtectRoute from './components/ProtectRoute'
 
 function App() {
@@ -18,7 +18,6 @@ function App() {
           <Route path='/activities/:id' element={<Game />} />
           <Route path='/discussions' element={<Discussions />} />
           <Route path='/discussions/:id' element={<DiscussionForum />} />
-          <Route path='/meditation/:id' element={<Meditations />} />
           <Route path='/mindstore' element={<MindStore />} />
           <Route path='*' element={<ErrorPage />} />
         </Route>

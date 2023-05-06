@@ -1,8 +1,23 @@
 .playButton {
-    margin: 0 auto;
-    width: 30px;
+  margin: 0 auto;
 }
 
 .playButton svg {
-    font-size: 2em;
+  font-size: 5em;
+  color: #9a9fdd;
+}
+
+.player {
+  background-color: white;
+  box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.04);
+  padding: 12px 24px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.player h2 {
+  margin: 12px;
 }

@@ -1,6 +1,6 @@
 import styles from "./index.module.css"
 
-export default function Modal({setOpen, content}) {
+export default function Modal({ setOpen, content }) {
   return (
     <>
       <div className={styles["overlay"]} role="overlay"></div>
