@@ -14,9 +14,10 @@ function detectURLs(message) {
 }
 
 function parseUrl(data) {
+  console.log(data.comment.replace())
   let urls = detectURLs(data.comment)
   if (urls?.length) {
-    return { ...data, url: urls[0] }
+    return { ...data, comment: data.comment.replace(urls[0], ""), url: urls[0] }
   } else {
     return data
   }
@@ -65,7 +66,6 @@ export default function DiscussionForum() {
 
     if (response.ok) {
       let parsed = data.map(c => parseUrl(c))
-
       setComments(parsed);
     } else {
       console.log("Failed to fetch username");
@@ -83,6 +83,8 @@ export default function DiscussionForum() {
         forum_id: id,
       }),
     };
+
+    console.log(options.body)
 
     const response = await fetch(
       `http://localhost:3000/comments/${id}`,
@@ -164,8 +166,8 @@ function CreateComment({ forum_id, user_id, username, comment, url }) {
       </div>
       <div className={styles["content"]}>
         <p className={`${styles["username"]} ${styles[forum_id == user_id ? "op" : null]}`}>{username} <span className="admin-icon">{owners.includes(user_id) ? <BsFillShieldFill /> : null}</span></p>
-
-        {url ? <img className={styles.url} draggable={false} src={url} alt="Image Error" /> : <p>{comment}</p>}
+        <p>{comment}</p>
+        {url ? <img className={styles.url} draggable={false} src={url} alt="Image Error" /> : null}
       </div>
     </div>
   );
