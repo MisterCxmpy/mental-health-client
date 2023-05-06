@@ -14,10 +14,9 @@ function detectURLs(message) {
 }
 
 function parseUrl(data) {
-  console.log(data.comment.replace())
   let urls = detectURLs(data.comment)
   if (urls?.length) {
-    return { ...data, comment: data.comment.replace(urls[0], ""), url: urls[0] }
+    return { ...data, comment: data.comment.replace(/(https?:\/\/[^\s]+)/g, ""), url: urls[0] }
   } else {
     return data
   }
