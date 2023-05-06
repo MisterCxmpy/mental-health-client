@@ -13,7 +13,13 @@ export default function Discussions() {
     async function fetchForums() {
       const response = await fetch('http://localhost:3000/forums');
       const data = await response.json();
-      setForums(data);
+
+      if (response.ok) {
+        setForums(data);
+      } else {
+        console.log(data)
+      }
+
     }
     fetchForums();
   }, []);

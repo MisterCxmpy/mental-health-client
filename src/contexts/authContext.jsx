@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }) => {
 
   const updateGoals = async (goals) => {
     let goalsStr = JSON.stringify(goals)
-    let options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ goals: goalsStr, user_id: user.user_id }) }
+    let options = { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ goals: goalsStr, user_id: user.user_id }) }
     const res = await fetch('http://localhost:3000/user/goals', options);
     const updatedUser = await res.json();
 
@@ -63,8 +63,20 @@ export const AuthProvider = ({ children }) => {
   }
 
   const updatePoints = async (points) => {
-    let options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ points, user_id: user.user_id }) }
+    let options = { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ points, user_id: user.user_id }) }
     const res = await fetch('http://localhost:3000/user/pts', options);
+    const updatedUser = await res.json();
+
+    if (res.ok) {
+      saveUser(updatedUser)
+    } else {
+      console.log(updatedUser);
+    }
+  }
+
+  const updateMentor = async (mentor) => {
+    let options = { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mentor, user_id: user.user_id }) }
+    const res = await fetch('http://localhost:3000/user/mentor', options);
     const updatedUser = await res.json();
 
     if (res.ok) {
@@ -96,7 +108,7 @@ export const AuthProvider = ({ children }) => {
   }, [user])
 
   return (
-    <AuthContext.Provider value={{ user, setUser, login, register, logout, completeIntro, updatePoints, updateGoals }}>
+    <AuthContext.Provider value={{ user, setUser, login, register, logout, completeIntro, updatePoints, updateGoals, updateMentor }}>
       {children}
     </AuthContext.Provider>
   );

@@ -5,7 +5,7 @@ import { useAuth } from "../../contexts/authContext";
 import { AiOutlineMenu } from "react-icons/ai";
 
 export default function AIMentor() {
-  const { user } = useAuth()
+  const { user, updateMentor } = useAuth()
   const [history, setHistory] = useState([]);
   const [input, setInput] = useState("");
 
@@ -23,8 +23,6 @@ export default function AIMentor() {
     let assistantMessage = { id: Math.floor(Math.random() * 7863), isYou: false, message: response.message, role: 'assistant' } // save to db
     setHistory(prev => [...prev, assistantMessage]);
   }
- 
-
 
   const handleSendUserMessage = async e => {
     setInput("")
@@ -37,11 +35,15 @@ export default function AIMentor() {
     messagesEndRef.current.scrollIntoView()
   }, [history])
 
-  const EnterSubmit = (e) => {
+  const enterSubmit = (e) => {
     if(e.keyCode == 13 && e.shiftKey == false) {
       e.preventDefault()
       handleSendMessage(e)
     }
+  }
+
+  const handleChangeMentor = async (e) => {
+    await updateMentor(e.target.textContent)
   }
 
   return (
@@ -53,12 +55,13 @@ export default function AIMentor() {
         </div>
         <div className={styles["input-box"]} onSubmit={handleSendMessage}>
           <div className={styles["options"]}>
-            <div class={styles["menu"]}>
-              <button class={styles["menu-button"]}><AiOutlineMenu /></button>
-              <ul class={styles["menu-list"]}>
+            <div className={styles["menu"]}>
+              <button className={styles["menu-button"]}><AiOutlineMenu /></button>
+              <ul className={styles["menu-list"]}>
                 <li><p>Unlocked Mentors</p></li>
-                <li><a href="#">Morgan</a></li>
-                <li><a href="#">David</a></li>
+                <li><button onClick={(e) => handleChangeMentor(e)}>Morgan</button></li>
+                <li><button onClick={(e) => handleChangeMentor(e)}>David</button></li>
+                <li><button onClick={(e) => handleChangeMentor(e)}>Snoop</button></li>
               </ul>
             </div>
           </div>
@@ -75,7 +78,7 @@ export default function AIMentor() {
                   e.target.style.height = "50px"
                   e.target.style.height = `${e.target.scrollHeight}px`;
                 }}
-                onKeyDown={(e) => EnterSubmit(e)}
+                onKeyDown={(e) => enterSubmit(e)}
               ></textarea>
               <button className={`${styles["submit"]} btn`}>Send Message</button>
             </div>
