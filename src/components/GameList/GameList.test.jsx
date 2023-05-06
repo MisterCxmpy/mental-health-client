@@ -26,5 +26,17 @@ describe('GameList Component', () => {
       expect(nav).toBeInTheDocument();
       expect(nav.childNodes.length).toBe(2)
   })
+
+  it('calcColourIndex calculates the correct color index', () => {
+    const testCases = [{ index: 0, expected: 3 }, { index: 5, expected: 3 }, { index: 11, expected: 4 }, { index: 17, expected: 5 }, { index: 24, expected: 3 }];
+  
+    const calcColourIndex = index => ((index % 5) + Math.floor(index / 6) * 6 + 2) % 6 || 2;
+
+    testCases.forEach(({ index, expected }) => {
+      const result = calcColourIndex(index);
+      console.log(result)
+      expect(result).toEqual(expected);
+    });
+  });
     
 })
