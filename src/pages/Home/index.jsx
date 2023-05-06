@@ -4,13 +4,7 @@ import { useState } from "react"
 import { MeditationList, MeditationModal, Modal, TaskContainer, UserStats } from "../../components"
 import styles from "./index.module.css"
 
-const meditationTypes = [
-  { type: "Vipassanna", src: '/assets/booli.mp3' },
-  { type: "Yoga", src: '/assets/booli.mp3' },
-  { type: "Gratitude", src: '/assets/booli.mp3' },
-  { type: "Compassion", src: '/assets/booli.mp3' },
-  { type: "Walking", src: '/assets/booli.mp3' }
-];
+import meditationTypes from '../../../assets/meditations.json'
 
 export default function Home() {
   const [meditation, setMeditation] = useState(null);
@@ -24,6 +18,7 @@ export default function Home() {
 
   return (
     <>
+      {modal ? <Modal setOpen={setModal} content={<MeditationModal {...meditation} />} /> : null}
       <div className="layout">
         <div className={styles["container"]}>
           <UserStats />
@@ -33,7 +28,7 @@ export default function Home() {
           <TaskContainer />
         </div>
       </div>
-      {modal ? <Modal setOpen={setModal} content={<MeditationModal {...meditation} />} /> : null}
+
     </>
   )
 }

@@ -4,10 +4,10 @@ import styles from './styles.module.css';
 import { HiPlay, HiStop } from 'react-icons/hi';
 
 
-function MeditationPlayer({ duration = 0, isPlaying, setPlaying, currTime, seconds, sound, type = '' }) {
+function MeditationPlayer({ duration = 0, isPlaying, setPlaying, seconds, sound, type = '', time }) {
     return (
         <div className={styles.player}>
-            <h2>{type} Meditation</h2>
+            <h2>{time} min {type} Meditation</h2>
             <input
                 type="range"
                 min="0"
@@ -19,7 +19,7 @@ function MeditationPlayer({ duration = 0, isPlaying, setPlaying, currTime, secon
                     sound.seek([e.target.value]);
                 }}
             />
-            <p>{currTime.min} : {currTime.sec}</p>
+            
             <PlayButton {...{ isPlaying, setPlaying }} />
         </div>
     )
