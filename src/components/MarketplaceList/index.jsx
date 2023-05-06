@@ -16,6 +16,7 @@ function Item({ name, price, colorIndex }) {
       <img src="https://www.johnstonehigh.co.uk/wp-content/uploads/2022/12/via.placeholder.png" alt="" draggable={false} />
       <div className={styles["content"]}>
         <h2>{name}</h2>
+   
         <h4>{price.toLocaleString("en-US")} Dabloons</h4>
         <button className="btn">Buy</button>
       </div>

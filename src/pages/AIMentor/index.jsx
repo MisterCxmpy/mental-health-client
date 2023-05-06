@@ -58,8 +58,8 @@ export default function AIMentor() {
     }
   }
 
-  const handleChangeMentor = async (e) => {
-    await updateMentor(e.target.textContent)
+  const handleChangeMentor = async (e, mentor) => {
+    await updateMentor(mentor)
   }
 
   return (
@@ -71,7 +71,9 @@ export default function AIMentor() {
           <div className={styles["options"]}>
             <div className={styles["menu"]}>
               <button className={styles["menu-button"]}><AiOutlineMenu /></button>
+              
               <MentorSelect mentors={mentors} handleChangeMentor={handleChangeMentor} />
+              
             </div>
           </div>
           <form className={styles["input-form"]}>
