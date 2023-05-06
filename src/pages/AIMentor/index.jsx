@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./index.module.css"
 import { useAuth } from "../../contexts/authContext";
+import { AiOutlineMenu } from "react-icons/ai";
 
 export default function AIMentor() {
   const { user } = useAuth()
@@ -33,7 +34,6 @@ export default function AIMentor() {
   }
 
   useEffect(() => { // fetch chat history from db
-    console.log(history);
     messagesEndRef.current.scrollIntoView()
   }, [history])
 
@@ -52,7 +52,16 @@ export default function AIMentor() {
           <div ref={messagesEndRef} />
         </div>
         <div className={styles["input-box"]} onSubmit={handleSendMessage}>
-          <div className={styles["options"]}></div>
+          <div className={styles["options"]}>
+            <div class={styles["menu"]}>
+              <button class={styles["menu-button"]}><AiOutlineMenu /></button>
+              <ul class={styles["menu-list"]}>
+                <li><p>Unlocked Mentors</p></li>
+                <li><a href="#">Morgan</a></li>
+                <li><a href="#">David</a></li>
+              </ul>
+            </div>
+          </div>
           <form className={styles["input-form"]}>
             <div className={styles["input"]}>
               <textarea
@@ -73,6 +82,7 @@ export default function AIMentor() {
           </form>
         </div>
       </div>
+      
     </div>
   )
 }
