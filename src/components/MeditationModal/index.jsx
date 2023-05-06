@@ -15,9 +15,9 @@ export default function MeditationModal({ src, type }) {
 
     useEffect(() => { // setting song metadata
         const interval = setInterval(() => {
-            if (sound) setSeconds(sound.seek([])); // setting the seconds state with the current state
+            if (sound) setSeconds(sound.seek([])); // setting the seconds state with the songs current playing time
         }, 1000);
-        
+
         return () => clearInterval(interval);
     }, [sound]);
 
@@ -50,24 +50,3 @@ function UserChooseTimes({ setDuration }) {
         </>
     )
 }
-
-// const [seconds, setSeconds] = useState(0); // song controls, duration and metadata
-// const [currTime, setCurrTime] = useState({ min: "", sec: "" }); // song controls, duration and metadata
-
-// useEffect(() => { // setting song metadata
-//     const interval = setInterval(() => {
-//         if (sound) {
-//             setSeconds(sound.seek([])); // setting the seconds state with the current state
-//             const min = Math.floor(sound.seek([]) / 60);
-//             const sec = Math.floor(sound.seek([]) % 60);
-
-//             setCurrTime({
-//                 min,
-//                 sec: sec < 10 ? "0" + sec : sec,
-//             });
-//         }
-//     }, 1000);
-
-
-//     return () => clearInterval(interval);
-// }, [sound]);
