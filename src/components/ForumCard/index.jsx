@@ -3,6 +3,9 @@ import { AiOutlineStar } from "react-icons/ai";
 import styles from "./index.module.css";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { BsFillShieldFill } from "react-icons/bs"
+
+const owners = [1, 2]
 
 export default function ForumCard({ title, content, user_id, forum_id}) {
 
@@ -29,7 +32,7 @@ export default function ForumCard({ title, content, user_id, forum_id}) {
       <div className={styles["post"]}>
         <div className={styles["content"]}>
           <h1>{title}</h1>
-          <p className={styles["post-op"]}>{username}</p>
+          <p className={styles["post-op"]}>{username} <span className="admin-icon">{owners.includes(user_id) ? <BsFillShieldFill /> : null}</span></p>
           <p>{content}</p>
         </div>
         <div className={styles["options"]}>
