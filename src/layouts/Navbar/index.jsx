@@ -27,7 +27,7 @@ export default function Navbar() {
             <div className={styles["profile-picture"]}></div>
             <div className={styles["profile-name"]}>{user.username}</div>
             <div className={styles["progress"]}>40% Completed</div>
-            <div className={styles["points"]}>{user.dabloons} Dabloons</div>
+            <div className={styles["points"]}>{user.dabloons.toLocaleString("en-US")} Dabloons</div>
             <div className={styles["inspiration-message"]}>
               {quote.q}
             </div>
@@ -51,10 +51,10 @@ function NavigationList() {
       <div className={styles["content"]}>
         <NavButton to={"/"} icon={<BiHome />} name={"Home"} />
         <NavButton to={"/activities"} icon={<HiOutlinePuzzle />} name={"Activities"} />
-        <NavButton to={"/mindstore"} icon={<AiOutlineDollarCircle />} name={"MindStore"} />
         <NavButton to={"/discussions"} icon={<HiOutlineChat />} name={"Discussions"} />
+        <NavButton to={"/mindstore"} icon={<AiOutlineDollarCircle />} name={"MindStore"} />
+        <button className={`${styles["btn"]} ${styles["logout"]}`} onClick={() => logout()} ><BiLogOut />Logout</button>
       </div>
-      <button className={`${styles["btn"]} ${styles["logout"]}`} onClick={() => logout()} ><BiLogOut />Logout</button>
     </div>
   )
 }
