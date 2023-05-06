@@ -6,7 +6,7 @@ import { useAuth } from "../../contexts/authContext";
 export default function AIMentor() {
   const { user } = useAuth()
   const [history, setHistory] = useState([]);
-  const [input, setInput] = useState();
+  const [input, setInput] = useState("");
 
   const messagesEndRef = useRef(null);
 
@@ -37,6 +37,17 @@ export default function AIMentor() {
     messagesEndRef.current.scrollIntoView()
   }, [history])
 
+  const EnterSubmit = (e) => {
+    if(e.keyCode == 13 && e.shiftKey == false) {
+      e.preventDefault();
+      let userMessage = { id: Math.floor(Math.random() * 7863), isYou: true, message: input, role: 'user' }; // save to db
+
+      setHistory(prev => [...prev, userMessage]);
+      
+      setInput("")
+    }
+  }
+
   return (
     <div className="layout">
       <div className={styles["container"]}>
@@ -48,13 +59,19 @@ export default function AIMentor() {
           <div className={styles["options"]}></div>
           <form className={styles["input-form"]}>
             <div className={styles["input"]}>
-              <input
+              <textarea
                 className={styles["input-bar"]}
+                value={input}
                 type="text"
                 placeholder="Enter your message here"
                 required
-                onChange={(e) => setInput(e.target.value)}
-              />
+                onChange={(e) => {
+                  setInput(e.target.value)
+                  e.target.style.height = "50px"
+                  e.target.style.height = `${e.target.scrollHeight}px`;
+                }}
+                onKeyDown={(e) => EnterSubmit(e)}
+              ></textarea>
               <button className={`${styles["submit"]} btn`}>Send Message</button>
             </div>
           </form>
