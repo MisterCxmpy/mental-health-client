@@ -3,6 +3,7 @@ import { CreateForum, Modal } from "../../components";
 import { useEffect, useState } from "react";
 import ForumCard from "../../components/ForumCard/index";
 import useSearch from "../../hooks/useSearch";
+import Avatar from "boring-avatars";
 
 
 export default function Discussions() {
@@ -33,7 +34,13 @@ export default function Discussions() {
       <div className="layout">
         <div className={styles["container"]}>
           <div className={styles["search"]}>
-            <div className={styles["profile-picture"]}></div>
+            <div className={styles["profile-picture"]}>
+            <Avatar
+                size={54}
+                variant="marble"
+                colors={["#9A9FDD", "#DEEFFE", "#E2FFFF"]}
+              />
+            </div>
             <form className={styles["search-form"]}>
               <div className={styles["input"]}>
                 <input
