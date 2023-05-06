@@ -37,9 +37,9 @@ export default function AIMentor() {
       let response = await fetch('http://localhost:3000/mentor/info')
       let data = await response.json();
 
-      if(response.ok) {
+      if (response.ok) {
         setMentors(data)
-      }else {
+      } else {
         console.log(data);
       }
     }
@@ -58,24 +58,25 @@ export default function AIMentor() {
     }
   }
 
-  const handleChangeMentor = async (e, mentor) => {
+  const handleChangeMentor = async (mentor) => {
+    console.log(mentor);
     await updateMentor(mentor)
   }
 
   return (
     <div className="layout">
       <div className={styles["container"]}>
+      
         <Conversation {...{ history, messagesEndRef }} />
 
         <div className={styles["input-box"]} onSubmit={handleSendMessage}>
           <div className={styles["options"]}>
             <div className={styles["menu"]}>
               <button className={styles["menu-button"]}><AiOutlineMenu /></button>
-              
               <MentorSelect mentors={mentors} handleChangeMentor={handleChangeMentor} />
-              
             </div>
           </div>
+
           <form className={styles["input-form"]}>
             <div className={styles["input"]}>
               <textarea
@@ -94,6 +95,7 @@ export default function AIMentor() {
               <button className={`${styles["submit"]} btn`}>Send Message</button>
             </div>
           </form>
+
         </div>
       </div>
 
@@ -124,8 +126,8 @@ function MentorSelect({ mentors, handleChangeMentor }) {
 
   return (
     <ul className={styles["menu-list"]}>
-    <li><p>Unlocked Mentors</p></li>
-    {mentors.map((m) => (<li key={m} ><button className={user.mentor == m ? styles["active"] : null} onClick={(e) => handleChangeMentor(e)}>{m}</button></li>))}
-  </ul>
+      <li><p>Unlocked Mentors</p></li>
+      {mentors.map((m) => (<li key={m} ><button className={user.mentor == m ? styles["active"] : null} onClick={() => handleChangeMentor(m)}>{m}</button></li>))}
+    </ul>
   )
 }
