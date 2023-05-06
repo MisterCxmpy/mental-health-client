@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import ForumCard from "../../components/ForumCard/index";
 import useSearch from "../../hooks/useSearch";
 
+
 export default function Discussions() {
   const [open, setOpen] = useState(false);
   const [forums, setForums] = useState([]);

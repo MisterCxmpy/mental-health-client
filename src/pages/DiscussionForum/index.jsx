@@ -8,6 +8,22 @@ import { BsFillShieldFill } from "react-icons/bs"
 
 const owners = [1, 2]
 
+function detectURLs(message) {
+  var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
+  return message.match(urlRegex)
+}
+
+function parseUrl(data) {
+  let urls = detectURLs(data.comment)
+  if (urls?.length) {
+    // parse and use url in component
+    return { ...data, url: urls[0] }
+
+  } else {
+    return data
+  }
+}
+
 export default function DiscussionForum() {
   const [forum, setForum] = useState({});
   const [comments, setComments] = useState([]);
@@ -50,7 +66,9 @@ export default function DiscussionForum() {
     const data = await response.json();
 
     if (response.ok) {
-      setComments(data);
+      let parsed = data.map(c => parseUrl(c))
+
+      setComments(parsed);
     } else {
       console.log("Failed to fetch username");
     }
@@ -76,7 +94,9 @@ export default function DiscussionForum() {
     const data = await response.json();
 
     if (response.ok) {
-      setComments((prev) => [...prev, data.comment]);
+      const parsed = parseUrl(data.comment)
+
+      setComments((prev) => [...prev, parsed]);
     } else {
       console.log("Failed to create comment!");
     }
@@ -125,7 +145,7 @@ export default function DiscussionForum() {
         {comments.length > 0 ? (
           <div className={styles["comment-section"]}>
             {comments.map((c, i) => (
-              <CreateComment key={i} forum_id={forum.user_id} user_id={c.user_id} username={c.username} comment={c.comment} />
+              <CreateComment key={i} forum_id={forum.user_id} user_id={c.user_id} username={c.username} comment={c.comment} url={c.url || null} />
             ))}
           </div>
         ) : null}
@@ -134,9 +154,7 @@ export default function DiscussionForum() {
   );
 }
 
-function CreateComment({ forum_id, user_id, username, comment, is_admin}) {
-
-  const { user } = useAuth();
+function CreateComment({ forum_id, user_id, username, comment, url }) {
 
   return (
     <div className={styles["comment"]}>
@@ -147,8 +165,9 @@ function CreateComment({ forum_id, user_id, username, comment, is_admin}) {
         ></div>
       </div>
       <div className={styles["content"]}>
-        <p className={`${styles["username"]} ${styles[ forum_id == user_id ? "op" : null]}`}>{username} <span className="admin-icon">{owners.includes(user_id) ? <BsFillShieldFill /> : null}</span></p>
-        <p>{comment}</p>
+        <p className={`${styles["username"]} ${styles[forum_id == user_id ? "op" : null]}`}>{username} <span className="admin-icon">{owners.includes(user_id) ? <BsFillShieldFill /> : null}</span></p>
+
+        {url ? <img className={styles.url} draggable={false} src={url} alt="Image Error" /> : <p>{comment}</p>}
       </div>
     </div>
   );

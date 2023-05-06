@@ -113,3 +113,9 @@
 .op {
   color: #636fff !important;
 }
+
+.url {
+  max-height: 350px;
+  max-width: 350px;
+  border-radius: 6px;
+}
