@@ -3,9 +3,20 @@ import { MarketplaceList, Tag } from "../../components"
 import styles from "./index.module.css"
 import { AiOutlineSearch, AiOutlineArrowUp, AiOutlineArrowDown } from "react-icons/ai"
 
+function filterCategories(array) {
+  let cats = array.map(i => i.category)
+  return cats.filter(onlyUnique);
+}
+
+function onlyUnique(value, index, array) {
+  return array.indexOf(value) === index;
+}
+
 export default function MindStore() {
   const [items, setItems] = useState([]);
   const [filter, setFilter] = useState({ query: "", items: [] });
+  const [categories, setCategories] = useState([]);
+  const [activeCategory, setActiveCategory] = useState(null);
 
   useEffect(() => {
     const getMarketplaceItems = async () => {
@@ -14,27 +25,48 @@ export default function MindStore() {
 
       if (response.ok) {
         setItems(data)
+        setCategories(filterCategories(data))
       }
 
       console.log(data);
     }
 
     getMarketplaceItems()
-    
+
   }, [])
 
   useEffect(() => {
     if (filter.query == "") setFilter(prev => ({ ...prev, res: items }))
-    setFilter(prev => ({
-      ...prev, items: items.filter(item => {
-        let name = item.name.toLowerCase();
-        let query = filter.query.toLowerCase()
 
-        return name.includes(query)
-      })
-    }))
+    if (activeCategory) {
+      setFilter(prev => ({
+        ...prev, items: items.filter(item => {
+          let name = item.name.toLowerCase();
+          let query = filter.query.toLowerCase()
 
-  }, [filter?.query, items])
+          return name.includes(query) && activeCategory == item.category
+        })
+      }))
+    } else {
+      setFilter(prev => ({
+        ...prev, items: items.filter(item => {
+          let name = item.name.toLowerCase();
+          let query = filter.query.toLowerCase()
+
+          return name.includes(query)
+        })
+      }))
+    }
+
+  }, [filter?.query, items, activeCategory])
+
+  const handleSelectCategory = (cat) => {
+    if (activeCategory == cat) {
+      setActiveCategory(null)
+    } else {
+      setActiveCategory(cat)
+    }
+  }
 
 
   return (
@@ -58,6 +90,7 @@ export default function MindStore() {
                   required
                   onChange={(e) => setFilter(prev => ({ ...prev, query: e.target.value }))}
                 />
+
               </div>
             </form>
           </div>
@@ -67,10 +100,7 @@ export default function MindStore() {
           </div>
         </div>
         <div className={styles["tags"]}>
-          <Tag tag={"CompSci"} />
-          <Tag tag={"Entrepreneur"} />
-          <Tag tag={"Joke"} />
-          <Tag tag={"Wise"} />
+          {categories.map(c => <Tag activeCategory={activeCategory} tag={c} key={c} select={() => handleSelectCategory(c)} />)}
         </div>
 
         <MarketplaceList items={filter.items} />
