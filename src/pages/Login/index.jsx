@@ -25,7 +25,7 @@ export default function Login() {
   return (
     <>
       <nav className={styles["navbar"]}>
-        <h1 className={styles["title"]}>App name</h1>
+        <h1 className={styles["title"]}>Serenity<span style={{color: "#9A9FDD"}}>AI</span></h1>
       </nav>
       <div className={styles["container"]}>
         <div className={styles["login-form"]}>
