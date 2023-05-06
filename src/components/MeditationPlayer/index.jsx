@@ -3,7 +3,6 @@
 import styles from './styles.module.css';
 import { HiPlay, HiStop } from 'react-icons/hi';
 
-
 function MeditationPlayer({ duration = 0, isPlaying, setPlaying, seconds, sound, type = '', time }) {
     return (
         <div className={styles.player}>
@@ -12,12 +11,9 @@ function MeditationPlayer({ duration = 0, isPlaying, setPlaying, seconds, sound,
                 type="range"
                 min="0"
                 max={duration / 1000}
-                default="0"
                 value={seconds}
                 className="timeline"
-                onChange={(e) => {
-                    sound.seek([e.target.value]);
-                }}
+                onChange={(e) => sound.seek([e.target.value])}
             />
             
             <PlayButton {...{ isPlaying, setPlaying }} />
