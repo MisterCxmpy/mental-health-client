@@ -20,9 +20,11 @@ export default function MindStore() {
     }
 
     getMarketplaceItems()
+    
   }, [])
 
   useEffect(() => {
+    if (filter.query == "") setFilter(prev => ({ ...prev, res: items }))
     setFilter(prev => ({
       ...prev, items: items.filter(item => {
         let name = item.name.toLowerCase();
@@ -31,8 +33,8 @@ export default function MindStore() {
         return name.includes(query)
       })
     }))
-  
-  }, [filter?.query])
+
+  }, [filter?.query, items])
 
 
   return (
