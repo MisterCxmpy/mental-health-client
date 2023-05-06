@@ -16,9 +16,7 @@ function detectURLs(message) {
 function parseUrl(data) {
   let urls = detectURLs(data.comment)
   if (urls?.length) {
-    // parse and use url in component
-    return { ...data, url: urls[0] }
-
+    return { ...data, comment: data.comment.replace(/(https?:\/\/[^\s]+)/g, ""), url: urls[0] }
   } else {
     return data
   }
@@ -67,7 +65,6 @@ export default function DiscussionForum() {
 
     if (response.ok) {
       let parsed = data.map(c => parseUrl(c))
-
       setComments(parsed);
     } else {
       console.log("Failed to fetch username");
@@ -86,6 +83,8 @@ export default function DiscussionForum() {
       }),
     };
 
+    console.log(options.body)
+
     const response = await fetch(
       `http://localhost:3000/comments/${id}`,
       options
@@ -95,7 +94,6 @@ export default function DiscussionForum() {
 
     if (response.ok) {
       const parsed = parseUrl(data.comment)
-
       setComments((prev) => [...prev, parsed]);
     } else {
       console.log("Failed to create comment!");
@@ -133,6 +131,7 @@ export default function DiscussionForum() {
           <form onSubmit={createComment} className={styles["create-form"]}>
             <textarea
               maxLength={500}
+              value={comment}
               placeholder="What are your thoughts?"
               onChange={(e) => setComment(e.target.value)}
               required
@@ -166,8 +165,8 @@ function CreateComment({ forum_id, user_id, username, comment, url }) {
       </div>
       <div className={styles["content"]}>
         <p className={`${styles["username"]} ${styles[forum_id == user_id ? "op" : null]}`}>{username} <span className="admin-icon">{owners.includes(user_id) ? <BsFillShieldFill /> : null}</span></p>
-
-        {url ? <img className={styles.url} draggable={false} src={url} alt="Image Error" /> : <p>{comment}</p>}
+        <p>{comment}</p>
+        {url ? <img className={styles.url} draggable={false} src={url} alt="Image Error" /> : null}
       </div>
     </div>
   );
