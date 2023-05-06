@@ -124,7 +124,7 @@ export default function DiscussionForum() {
         {comments.length > 0 ? (
           <div className={styles["comment-section"]}>
             {comments.map((c, i) => (
-              <CreateComment key={i} username={c.username} comment={c.comment} />
+              <CreateComment key={i} forum_id={forum.user_id} user_id={c.user_id} username={c.username} comment={c.comment} />
             ))}
           </div>
         ) : null}
@@ -133,7 +133,10 @@ export default function DiscussionForum() {
   );
 }
 
-function CreateComment({ username, comment }) {
+function CreateComment({ forum_id, user_id, username, comment }) {
+
+  const { user } = useAuth();
+
   return (
     <div className={styles["comment"]}>
       <div className={styles["profile"]}>
@@ -143,7 +146,8 @@ function CreateComment({ username, comment }) {
         ></div>
       </div>
       <div className={styles["content"]}>
-        <p className={styles["username"]}>{username}</p>
+        {console.log(forum_id, user_id)}
+        <p className={`${styles["username"]} ${styles[ forum_id == user_id ? "op" : null]}`}>{username}</p>
         <p>{comment}</p>
       </div>
     </div>
