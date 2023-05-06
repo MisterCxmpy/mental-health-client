@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { VscComment } from "react-icons/vsc";
 import styles from "./index.module.css";
 import { AiOutlineStar } from "react-icons/ai";
