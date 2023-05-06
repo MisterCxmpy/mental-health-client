@@ -5,10 +5,12 @@ import { useAuth } from "../../contexts/authContext";
 import styles from "./index.module.css";
 
 import { BiHome, BiGlassesAlt, BiLogOut } from "react-icons/bi/";
-import { HiOutlinePuzzle, HiOutlineChat, HiOutlineBookOpen } from "react-icons/hi";
+import { HiOutlinePuzzle, HiOutlineChat } from "react-icons/hi";
 import { AiOutlineDollarCircle } from "react-icons/ai";
+
 import { FiSettings } from "react-icons/fi";
 import { BsFillShieldFill } from "react-icons/bs"
+
 
 export default function Navbar() {
   const { user } = useAuth();
@@ -18,11 +20,6 @@ export default function Navbar() {
     <>
       <nav className={styles["navbar"]}>
         <div className={styles["profile"]}>
-
-          <div className={styles["profile-options"]}>
-            <div className={styles["profile-btn"]}>My profile</div>
-            <div className={styles["profile-btn"]}><FiSettings /></div>
-          </div>
 
           <div className={styles["profile-info"]}>
             <div className={styles["profile-picture"]}></div>

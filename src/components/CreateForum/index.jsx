@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import styles from "./index.module.css"
 import { useAuth } from "../../contexts/authContext"
 
@@ -19,9 +19,10 @@ export default function CreateForum({ setOpen, setForums }) {
       body: JSON.stringify({
         user_id: user.user_id,
         title: title,
-        content: body,
+        content: body || "",
       })
     })
+
     const data = await response.json()
     
     setForums(prev => [...prev, data])

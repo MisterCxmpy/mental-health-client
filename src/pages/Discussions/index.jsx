@@ -1,5 +1,5 @@
 import styles from "./index.module.css";
-import { CreateForum, Modal, Tag } from "../../components";
+import { CreateForum, Modal } from "../../components";
 import { useEffect, useState } from "react";
 import ForumCard from "../../components/ForumCard/index";
 import useSearch from "../../hooks/useSearch";
@@ -7,7 +7,7 @@ import useSearch from "../../hooks/useSearch";
 export default function Discussions() {
   const [open, setOpen] = useState(false);
   const [forums, setForums] = useState([]);
-  const { query, setQuery, result, searching } = useSearch(forums);
+  const { setQuery, result } = useSearch(forums);
 
   useEffect(() => {
     async function fetchForums() {
