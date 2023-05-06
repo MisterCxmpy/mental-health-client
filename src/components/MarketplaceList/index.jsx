@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import styles from "./index.module.css";
 
 const calcColourIndex = index => ((index % 5) + Math.floor(index / 6) * 6 + 2) % 6 || 2;
