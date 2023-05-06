@@ -4,6 +4,9 @@ import { AiOutlineStar } from "react-icons/ai";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext";
+import { BsFillShieldFill } from "react-icons/bs"
+
+const owners = [1, 2]
 
 export default function DiscussionForum() {
   const [forum, setForum] = useState({});
@@ -72,8 +75,6 @@ export default function DiscussionForum() {
 
     const data = await response.json();
 
-    console.log(data);
-
     if (response.ok) {
       setComments((prev) => [...prev, data.comment]);
     } else {
@@ -94,7 +95,7 @@ export default function DiscussionForum() {
         <div className={styles["post"]}>
           <div className={styles["content"]}>
             <h1>{forum.title}</h1>
-            <p className={styles["post-op"]}>{username}</p>
+            <p className={styles["post-op"]}>{username} <span className="admin-icon">{owners.includes(forum.user_id) ? <BsFillShieldFill /> : null}</span></p>
             <p>{forum.content}</p>
           </div>
           <div className={styles["options"]}>
@@ -133,7 +134,7 @@ export default function DiscussionForum() {
   );
 }
 
-function CreateComment({ forum_id, user_id, username, comment }) {
+function CreateComment({ forum_id, user_id, username, comment, is_admin}) {
 
   const { user } = useAuth();
 
@@ -146,8 +147,7 @@ function CreateComment({ forum_id, user_id, username, comment }) {
         ></div>
       </div>
       <div className={styles["content"]}>
-        {console.log(forum_id, user_id)}
-        <p className={`${styles["username"]} ${styles[ forum_id == user_id ? "op" : null]}`}>{username}</p>
+        <p className={`${styles["username"]} ${styles[ forum_id == user_id ? "op" : null]}`}>{username} <span className="admin-icon">{owners.includes(user_id) ? <BsFillShieldFill /> : null}</span></p>
         <p>{comment}</p>
       </div>
     </div>

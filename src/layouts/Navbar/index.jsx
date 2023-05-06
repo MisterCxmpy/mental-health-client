@@ -8,6 +8,7 @@ import { BiHome, BiGlassesAlt, BiLogOut } from "react-icons/bi/";
 import { HiOutlinePuzzle, HiOutlineChat, HiOutlineBookOpen } from "react-icons/hi";
 import { AiOutlineDollarCircle } from "react-icons/ai";
 import { FiSettings } from "react-icons/fi";
+import { BsFillShieldFill } from "react-icons/bs"
 
 export default function Navbar() {
   const { user } = useAuth();
@@ -25,7 +26,7 @@ export default function Navbar() {
 
           <div className={styles["profile-info"]}>
             <div className={styles["profile-picture"]}></div>
-            <div className={styles["profile-name"]}>{user.username}</div>
+            <div className={styles["profile-name"]}>{user.username} <span className="admin-icon">{user.is_admin ? <BsFillShieldFill /> : null}</span></div>
             <div className={styles["progress"]}>40% Completed</div>
             <div className={styles["points"]}>{user.dabloons.toLocaleString("en-US")} Dabloons</div>
             <div className={styles["inspiration-message"]}>

@@ -43,3 +43,7 @@ a {
   text-decoration: none;
   color: inherit;
 }
+
+.admin-icon {
+  color: rgb(100, 201, 100);
+}
