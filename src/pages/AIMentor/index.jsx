@@ -127,10 +127,3 @@ function MentorSelect({ mentors, handleChangeMentor }) {
   </ul>
   )
 }
-
-{/* <ul className={styles["menu-list"]}>
-  <li><p>Unlocked Mentors</p></li>
-  <li><button onClick={(e) => handleChangeMentor(e)}>Morgan</button></li>
-  <li><button onClick={(e) => handleChangeMentor(e)}>David</button></li>
-  <li><button onClick={(e) => handleChangeMentor(e)}>Snoop</button></li>
-</ul> */}

@@ -1,14 +1,33 @@
+import { useEffect, useState } from "react"
 import { MarketplaceList, Tag } from "../../components"
 import styles from "./index.module.css"
 import {AiOutlineSearch, AiOutlineArrowUp, AiOutlineArrowDown} from "react-icons/ai"
 
 export default function MindStore() {
+  const [items, setItems] = useState();
+
+  useEffect(() => {
+    const getMarketplaceItems = async () => {
+      let response = await fetch('http://localhost:3000/mentor/prices')
+      let data = await response.json()
+
+      if(response.ok) {
+        setItems(data)
+      }
+
+      console.log(data);
+    }
+
+    getMarketplaceItems()
+  }, [])
+
+
   return (
     <div className="layout">
       <div className={styles["header"]}>
         <div className={styles["header-content"]}>
           <h1 className={styles["welcome-message"]}>Marketplace</h1>
-          <p className={styles["message"]}>Mentor persona's and themes</p>
+          <p className={styles["message"]}>Mentor persona&apos;s and themes</p>
         </div>
       </div>
       <div className={styles["store-controls"]}>
@@ -37,7 +56,8 @@ export default function MindStore() {
           <Tag tag={"Joke"}/>
           <Tag tag={"Wise"}/>
         </div>
-        <MarketplaceList />
+
+        <MarketplaceList items={items} />
       </div>
     </div>
   )
