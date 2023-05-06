@@ -7,10 +7,19 @@ import useSound from 'use-sound';
 export default function MeditationModal({ src, type }) {
     const [isPlaying, setIsPlaying] = useState(false); // play button state
     const [time, setTime] = useState(null); // user desiered meditation time
+    const [seconds, setSeconds] = useState(0);
 
     const [play, { pause, duration, sound }] = useSound(src); // song controls, duration and metadata
 
     const contentRef = useRef(null); // ref for content fadein animation
+
+    useEffect(() => { // setting song metadata
+        const interval = setInterval(() => {
+            if (sound) setSeconds(sound.seek([])); // setting the seconds state with the songs current playing time
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [sound]);
 
     useEffect(() => { // fade in for content
         let timeout = setTimeout(() => contentRef.current.style.opacity = 1, 500);
@@ -23,16 +32,9 @@ export default function MeditationModal({ src, type }) {
     }
 
     return (
-        <>
-            <div ref={contentRef} className={styles.content}>
-                {
-                    !time ?
-                        <UserChooseTimes setDuration={setTime} />
-                        :
-                        <MeditationPlayer {...{ duration, isPlaying, setPlaying, sound, type, time }} />
-                }
-            </div>
-        </>
+        <div ref={contentRef} className={styles.content}>
+            {!time ? <UserChooseTimes setDuration={setTime} /> : <MeditationPlayer {...{ duration, isPlaying, setPlaying, sound, type, time, seconds }} />}
+        </div>
     )
 }
 
@@ -48,24 +50,3 @@ function UserChooseTimes({ setDuration }) {
         </>
     )
 }
-
-// const [seconds, setSeconds] = useState(0); // song controls, duration and metadata
-// const [currTime, setCurrTime] = useState({ min: "", sec: "" }); // song controls, duration and metadata
-
-// useEffect(() => { // setting song metadata
-//     const interval = setInterval(() => {
-//         if (sound) {
-//             setSeconds(sound.seek([])); // setting the seconds state with the current state
-//             const min = Math.floor(sound.seek([]) / 60);
-//             const sec = Math.floor(sound.seek([]) % 60);
-
-//             setCurrTime({
-//                 min,
-//                 sec: sec < 10 ? "0" + sec : sec,
-//             });
-//         }
-//     }, 1000);
-
-
-//     return () => clearInterval(interval);
-// }, [sound]);

@@ -152,6 +152,11 @@
   cursor: pointer;
   width: 100%;
   text-align: left;
+
+}
+
+.menu-list > li > button.active {
+  background-color: #6365ae;
 }
 
 .menu-list > li > p {
