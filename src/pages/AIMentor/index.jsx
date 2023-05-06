@@ -42,8 +42,8 @@ export default function AIMentor() {
     }
   }
 
-  const handleChangeMentor = async (e) => {
-    await updateMentor(e.target.textContent)
+  const handleChangeMentor = async (e, mentor) => {
+    await updateMentor(mentor)
   }
 
   return (
@@ -59,9 +59,14 @@ export default function AIMentor() {
               <button className={styles["menu-button"]}><AiOutlineMenu /></button>
               <ul className={styles["menu-list"]}>
                 <li><p>Unlocked Mentors</p></li>
-                <li><button onClick={(e) => handleChangeMentor(e)}>Morgan</button></li>
-                <li><button onClick={(e) => handleChangeMentor(e)}>David</button></li>
-                <li><button onClick={(e) => handleChangeMentor(e)}>Snoop</button></li>
+                <li><button onClick={(e) => handleChangeMentor(e, "Morgan")}>Morgan</button></li>
+                <li><button onClick={(e) => handleChangeMentor(e, "David")}>David Attenborough</button></li>
+                <li><button onClick={(e) => handleChangeMentor(e, "Snoop")}>Snoop Dogg</button></li>
+                <li><button onClick={(e) => handleChangeMentor(e, "Bob")}>Bob Ross</button></li>
+                <li><button onClick={(e) => handleChangeMentor(e, "Stephen")}>Stephen Hawking</button></li>
+                <li><button onClick={(e) => handleChangeMentor(e, "Lex")}>Lex Friedman</button></li>
+                <li><button onClick={(e) => handleChangeMentor(e, "Shakespeare")}>Shakespeare</button></li>
+                <li><button onClick={(e) => handleChangeMentor(e, "Swift")}>Taylor Swift</button></li>
               </ul>
             </div>
           </div>
