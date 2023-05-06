@@ -26,7 +26,7 @@ export default function AIMentor() {
 
 
   const handleSendUserMessage = async e => {
-    e.target.reset()
+    setInput("")
     let userMessage = { id: Math.floor(Math.random() * 7863), isYou: true, message: input, role: 'user' }; // save to db
 
     setHistory(prev => [...prev, userMessage]);
@@ -39,12 +39,8 @@ export default function AIMentor() {
 
   const EnterSubmit = (e) => {
     if(e.keyCode == 13 && e.shiftKey == false) {
-      e.preventDefault();
-      let userMessage = { id: Math.floor(Math.random() * 7863), isYou: true, message: input, role: 'user' }; // save to db
-
-      setHistory(prev => [...prev, userMessage]);
-      
-      setInput("")
+      e.preventDefault()
+      handleSendMessage(e)
     }
   }
 

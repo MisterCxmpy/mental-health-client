@@ -46,9 +46,6 @@ export default function Discussions() {
               </button>
             </form>
           </div>
-          <div className={styles["tags"]}>
-            <Tag tag={"Self Help"} />
-          </div>
           <div className={styles["posts"]}>
             {result.length > 0 ? result.map((forum) => (
               <ForumCard key={forum.forum_id} title={forum.title} content={forum.content} user_id={forum.user_id} forum_id={forum.forum_id} />
