@@ -16,9 +16,7 @@ function detectURLs(message) {
 function parseUrl(data) {
   let urls = detectURLs(data.comment)
   if (urls?.length) {
-    // parse and use url in component
     return { ...data, url: urls[0] }
-
   } else {
     return data
   }
@@ -95,7 +93,6 @@ export default function DiscussionForum() {
 
     if (response.ok) {
       const parsed = parseUrl(data.comment)
-
       setComments((prev) => [...prev, parsed]);
     } else {
       console.log("Failed to create comment!");
@@ -133,6 +130,7 @@ export default function DiscussionForum() {
           <form onSubmit={createComment} className={styles["create-form"]}>
             <textarea
               maxLength={500}
+              value={comment}
               placeholder="What are your thoughts?"
               onChange={(e) => setComment(e.target.value)}
               required
