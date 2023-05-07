@@ -1,27 +1,28 @@
 import styles from "./index.module.css"
+import { Link } from 'react-router-dom'
 
-export default function TaskContainer() {
+export default function TaskContainer({ goals = [] }) {
   return (
     <div className={styles["task-container"]}>
       <div className={styles["task-content"]}>
         <h2>My AIMentor:</h2>
         <div className={styles["task-list"]}>
-          <PromptTask />
+          {goals.length ? goals.map(g => (<PromptTask task={g.task} key={g.id} />)) : null}
         </div>
       </div>
       <div className={styles["control-options"]}>
-        <button className="btn">Have a chat</button>
+        <Link to={'/my-ai-mentor'}><button className="btn">Have a chat</button></Link>
         <button className="btn">Reroll ideas</button>
       </div>
     </div>
   );
 }
 
-function PromptTask({ task = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius possimus voluptates, dolor aperiam obcaecati voluptatem!' }) {
+function PromptTask({ task = 'Lorem ipsum.' }) {
   return (
     <div className={styles["prompt-task"]}>
       <h3>
-      {task}
+        {task}
       </h3>
     </div>
   );
