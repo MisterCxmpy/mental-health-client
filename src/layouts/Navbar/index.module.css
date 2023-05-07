@@ -43,7 +43,24 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  height: 90%;
+  height: 100%;
+}
+
+.profile-progress {
+  min-width: 92px;
+  min-height: 92px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-progress > svg {
+  min-width: 100px;
+  min-height: 100px;
+  max-width: 100px;
+  max-height: 100px;
+  position: absolute;
 }
 
 .profile-picture {

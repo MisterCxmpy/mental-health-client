@@ -13,12 +13,11 @@ export default function MarketplaceList({ items = [] }) {
 
 function Item({ name, price, category, colorIndex }) {
   return (
-    <div className={`${styles["item"]} ${styles[`color-${colorIndex}`]}`}>
+    <div className={`${styles["item"]} ${styles[`color-${colorIndex}`]}`} role="item">
       <img src="https://www.johnstonehigh.co.uk/wp-content/uploads/2022/12/via.placeholder.png" alt="" draggable={false} />
       <div className={styles["content"]}>
         <h2>{name}</h2>
         <p className={styles.category}>{category}</p>
-   
         <h4>{price.toLocaleString("en-US")} Dabloons</h4>
         <button className="btn">Buy</button>
       </div>

@@ -28,8 +28,7 @@ function PromptTask({ task = 'Lorem ipsum.', id, completed }) {
       <h3>
         {task}
       </h3>
-
-     {!completed ? <button className="btn" onClick={async () => await completeStGoal(id)}>Complete</button> : <h3>Done</h3>}
+      {!completed ? <button className="btn" onClick={async () => await completeStGoal(id)}>Complete</button> : <h3>Done</h3>}
     </div>
   );
 }

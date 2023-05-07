@@ -3,7 +3,7 @@ import { VscComment } from "react-icons/vsc";
 import styles from "./index.module.css";
 import { AiOutlineStar } from "react-icons/ai";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../../contexts/authContext";
 import { BsFillShieldFill } from "react-icons/bs";
 import Avatar from "boring-avatars";
@@ -172,40 +172,45 @@ export default function DiscussionForum() {
 }
 
 function CreateComment({ forum_id, user_id, username, comment, url }) {
+
+  const messageRef = useRef()
+  const [isCollapse, setIsCollapse] = useState(false)
+
+  function collapseMessage(state) {
+    messageRef.current.style.display = state ? "none" : "block"
+    setIsCollapse(!isCollapse)
+  }
+
   return (
     <div className={styles["comment"]}>
       <div className={styles["profile"]}>
         <div className={styles["profile-picture"]}>
-          <Avatar
-            size={54}
-            variant="marble"
-            colors={["#9A9FDD", "#DEEFFE", "#E2FFFF"]}
-          />
+          <button onClick={() => collapseMessage(!isCollapse)} className={styles["toggle-collapse"]}>
+            <Avatar
+              size={54}
+              variant="marble"
+              colors={["#9A9FDD", "#DEEFFE", "#E2FFFF"]}
+            />
+          </button>
         </div>
         <div
           className={`${styles["divider"]} ${styles["divider-not-last"]}`}
         ></div>
       </div>
       <div className={styles["content"]}>
-        <p
-          className={`${styles["username"]} ${
-            styles[forum_id == user_id ? "op" : null]
-          }`}
-        >
+        <p className={`${styles.username} ${forum_id === user_id ? styles.op : ""}`}>
           {username}{" "}
           <span className="admin-icon">
             {owners.includes(user_id) ? <BsFillShieldFill /> : null}
-          </span>
+          </span>{" "}
+          {isCollapse && <span className={styles["collapse-message"]}>(collapsed)</span>}
         </p>
-        <p>{comment}</p>
-        {url ? (
-          <img
-            className={styles.url}
-            draggable={false}
-            src={url}
-            alt="Image Error"
-          />
-        ) : null}
+        <div ref={messageRef} className={styles.message}>
+          <p>{comment}</p>
+          {url && (
+            <img className={styles.url} draggable={false} src={url} alt="Image Error" />
+          )}
+        </div>
       </div>
     </div>
   );

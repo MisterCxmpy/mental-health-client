@@ -121,7 +121,11 @@ function Message({ isYou, message }) {
         size={54}
         variant="marble"
         colors={["#9A9FDD", "#DEEFFE", "#E2FFFF"]}
-      /> : null} 
+      /> : <Avatar
+      size={54}
+      variant="pixel"
+      colors={["#9A9FDD", "#DEEFFE", "#E2FFFF"]}
+    />} 
       </div>
       <p>{message}</p>
     </div>
