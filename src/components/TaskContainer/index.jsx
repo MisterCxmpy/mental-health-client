@@ -24,6 +24,7 @@ function PromptTask({ task = 'Lorem ipsum.' }) {
       <h3>
         {task}
       </h3>
+        <input className={styles["prompt-checkbox"]} type="checkbox"/>
     </div>
   );
 }

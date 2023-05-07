@@ -42,13 +42,20 @@
   right: 24px;
 }
 
+.toggle-collapse {
+  background: transparent;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+}
+
 .content {
   position: relative;
   width: 100%;
   height: 80%;
 }
 
-.content > p {
+.content > p, .message > p {
   font-size: 20px;
   opacity: 0.79;
   overflow-wrap: anywhere;
@@ -117,4 +124,9 @@
   max-height: 350px;
   max-width: 350px;
   border-radius: 6px;
+}
+
+.collapse-message {
+  color: var(--primary-font-color) !important;
+  font-size: 14px;
 }
