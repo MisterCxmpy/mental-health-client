@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./index.module.css"
 import { useAuth } from "../../contexts/authContext";
 import { AiOutlineMenu } from "react-icons/ai";
+import Avatar from "boring-avatars";
 
 export default function AIMentor() {
   const { user, updateMentor } = useAuth()
@@ -115,7 +116,13 @@ function Conversation({ history, messagesEndRef }) {
 function Message({ isYou, message }) {
   return (
     <div className={`${styles[isYou ? "user-message" : "ai-message"]} ${styles["message"]}`}>
-      <div className={styles["profile-picture"]}></div>
+      <div className={styles["profile-picture"]}>
+      {isYou ? <Avatar
+        size={54}
+        variant="marble"
+        colors={["#9A9FDD", "#DEEFFE", "#E2FFFF"]}
+      /> : null} 
+      </div>
       <p>{message}</p>
     </div>
   )

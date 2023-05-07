@@ -5,21 +5,26 @@ import { AiOutlineStar } from "react-icons/ai";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext";
-import { BsFillShieldFill } from "react-icons/bs"
+import { BsFillShieldFill } from "react-icons/bs";
+import Avatar from "boring-avatars";
 
-const owners = [1, 2]
+const owners = [1, 2];
 
 function detectURLs(message) {
   var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
-  return message.match(urlRegex)
+  return message.match(urlRegex);
 }
 
 function parseUrl(data) {
-  let urls = detectURLs(data.comment)
+  let urls = detectURLs(data.comment);
   if (urls?.length) {
-    return { ...data, comment: data.comment.replace(/(https?:\/\/[^\s]+)/g, ""), url: urls[0] }
+    return {
+      ...data,
+      comment: data.comment.replace(/(https?:\/\/[^\s]+)/g, ""),
+      url: urls[0],
+    };
   } else {
-    return data
+    return data;
   }
 }
 
@@ -65,7 +70,7 @@ export default function DiscussionForum() {
     const data = await response.json();
 
     if (response.ok) {
-      let parsed = data.map(c => parseUrl(c))
+      let parsed = data.map((c) => parseUrl(c));
       setComments(parsed);
     } else {
       console.log("Failed to fetch username");
@@ -84,7 +89,7 @@ export default function DiscussionForum() {
       }),
     };
 
-    console.log(options.body)
+    console.log(options.body);
 
     const response = await fetch(
       `http://localhost:3000/comments/${id}`,
@@ -94,7 +99,7 @@ export default function DiscussionForum() {
     const data = await response.json();
 
     if (response.ok) {
-      const parsed = parseUrl(data.comment)
+      const parsed = parseUrl(data.comment);
       setComments((prev) => [...prev, parsed]);
     } else {
       console.log("Failed to create comment!");
@@ -114,7 +119,12 @@ export default function DiscussionForum() {
         <div className={styles["post"]}>
           <div className={styles["content"]}>
             <h1>{forum.title}</h1>
-            <p className={styles["post-op"]}>{username} <span className="admin-icon">{owners.includes(forum.user_id) ? <BsFillShieldFill /> : null}</span></p>
+            <p className={styles["post-op"]}>
+              {username}{" "}
+              <span className="admin-icon">
+                {owners.includes(forum.user_id) ? <BsFillShieldFill /> : null}
+              </span>
+            </p>
             <p>{forum.content}</p>
           </div>
           <div className={styles["options"]}>
@@ -145,7 +155,14 @@ export default function DiscussionForum() {
         {comments.length > 0 ? (
           <div className={styles["comment-section"]}>
             {comments.map((c, i) => (
-              <CreateComment key={i} forum_id={forum.user_id} user_id={c.user_id} username={c.username} comment={c.comment} url={c.url || null} />
+              <CreateComment
+                key={i}
+                forum_id={forum.user_id}
+                user_id={c.user_id}
+                username={c.username}
+                comment={c.comment}
+                url={c.url || null}
+              />
             ))}
           </div>
         ) : null}
@@ -155,19 +172,40 @@ export default function DiscussionForum() {
 }
 
 function CreateComment({ forum_id, user_id, username, comment, url }) {
-
   return (
     <div className={styles["comment"]}>
       <div className={styles["profile"]}>
-        <div className={styles["profile-picture"]}></div>
+        <div className={styles["profile-picture"]}>
+          <Avatar
+            size={54}
+            variant="marble"
+            colors={["#9A9FDD", "#DEEFFE", "#E2FFFF"]}
+          />
+        </div>
         <div
           className={`${styles["divider"]} ${styles["divider-not-last"]}`}
         ></div>
       </div>
       <div className={styles["content"]}>
-        <p className={`${styles["username"]} ${styles[forum_id == user_id ? "op" : null]}`}>{username} <span className="admin-icon">{owners.includes(user_id) ? <BsFillShieldFill /> : null}</span></p>
+        <p
+          className={`${styles["username"]} ${
+            styles[forum_id == user_id ? "op" : null]
+          }`}
+        >
+          {username}{" "}
+          <span className="admin-icon">
+            {owners.includes(user_id) ? <BsFillShieldFill /> : null}
+          </span>
+        </p>
         <p>{comment}</p>
-        {url ? <img className={styles.url} draggable={false} src={url} alt="Image Error" /> : null}
+        {url ? (
+          <img
+            className={styles.url}
+            draggable={false}
+            src={url}
+            alt="Image Error"
+          />
+        ) : null}
       </div>
     </div>
   );

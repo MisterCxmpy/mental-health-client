@@ -8,9 +8,9 @@ import { BiHome, BiGlassesAlt, BiLogOut } from "react-icons/bi/";
 import { HiOutlinePuzzle, HiOutlineChat } from "react-icons/hi";
 import { AiOutlineDollarCircle } from "react-icons/ai";
 
-import { FiSettings } from "react-icons/fi";
-import { BsFillShieldFill } from "react-icons/bs"
+import { BsFillShieldFill } from "react-icons/bs";
 
+import Avatar from "boring-avatars";
 
 export default function Navbar() {
   const { user } = useAuth();
@@ -20,17 +20,26 @@ export default function Navbar() {
     <>
       <nav className={styles["navbar"]}>
         <div className={styles["profile"]}>
-
           <div className={styles["profile-info"]}>
-            <div className={styles["profile-picture"]}></div>
-            <div className={styles["profile-name"]}>{user.username} <span className="admin-icon">{user.is_admin ? <BsFillShieldFill /> : null}</span></div>
-            <div className={styles["progress"]}>40% Completed</div>
-            <div className={styles["points"]}>{user.dabloons.toLocaleString("en-US")} Dabloons</div>
-            <div className={styles["inspiration-message"]}>
-              {quote.q}
+            <div className={styles["profile-picture"]}>
+              <Avatar
+                size={72}
+                variant="marble"
+                colors={["#9A9FDD", "#DEEFFE", "#E2FFFF"]}
+              />
             </div>
+            <div className={styles["profile-name"]}>
+              {user.username}{" "}
+              <span className="admin-icon">
+                {user.is_admin ? <BsFillShieldFill /> : null}
+              </span>
+            </div>
+            <div className={styles["progress"]}>40% Completed</div>
+            <div className={styles["points"]}>
+              {user.dabloons.toLocaleString("en-US")} Dabloons
+            </div>
+            <div className={styles["inspiration-message"]}>{quote.q}</div>
           </div>
-
         </div>
         <NavigationList />
       </nav>
@@ -40,21 +49,42 @@ export default function Navbar() {
 }
 
 function NavigationList() {
-
   const { logout } = useAuth();
 
   return (
     <div className={styles["navigation"]} role="navigation-btns">
-      <NavButton to={"/my-ai-mentor"} icon={<BiGlassesAlt />} name={"My AIMentor"} />
+      <NavButton
+        to={"/my-ai-mentor"}
+        icon={<BiGlassesAlt />}
+        name={"My AIMentor"}
+      />
       <div className={styles["content"]}>
         <NavButton to={"/"} icon={<BiHome />} name={"Home"} />
-        <NavButton to={"/activities"} icon={<HiOutlinePuzzle />} name={"Activities"} />
-        <NavButton to={"/discussions"} icon={<HiOutlineChat />} name={"Discussions"} />
-        <NavButton to={"/mindstore"} icon={<AiOutlineDollarCircle />} name={"MindStore"} />
-        <button className={`${styles["btn"]} ${styles["logout"]}`} onClick={() => logout()} ><BiLogOut />Logout</button>
+        <NavButton
+          to={"/activities"}
+          icon={<HiOutlinePuzzle />}
+          name={"Activities"}
+        />
+        <NavButton
+          to={"/discussions"}
+          icon={<HiOutlineChat />}
+          name={"Discussions"}
+        />
+        <NavButton
+          to={"/mindstore"}
+          icon={<AiOutlineDollarCircle />}
+          name={"MindStore"}
+        />
+        <button
+          className={`${styles["btn"]} ${styles["logout"]}`}
+          onClick={() => logout()}
+        >
+          <BiLogOut />
+          Logout
+        </button>
       </div>
     </div>
-  )
+  );
 }
 
 function NavButton({ to, icon, name }) {
@@ -65,13 +95,13 @@ function NavButton({ to, icon, name }) {
       style={({ isActive }) =>
         isActive
           ? {
-            color: "#ffffff",
-            background: "#9A9FDD",
-          }
+              color: "#ffffff",
+              background: "#9A9FDD",
+            }
           : {
-            color: "#202020",
-            background: "none",
-          }
+              color: "#202020",
+              background: "none",
+            }
       }
     >
       {icon}
