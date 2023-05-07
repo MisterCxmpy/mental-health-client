@@ -198,27 +198,18 @@ function CreateComment({ forum_id, user_id, username, comment, url }) {
         ></div>
       </div>
       <div className={styles["content"]}>
-        <p
-          className={`${styles["username"]} ${
-            styles[forum_id == user_id ? "op" : null]
-          }`}
-        >
+        <p className={`${styles.username} ${forum_id === user_id ? styles.op : ""}`}>
           {username}{" "}
           <span className="admin-icon">
             {owners.includes(user_id) ? <BsFillShieldFill /> : null}
           </span>{" "}
-          {isCollapse ? <span className={styles["collapse-message"]}>(collapsed)</span> : null}
+          {isCollapse && <span className={styles["collapse-message"]}>(collapsed)</span>}
         </p>
-        <div ref={messageRef} className={styles["message"]}>
+        <div ref={messageRef} className={styles.message}>
           <p>{comment}</p>
-          {url ? (
-            <img
-              className={styles.url}
-              draggable={false}
-              src={url}
-              alt="Image Error"
-            />
-          ) : null}
+          {url && (
+            <img className={styles.url} draggable={false} src={url} alt="Image Error" />
+          )}
         </div>
       </div>
     </div>
