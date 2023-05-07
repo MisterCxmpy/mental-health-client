@@ -69,7 +69,7 @@ export default function BlotChart({ index }) {
   return (
     <>
       {isLoading ? (
-        <img src="https://giphy.com/embed/RgzryV9nRCMHPVVXPV" alt="loading" />
+        <div className={styles["loading"]}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
       ) : (
         <div className={styles[`blotChart`]}>
           <h2>Expression Exercise</h2>
