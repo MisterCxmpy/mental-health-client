@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 
 import { useState, useEffect } from "react"
@@ -8,35 +9,32 @@ import meditationTypes from '../../../assets/meditations.json'
 import { useAuth } from "../../contexts/authContext"
 
 export default function Home() {
-  const { user } = useAuth()
+  const { user, saveUser } = useAuth()
   const [meditation, setMeditation] = useState(null);
   const [modal, setModal] = useState(false);
-  const [shortTermGoals, setShortTermGoals] = useState(false);
+  const [shortTermGoals, setShortTermGoals] = useState(user.st_goals || []);
 
-  const handleSelectMeditation = (thing) => {
-    console.log(thing);
+  const getUserGoals = async () => {
+    let options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: user.user_id }) }
+    let response = await fetch('http://localhost:3000/user/st/goals', options)
+
+    let data = await response.json()
+
+    if (response.ok) {
+      saveUser(data)
+      setShortTermGoals(data.st_goals)
+    }
+  }
+
+  const handleSelectMeditation = (meditation) => {
     setModal(true)
-    setMeditation(thing);
+    setMeditation(meditation);
   }
 
   useEffect(() => {
-    const getUserGoals = async () => {
-      let options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: user.user_id }) }
-      let response = await fetch('http://localhost:3000/user/st/goals', options)
-
-      let data = await response.json()
-
-      if (response.ok) {
-        setShortTermGoals(data)
-      }
-
-      console.log(data)
-    }
-
-    if (user && !user?.goals.length) {
+    if (user && !user?.st_goals.length) {
       getUserGoals()
     }
-
   }, [])
 
   return (
@@ -48,7 +46,7 @@ export default function Home() {
 
           <MeditationList items={meditationTypes} setMeditation={handleSelectMeditation} />
 
-          <TaskContainer goals={shortTermGoals} />
+          <TaskContainer goals={shortTermGoals} getUserGoals={getUserGoals} />
         </div>
       </div>
 

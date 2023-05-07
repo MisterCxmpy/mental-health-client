@@ -1,7 +1,7 @@
 import styles from "./index.module.css"
 import { Link } from 'react-router-dom'
 
-export default function TaskContainer({ goals = [] }) {
+export default function TaskContainer({ goals = [], getUserGoals }) {
   return (
     <div className={styles["task-container"]}>
       <div className={styles["task-content"]}>
@@ -12,7 +12,7 @@ export default function TaskContainer({ goals = [] }) {
       </div>
       <div className={styles["control-options"]}>
         <Link to={'/my-ai-mentor'}><button className="btn">Have a chat</button></Link>
-        <button className="btn">Reroll ideas</button>
+        <button onClick={async () => await getUserGoals()} className="btn">Reroll ideas</button>
       </div>
     </div>
   );
