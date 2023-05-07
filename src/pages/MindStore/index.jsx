@@ -81,7 +81,7 @@ export default function MindStore() {
         <div className={styles["controls"]}>
           <div className={styles["search"]}>
             <AiOutlineSearch />
-            <form className={styles["search-form"]}>
+            <form className={styles["search-form"]} onSubmit={e => e.preventDefault()}>
               <div className={styles["input"]}>
                 <input
                   className={styles["search-bar"]}
