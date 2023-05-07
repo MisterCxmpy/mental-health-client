@@ -32,7 +32,7 @@ export default function MeditationModal({ src, type }) {
     }
 
     return (
-        <div ref={contentRef} className={styles.content}>
+        <div ref={contentRef} className={styles.content} role='content'>
             {!time ? <UserChooseTimes setDuration={setTime} /> : <MeditationPlayer {...{ duration, isPlaying, setPlaying, sound, type, time, seconds }} />}
         </div>
     )

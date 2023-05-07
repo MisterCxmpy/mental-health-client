@@ -21,18 +21,33 @@ describe("CreateForum Component", () => {
     cleanup();
   });
 
-  it("Renders Item", () => {
-    const item = screen.getByRole('item')
-    expect(item).toBeInTheDocument();
-  });
+  it("Renders Marketplace List with Items", () => {
+    const mockItems = [
+      { name: "Test Item 1", price: 100, category: "Test Category 1" },
+      { name: "Test Item 2", price: 200, category: "Test Category 2" },
+      { name: "Test Item 3", price: 300, category: "Test Category 3" },
+    ];
 
-  it("Renders Image", () => {
-    const itemImg = screen.getByRole('item-img')
-    expect(itemImg).toBeInTheDocument();
-  });
+    render(<MarketplaceList items={mockItems} />);
 
-  it("Renders Content", () => {
-    const content = screen.getByRole('content')
-    expect(content).toBeInTheDocument();
+    const itemList = screen.getAllByRole("marketplace-list");
+    expect(itemList[0]).toBeInTheDocument();
+
+    const itemElements = screen.getAllByRole("item");
+    expect(itemElements.length).toBe(mockItems.length);
+
+    itemElements.forEach((itemElement, index) => {
+      const itemProps = mockItems[index];
+      const itemName = screen.getByText(itemProps.name);
+      const itemCategory = screen.getByText(itemProps.category);
+      const itemPrice = screen.getByText(
+        `${itemProps.price.toLocaleString("en-US")} Dabloons`
+      );
+
+      expect(itemElement).toBeInTheDocument();
+      expect(itemName).toBeInTheDocument();
+      expect(itemCategory).toBeInTheDocument();
+      expect(itemPrice).toBeInTheDocument();
+    });
   });
 });
