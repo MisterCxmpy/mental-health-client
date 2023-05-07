@@ -16,6 +16,8 @@ export default function Navbar() {
   const { user } = useAuth();
   const { quote } = useQuote();
 
+  const userCompletedGoals = user.st_goals.filter(g => g.completed == true).length / 5 * 100;
+
   return (
     <>
       <nav className={styles["navbar"]}>
@@ -34,7 +36,7 @@ export default function Navbar() {
                 {user.is_admin ? <BsFillShieldFill /> : null}
               </span>
             </div>
-            <div className={styles["progress"]}>40% Completed</div>
+            <div className={styles["progress"]}>{userCompletedGoals}% Completed</div>
             <div className={styles["points"]}>
               {user.dabloons.toLocaleString("en-US")} Dabloons
             </div>

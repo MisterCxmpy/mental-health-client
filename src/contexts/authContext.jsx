@@ -86,6 +86,18 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  const completeStGoal = async (id) => {
+    let options =  { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ goal_id: id, user_id: user.user_id }) }
+    const res = await fetch('http://localhost:3000/user/st/goals', options);
+    const updatedUser = await res.json();
+
+    if (res.ok) {
+      saveUser(updatedUser)
+    } else {
+      console.log(updatedUser);
+    }
+  }
+
   useEffect(() => { // check for cachedUser data to login and redirect user
     let cached = localStorage.getItem('user');
     let path = window.location.pathname == '/authenticate/intro';
@@ -108,7 +120,7 @@ export const AuthProvider = ({ children }) => {
   }, [user])
 
   return (
-    <AuthContext.Provider value={{ user, setUser, login, register, logout, completeIntro, updatePoints, updateGoals, updateMentor }}>
+    <AuthContext.Provider value={{ user, saveUser, login, register, logout, completeIntro, updatePoints, updateGoals, updateMentor, completeStGoal }}>
       {children}
     </AuthContext.Provider>
   );

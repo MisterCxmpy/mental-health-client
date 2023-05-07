@@ -53,6 +53,9 @@
   display: flex;
   align-items: center;
   color: var(--primary-font-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .prompt-task > h3{
