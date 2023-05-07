@@ -89,8 +89,6 @@ export default function DiscussionForum() {
       }),
     };
 
-    console.log(options.body);
-
     const response = await fetch(
       `http://localhost:3000/comments/${id}`,
       options
@@ -128,13 +126,9 @@ export default function DiscussionForum() {
             <p>{forum.content}</p>
           </div>
           <div className={styles["options"]}>
-            <p>
-              <VscComment />
-              81 Comments
-            </p>
-            <p>
-              <AiOutlineStar />
-              Favourite
+            <p className={styles["options-list"]}>
+              <VscComment />&nbsp;
+              {comments.length} Comments
             </p>
           </div>
         </div>

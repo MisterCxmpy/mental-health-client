@@ -33,3 +33,8 @@
   align-items: center;
   gap: 38px;
 }
+
+.options-list {
+  display: flex;
+  align-items: center;
+}

@@ -130,3 +130,8 @@
   color: var(--primary-font-color) !important;
   font-size: 14px;
 }
+
+.options-list {
+  display: flex;
+  align-items: center;
+}
