@@ -37,6 +37,10 @@ export default function Home() {
     }
   }, [])
 
+  useEffect(() => {
+   setShortTermGoals(user.st_goals)
+  }, [user])
+
   return (
     <>
       {modal ? <Modal setOpen={setModal} content={<MeditationModal {...meditation} />} /> : null}
