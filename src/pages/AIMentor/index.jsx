@@ -157,13 +157,13 @@ function Conversation({ history = [], messagesEndRef }) {
   console.log(history);
   return (
     <div className={styles["messages-container"]}>
-      {history ? history.map(m => <Message key={m.id} isYou={m.role == 'user'} message={m.content} loading={m.loading} />) : <Loading />}
+      {history ? history.map(m => <Message key={m.id} isYou={m.role == 'user'} message={m.content} loading={m.loading} user={user} />) : <Loading />}
       <div ref={messagesEndRef} />
     </div>
   )
 }
 
-function Message({ isYou, message, loading }) {
+function Message({ isYou, message, loading, user }) {
   return (
     <>
       {loading ? <div> <Loading />  </div> : <div className={`${styles[isYou ? "user-message" : "ai-message"]} ${styles["message"]}`}>
@@ -178,7 +178,7 @@ function Message({ isYou, message, loading }) {
             colors={["#9A9FDD", "#DEEFFE", "#E2FFFF"]}
           />}
         </div>
-        <p>{message}</p>
+        <p>{user.mentor} {message}</p>
       </div>}
     </>
   )
