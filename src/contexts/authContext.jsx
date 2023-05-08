@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }) => {
   const login = async ({ username, password }) => {
     const options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, password }) }
 
-    const response = await fetch('http://localhost:3000/auth/login', options);
+    const response = await fetch('https://mental-health-server-w9lq.onrender.com/auth/login', options);
     const user = await response.json();
 
     if (!response.ok) throw new Error(user.message); // if theres any error, throw one and with that data
@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }) => {
   const register = async ({ username, password }) => {
     const options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, password }) }
 
-    const response = await fetch('http://localhost:3000/auth/register', options);
+    const response = await fetch('https://mental-health-server-w9lq.onrender.com/auth/register', options);
     const user = await response.json();
 
     if (!response.ok) throw new Error(user.message); // if theres any error, throw one and with that data
@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }) => {
   const updateGoals = async (goals) => {
     let goalsStr = JSON.stringify(goals)
     let options = { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ goals: goalsStr, user_id: user.user_id }) }
-    const res = await fetch('http://localhost:3000/user/goals', options);
+    const res = await fetch('https://mental-health-server-w9lq.onrender.com/user/goals', options);
     const updatedUser = await res.json();
 
     res.ok ? saveUser(updatedUser) : console.log(updatedUser);
@@ -64,7 +64,7 @@ export const AuthProvider = ({ children }) => {
 
   const updatePoints = async (points) => {
     let options = { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ points, user_id: user.user_id }) }
-    const res = await fetch('http://localhost:3000/user/pts', options);
+    const res = await fetch('https://mental-health-server-w9lq.onrender.com/user/pts', options);
     const updatedUser = await res.json();
 
     if (res.ok) {
@@ -76,7 +76,7 @@ export const AuthProvider = ({ children }) => {
 
   const updateMentor = async (mentor) => {
     let options = { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mentor, user_id: user.user_id }) }
-    const res = await fetch('http://localhost:3000/user/mentor', options);
+    const res = await fetch('https://mental-health-server-w9lq.onrender.com/user/mentor', options);
     const updatedUser = await res.json();
 
     if (res.ok) {
@@ -88,7 +88,7 @@ export const AuthProvider = ({ children }) => {
 
   const completeStGoal = async (id) => {
     let options =  { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ goal_id: id, user_id: user.user_id }) }
-    const res = await fetch('http://localhost:3000/user/st/goals', options);
+    const res = await fetch('https://mental-health-server-w9lq.onrender.com/user/st/goals', options);
     const updatedUser = await res.json();
 
     if (res.ok) {

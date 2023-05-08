@@ -10,9 +10,10 @@ const owners = [1, 2]
 export default function ForumCard({ title, content, user_id, forum_id}) {
 
   const [username, setUsername] = useState("")
+  const [comments, setComments] = useState([])
 
   async function getUser() {
-    const response = await fetch(`http://localhost:3000/user/${user_id}`)
+    const response = await fetch(`https://mental-health-server-w9lq.onrender.com/user/${user_id}`)
 
     const { username } = await response.json()
 
@@ -23,8 +24,21 @@ export default function ForumCard({ title, content, user_id, forum_id}) {
     }
   }
 
+  async function getComments() {
+    const response = await fetch(`https://mental-health-server-w9lq.onrender.com/comments/${forum_id}`);
+
+    const data = await response.json();
+
+    if (response.ok) {
+      setComments(data);
+    } else {
+      console.log("Failed to fetch username");
+    }
+  }
+
   useEffect(() => {
     getUser()
+    getComments()
   }, [])
 
   return (
@@ -36,13 +50,9 @@ export default function ForumCard({ title, content, user_id, forum_id}) {
           <p>{content}</p>
         </div>
         <div className={styles["options"]}>
-          <p>
-            <VscComment />
-            0 Comments
-          </p>
-          <p>
-            <AiOutlineStar />
-            Favourite
+          <p className={styles["options-list"]}>
+            <VscComment />&nbsp;
+            {comments.length} Comments
           </p>
         </div>
       </div>

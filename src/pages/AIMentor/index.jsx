@@ -35,7 +35,7 @@ export default function AIMentor() {
 
   useEffect(() => { // fetch chat history from db
     const getMentors = async () => {
-      let response = await fetch('http://localhost:3000/mentor/info')
+      let response = await fetch('https://mental-health-server-w9lq.onrender.com/mentor/info')
       let data = await response.json();
 
       if (response.ok) {
@@ -121,7 +121,11 @@ function Message({ isYou, message }) {
         size={54}
         variant="marble"
         colors={["#9A9FDD", "#DEEFFE", "#E2FFFF"]}
-      /> : null} 
+      /> : <Avatar
+      size={54}
+      variant="pixel"
+      colors={["#9A9FDD", "#DEEFFE", "#E2FFFF"]}
+    />} 
       </div>
       <p>{message}</p>
     </div>

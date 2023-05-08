@@ -105,7 +105,7 @@ export default function Intro() {
 }
 
 function IntroPart({ message1Ref, message2Ref, continueBtnRef, switchInfo }) {
-  let title = "MHM!".split("");
+  let title = "SerenityAI!".split("");
   const TitleBtn = ({ letter }) => (
     <button className={styles["bounce"]} style={{ color: "#9A9FDD" }}>
       {letter}

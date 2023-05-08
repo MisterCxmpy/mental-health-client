@@ -31,7 +31,7 @@ export default function Signup() {
         <div className={styles["signup-form"]}>
           <div className={styles["heading"]}>
             <h1>Register</h1>
-            <p>Sign up to MHM today! Enter your details below.</p>
+            <p>Sign up to SerenityAI today! Enter your details below.</p>
           </div>
           <form onSubmit={submitForm}>
             <div className={styles["input"]}>

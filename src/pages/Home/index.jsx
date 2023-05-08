@@ -16,7 +16,7 @@ export default function Home() {
 
   const getUserGoals = async () => {
     let options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: user.user_id }) }
-    let response = await fetch('http://localhost:3000/user/st/goals', options)
+    let response = await fetch('https://mental-health-server-w9lq.onrender.com/user/st/goals', options)
 
     let data = await response.json()
 
