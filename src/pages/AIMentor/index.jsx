@@ -18,7 +18,7 @@ export default function AIMentor() {
     e.preventDefault()
     handleSendUserMessage(e)
 
-    let options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: { content: input, role: 'user' }, mentor: user.mentor }) };
+    let options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: user.user_id ,message: { content: input, role: 'user' }, mentor: user.mentor }) };
     let res = await fetch('https://mental-health-server-w9lq.onrender.com/mentor/chat', options)
 
     let response = await res.json();
