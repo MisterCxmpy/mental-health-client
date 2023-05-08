@@ -36,7 +36,7 @@ export default function AIMentor() {
     let userMessage = { id: Math.floor(Math.random() * 7863), content: input, role: 'user' }; // save to db
 
     setHistory(prev => {
-      if(prev.length) {
+      if(prev?.length) {
         return [...prev, userMessage]
       } else {
         return [userMessage]
