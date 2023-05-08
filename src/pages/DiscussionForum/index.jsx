@@ -225,22 +225,24 @@ function CreateComment({ forum_id, user_id, username, comment, url, video }) {
         </p>
         <div ref={messageRef} className={styles.message}>
           <p>{comment}</p>
-          {!video ? (
-            <img
-              className={styles.url}
-              draggable={false}
-              src={url}
-              alt="Image Error"
-            />
-          ) : (
-            <video
-              controls={true}
-              className={styles.url}
-              draggable={false}
-              src={url}
-              alt="Image Error"
-            />
-          )}
+          {url ? (
+            !video ? (
+              <img
+                className={styles.url}
+                draggable={false}
+                src={url}
+                alt="Image Error"
+              />
+            ) : (
+              <video
+                controls={true}
+                className={styles.url}
+                draggable={false}
+                src={url}
+                alt="Image Error"
+              />
+            )
+          ) : null}
         </div>
       </div>
     </div>
