@@ -13,7 +13,7 @@ export default function ForumCard({ title, content, user_id, forum_id, urls}) {
   const [comments, setComments] = useState([])
 
   async function getUser() {
-    const response = await fetch(`https://mental-health-server-w9lq.onrender.com/user/${user_id}`)
+    const response = await fetch(`http://localhost:3000/user/${user_id}`)
 
     const { username } = await response.json()
 
@@ -25,7 +25,7 @@ export default function ForumCard({ title, content, user_id, forum_id, urls}) {
   }
 
   async function getComments() {
-    const response = await fetch(`https://mental-health-server-w9lq.onrender.com/comments/${forum_id}`);
+    const response = await fetch(`http://localhost:3000/comments/${forum_id}`);
 
     const data = await response.json();
 

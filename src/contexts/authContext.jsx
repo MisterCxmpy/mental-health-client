@@ -88,6 +88,18 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  const updateOwnedMentors = async (mentor) => {
+    let options = { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mentor, user_id: user.user_id }) }
+    const res = await fetch('http://localhost:3000/user/mentor/buy', options);
+    const updatedUser = await res.json();
+
+    if (res.ok) {
+      saveUser(updatedUser)
+    } else {
+      console.log(updatedUser);
+    }
+  }
+
   const completeStGoal = async (id) => {
     let options =  { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ goal_id: id, user_id: user.user_id }) }
     const res = await fetch('http://localhost:3000/user/st/goals', options);
@@ -98,6 +110,16 @@ export const AuthProvider = ({ children }) => {
     } else {
       console.log(updatedUser);
     }
+  }
+
+  const buyMentor = async ({ name, price }) => {
+    if (user?.owned_mentors?.findIndex(n => n == name) >= 0) return
+    await updatePoints(-price)
+    let newMentors = user.owned_mentors;
+
+    newMentors.push(name)
+    saveUser({...user, owned_mentors: newMentors})
+    await updateOwnedMentors(name)
   }
 
   useEffect(() => { // check for cachedUser data to login and redirect user
@@ -122,7 +144,7 @@ export const AuthProvider = ({ children }) => {
   }, [user])
 
   return (
-    <AuthContext.Provider value={{ user, saveUser, login, register, logout, completeIntro, updatePoints, updateGoals, updateMentor, completeStGoal }}>
+    <AuthContext.Provider value={{ user, saveUser, login, register, logout, completeIntro, updatePoints, updateGoals, updateMentor, completeStGoal, buyMentor }}>
       {children}
     </AuthContext.Provider>
   );

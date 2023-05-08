@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { MarketplaceList, Tag } from "../../components"
 import styles from "./index.module.css"
 import { AiOutlineSearch, AiOutlineArrowUp, AiOutlineArrowDown } from "react-icons/ai"
+import { useAuth } from "../../contexts/authContext"
 
 function filterCategories(array) {
   let cats = array.map(i => i.category)
@@ -12,7 +13,9 @@ function onlyUnique(value, index, array) {
   return array.indexOf(value) === index;
 }
 
+
 export default function MindStore() {
+  const { user, buyMentor } = useAuth();
   const [items, setItems] = useState([]);
   const [filter, setFilter] = useState({ query: "", items: [] });
   const [categories, setCategories] = useState([]);
@@ -20,45 +23,63 @@ export default function MindStore() {
 
   useEffect(() => {
     const getMarketplaceItems = async () => {
-      let response = await fetch('https://mental-health-server-w9lq.onrender.com/mentor/prices')
+      let response = await fetch('http://localhost:3000/mentor/prices')
       let data = await response.json()
 
       if (response.ok) {
-        setItems(data)
+        let all = data.filter(i => {
+          if (user?.owned_mentors?.findIndex(m => m.toLowerCase() == i.name.toLowerCase()) < 0) {
+            return i
+          }
+        })
+
+        setItems(all)
         setCategories(filterCategories(data))
       }
-
-      console.log(data);
     }
 
     getMarketplaceItems()
-
   }, [])
 
   useEffect(() => {
-    if (filter.query == "") setFilter(prev => ({ ...prev, res: items }))
+    if (filter.query == "") {
+      setFilter(prev => {
+        console.log(prev);
+        let all = items.filter(i => {
+          if (user.owned_mentors.findIndex(m => m.toLowerCase() == i.name.toLowerCase()) < 0) {
+            return i
+          }
+        })
+
+        return { ...prev, res: all }
+      })
+    }
 
     if (activeCategory) {
-      setFilter(prev => ({
+      setFilter(prev => ({ // sort mentors based on category
         ...prev, items: items.filter(item => {
           let name = item.name.toLowerCase();
           let query = filter.query.toLowerCase()
 
-          return name.includes(query) && activeCategory == item.category
+          const hit = name.includes(query) && activeCategory == item.category;
+          return hit
+
         })
       }))
     } else {
-      setFilter(prev => ({
+      setFilter(prev => ({ // sort mentors based on query
         ...prev, items: items.filter(item => {
           let name = item.name.toLowerCase();
           let query = filter.query.toLowerCase()
 
-          return name.includes(query)
+          const hit = name.includes(query)
+          return hit
+
         })
       }))
     }
 
-  }, [filter?.query, items, activeCategory])
+  }, [filter?.query, items, activeCategory, user?.owned_mentors])
 
   const handleSelectCategory = (cat) => {
     if (activeCategory == cat) {
@@ -66,6 +87,10 @@ export default function MindStore() {
     } else {
       setActiveCategory(cat)
     }
+  }
+
+  const handleBuyMentor = async ({ name, price }) => {
+    await buyMentor({ name, price })
   }
 
 
@@ -103,7 +128,7 @@ export default function MindStore() {
           {categories.map(c => <Tag activeCategory={activeCategory} tag={c} key={c} select={() => handleSelectCategory(c)} />)}
         </div>
 
-        <MarketplaceList items={filter.items} />
+        <MarketplaceList handleBuyMentor={handleBuyMentor} items={filter.items} />
       </div>
     </div>
   )

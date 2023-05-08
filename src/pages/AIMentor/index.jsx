@@ -24,7 +24,7 @@ export default function AIMentor() {
 
     setLoading(true)
     let options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: user.user_id, message: { content: input, role: 'user' }, mentor: user.mentor }) };
-    let res = await fetch('https://mental-health-server-w9lq.onrender.com/mentor/chat', options)
+    let res = await fetch('http://localhost:3000/mentor/chat', options)
 
     let response = await res.json();
 
@@ -38,7 +38,7 @@ export default function AIMentor() {
     let userMessage = { id: Math.floor(Math.random() * 7863), content: input, role: 'user' }; // save to db
 
     setHistory(prev => {
-      if(prev?.length) {
+      if (prev?.length) {
         return [...prev, userMessage]
       } else {
         return [userMessage]
@@ -48,37 +48,37 @@ export default function AIMentor() {
 
   useEffect(() => { // fetch chat history from db
     let cachedChat = localStorage.getItem('mentorChat');
+    setMentors([...user.owned_mentors, 'Morgan'])
 
     const getMentors = async () => {
-      let response = await fetch('http://localhost:3000/mentor/info')
-      let mentorData = await response.json();
       let historyData;
-
-      if (cachedChat) {
-        let data = JSON.parse(cachedChat);
-        setHistory(data)
-      } else {
-        let response2 = await fetch('https://mental-health-server-w9lq.onrender.com/mentor/init', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: user.user_id, mentor: user.mentor }) })
-
-        historyData = await response2.json()
-      }
-
+      let response = await fetch('http://localhost:3000/mentor/init', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: user.user_id, mentor: user.mentor })
+      })
 
       if (response.ok) {
-        setMentors(mentorData)
+        historyData = await response.json()
+      } else {
+        historyData = []
+      }
+
+      if (response.ok) {
+        setHistory(historyData.history)
+
         if (historyData) {
-          setHistory(historyData.history)
           localStorage.setItem('mentorChat', JSON.stringify(historyData.history))
         }
-      } else {
-        console.log(mentorData);
-        console.log(historyData);
       }
     }
+    if (cachedChat !== 'undefined') {
+      let data = JSON.parse(cachedChat);
+      setHistory(data)
+    } else {
+      getMentors()
+    }
 
-
-
-    getMentors()
   }, [])
 
   useEffect(() => { // fetch chat history from db
@@ -88,14 +88,14 @@ export default function AIMentor() {
   useEffect(() => { // fetch chat history from db
     if (loading) {
       setHistory(prev => {
-        if(prev.length) {
+        if (prev.length) {
           return [...prev, { message: 'Loading', loading: true }]
-        }else {
+        } else {
           return [{ message: 'Loading', loading: true }]
         }
       })
     } else {
-      setHistory(prev => prev.filter(p => !p.loading))
+      setHistory(prev => prev?.filter(p => !p.loading))
       textareaRef.current.focus();
     }
 
@@ -166,11 +166,11 @@ function Conversation({ history = [], messagesEndRef, user, changeHistory }) {
   return (
     <>
       {!changeHistory ? <div className={styles["messages-container"]}>
-      {history ? history.map((m, i) => <Message key={i} isYou={m.role == 'user'} message={m.content} loading={m.loading} user={user} />) : <Loading />}
-      <div ref={messagesEndRef} />
-    </div> : <div className={styles["loading-container"]}><Loading2 /></div>}
+        {history.length ? history.map((m, i) => <Message key={i} isYou={m.role == 'user'} message={m.content} loading={m.loading} user={user} />) : <Message isYou={true} message={`Start chatting to ${user.mentor} now! Just send a message.`} user={user} />}
+        <div ref={messagesEndRef} />
+      </div> : <div className={styles["loading-container"]}><Loading2 /></div>}
     </>
-    
+
   )
 }
 

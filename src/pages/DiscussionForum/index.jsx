@@ -1,19 +1,41 @@
 /* eslint-disable react/prop-types */
 import { VscComment } from "react-icons/vsc";
 import styles from "./index.module.css";
-import { AiOutlineStar } from "react-icons/ai";
 import { useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../../contexts/authContext";
 import { BsFillShieldFill } from "react-icons/bs";
+import GifPicker from 'gif-picker-react'
 import Avatar from "boring-avatars";
 
 const owners = [1, 2];
 
 function detectURLs(message) {
+  console.log(message);
   var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
   return message.match(urlRegex);
 }
+
+// function parseUrl(comment) {
+//   let urls = detectURLs(comment);
+//   if (urls?.length) {
+//     if (urls[0].slice(-3) == "mp4") {
+//       return {
+//         comment: comment.replace(/(https?:\/\/[^\s]+)/g, ""),
+//         url: urls[0],
+//         video: true,
+//       };
+//     }
+//     return {
+//       comment: comment.replace(/(https?:\/\/[^\s]+)/g, ""),
+//       url: urls[0],
+//     };
+//   } else {
+//     return {
+//       comment,
+//     };
+//   }
+// }
 
 function parseUrl(data) {
   let urls = detectURLs(data.comment);
@@ -41,35 +63,10 @@ export default function DiscussionForum() {
   const [comments, setComments] = useState([]);
   const [username, setUsername] = useState("");
   const [comment, setComment] = useState("");
+  const [showGif, setShowGif] = useState(false);
   const { user } = useAuth();
 
   const { id } = useParams();
-
-  function detectURLs(message) {
-    var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
-    return message.match(urlRegex);
-  }
-
-  function parseUrl(comment) {
-    let urls = detectURLs(comment);
-    if (urls?.length) {
-      if (urls[0].slice(-3) == "mp4") {
-        return {
-          comment: comment.replace(/(https?:\/\/[^\s]+)/g, ""),
-          url: urls[0],
-          video: true,
-        };
-      }
-      return {
-        comment: comment.replace(/(https?:\/\/[^\s]+)/g, ""),
-        url: urls[0],
-      };
-    } else {
-      return {
-        comment,
-      };
-    }
-  }
 
   async function getForum() {
     const response = await fetch(`http://localhost:3000/forums/forum/${id}`);
@@ -77,7 +74,7 @@ export default function DiscussionForum() {
     const data = await response.json();
 
     if (response.ok) {
-      const parsed = parseUrl(data.content);
+      const parsed = parseUrl({ comment: data.content });
 
       setForum({ ...data, content: parsed });
     } else {
@@ -140,6 +137,7 @@ export default function DiscussionForum() {
     }
 
     setComment("");
+    setShowGif(false)
     e.target.reset();
   }
 
@@ -150,6 +148,7 @@ export default function DiscussionForum() {
   return (
     <div className="layout">
       <div className={styles["container"]}>
+
         <div className={styles["post"]}>
           <div className={styles["content"]}>
             <h1>{forum.title}</h1>
@@ -169,6 +168,7 @@ export default function DiscussionForum() {
             </p>
           </div>
         </div>
+
         <div className={styles["create-comment"]}>
           <form onSubmit={createComment} className={styles["create-form"]}>
             <textarea
@@ -178,32 +178,31 @@ export default function DiscussionForum() {
               onChange={(e) => setComment(e.target.value)}
               required
             ></textarea>
+            <div className={styles['textarea-toolbar']}>
+              <button onClick={() => setShowGif(prev => !prev)}>gif</button>
+              {showGif ? <GifPicker onGifClick={(({ url }) => setComment(url))} tenorApiKey={"AIzaSyA2-t1Z34mEI3lUpj2LhZ6v4EK_fdth07I"} /> : null}
+            </div>
             <button type="submit" className={`${styles["submit-btn"]} btn`}>
               Comment
             </button>
           </form>
         </div>
-        {comments.length > 0 ? (
-          <div className={styles["comment-section"]}>
-            {comments.map((c, i) => (
-              <CreateComment
-                key={i}
-                forum_id={forum.user_id}
-                user_id={c.user_id}
-                username={c.username}
-                comment={c.comment}
-                url={c.url || null}
-                video={c.video}
-              />
-            ))}
-          </div>
-        ) : null}
+
+        {comments.length ? <CommentList comments={comments} forum={forum} /> : null}
       </div>
     </div>
   );
 }
 
-function CreateComment({ forum_id, user_id, username, comment, url, video }) {
+function CommentList({ comments, forum }) {
+  return (
+    <div className={styles["comment-section"]}>
+      {comments.map((c) => <Comment key={`${forum.user_id}-${c.comment[0]}-${c.user_id}sseq`} forum_id={forum.user_id} {...c} url={c.url || null} />)}
+    </div>
+  )
+}
+
+function Comment({ forum_id, user_id, username, comment, url, video }) {
   const messageRef = useRef();
   const [isCollapse, setIsCollapse] = useState(false);
 
@@ -233,9 +232,8 @@ function CreateComment({ forum_id, user_id, username, comment, url, video }) {
       </div>
       <div className={styles["content"]}>
         <p
-          className={`${styles.username} ${
-            forum_id === user_id ? styles.op : ""
-          }`}
+          className={`${styles.username} ${forum_id === user_id ? styles.op : ""
+            }`}
         >
           {username}{" "}
           <span className="admin-icon">
@@ -246,32 +244,14 @@ function CreateComment({ forum_id, user_id, username, comment, url, video }) {
           )}
         </p>
         <div ref={messageRef} className={styles.message}>
-          <p>{comment}</p>
-          {url ? (
-            !video ? (
-              <img
-                className={styles.url}
-                draggable={false}
-                src={url}
-                alt="Image Error"
-              />
-            ) : (
-              <video
-                controls={true}
-                className={styles.url}
-                draggable={false}
-                src={url}
-                alt="Image Error"
-              />
-            )
-          ) : null}
+          <TextContent comment={comment} url={url} video={video} />
         </div>
       </div>
     </div>
   );
 }
 
-function ForumDetails({forum}) {
+function ForumDetails({ forum }) {
   return (
     <>
       {forum.content ? (
@@ -298,4 +278,32 @@ function ForumDetails({forum}) {
       ) : null}
     </>
   );
+}
+
+function TextContent({ comment, content, url, video }) {
+  let text = comment || content || null;
+
+  return (
+    <>
+      {text ? <p>{text}</p> : null}
+      {url ? (
+        !video ? (
+          <img
+            className={styles.url}
+            draggable={false}
+            src={url}
+            alt="Image Error"
+          />
+        ) : (
+          <video
+            controls={true}
+            className={styles.url}
+            draggable={false}
+            src={url}
+            alt="Image Error"
+          />
+        )
+      ) : null}
+    </>
+  )
 }
