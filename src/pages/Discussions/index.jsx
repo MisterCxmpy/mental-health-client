@@ -11,6 +11,33 @@ export default function Discussions() {
   const [forums, setForums] = useState([]);
   const { setQuery, result } = useSearch(forums);
 
+  function detectURLs(message) {
+    var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
+    return message.match(urlRegex);
+  }
+
+  function parseUrl(comment) {
+    let urls = detectURLs(comment);
+    if (urls?.length) {
+      if (urls[0].slice(-3) == "mp4") {
+        return {
+          comment: comment.replace(/(https?:\/\/[^\s]+)/g, ""),
+          url: urls[0],
+          video: true,
+        };
+      }
+      return {
+        comment: comment.replace(/(https?:\/\/[^\s]+)/g, ""),
+        url: urls[0],
+      };
+    } else {
+      return {
+        comment
+      };
+    }
+  }
+  
+
   useEffect(() => {
     async function fetchForums() {
       const response = await fetch('http://localhost:3000/forums');
@@ -62,7 +89,7 @@ export default function Discussions() {
           </div>
           <div className={styles["posts"]}>
             {result.length > 0 ? result.map((forum) => (
-              <ForumCard key={forum.forum_id} title={forum.title} content={forum.content} user_id={forum.user_id} forum_id={forum.forum_id} />
+              <ForumCard key={forum.forum_id} title={forum.title} content={forum.content} user_id={forum.user_id} forum_id={forum.forum_id} urls={parseUrl(forum.content)}/>
             )) : null}
           </div>
         </div>
