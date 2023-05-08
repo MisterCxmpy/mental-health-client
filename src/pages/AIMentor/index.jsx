@@ -51,11 +51,6 @@ export default function AIMentor() {
     setMentors([...user.owned_mentors, 'Morgan'])
 
     const getMentors = async () => {
-<<<<<<< HEAD
-=======
-      let response = await fetch('http://localhost:3000/mentor/info')
-      let mentorData = await response.json();
->>>>>>> cad0545b04cf04d6dbac022171fb834d59397b54
       let historyData;
       let response = await fetch('http://localhost:3000/mentor/init', {
         method: 'POST',
@@ -167,11 +162,7 @@ export default function AIMentor() {
   )
 }
 
-<<<<<<< HEAD
-function Conversation({ history = [], messagesEndRef }) {
-=======
 function Conversation({ history = [], messagesEndRef, user, changeHistory }) {
->>>>>>> cad0545b04cf04d6dbac022171fb834d59397b54
   return (
     <>
       {!changeHistory ? <div className={styles["messages-container"]}>
