@@ -1,3 +1,4 @@
+import Loading2 from "../Loading2";
 import styles from "./index.module.css";
 import React, { useState, useEffect } from "react";
 
@@ -12,7 +13,7 @@ export default function BlotChart({ index }) {
   useEffect(() => {
     const initiateGame = async () => {
       setIsLoading(true);
-      const response = await fetch("https://mental-health-server-w9lq.onrender.com/games/initiateGame");
+      const response = await fetch("http://localhost:3000/games/initiateGame");
       const image = await response.json();
       const imageURL = image.url;
       setImage(imageURL);
@@ -22,7 +23,7 @@ export default function BlotChart({ index }) {
   }, []);
   const getImage = async (prompt) => {
     setIsLoading(true);
-    const response = await fetch("https://mental-health-server-w9lq.onrender.com/games/createImage", {
+    const response = await fetch("http://localhost:3000/games/createImage", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -39,7 +40,7 @@ export default function BlotChart({ index }) {
     event.preventDefault();
     setIsFormSubmitted(true);
     setIsLoading(true);
-    const response = await fetch("https://mental-health-server-w9lq.onrender.com/games/checkAnswer", {
+    const response = await fetch("http://localhost:3000/games/checkAnswer", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -69,7 +70,7 @@ export default function BlotChart({ index }) {
   return (
     <>
       {isLoading ? (
-        <div className={styles["loading"]}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        <Loading2 />
       ) : (
         <div className={styles[`blotChart`]}>
           <h2>Expression Exercise</h2>

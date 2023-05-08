@@ -20,7 +20,7 @@ export default function MindStore() {
 
   useEffect(() => {
     const getMarketplaceItems = async () => {
-      let response = await fetch('https://mental-health-server-w9lq.onrender.com/mentor/prices')
+      let response = await fetch('http://localhost:3000/mentor/prices')
       let data = await response.json()
 
       if (response.ok) {

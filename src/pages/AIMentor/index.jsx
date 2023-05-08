@@ -4,13 +4,14 @@ import styles from "./index.module.css"
 import { useAuth } from "../../contexts/authContext";
 import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "boring-avatars";
-import { Loading } from "../../components";
+import { Loading, Loading2 } from "../../components";
 
 export default function AIMentor() {
   const { user, updateMentor } = useAuth()
   const [history, setHistory] = useState([]);
   const [mentors, setMentors] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [changeHistory, setChangeHistory] = useState(false)
   const [input, setInput] = useState("");
   const textareaRef = useRef()
 
@@ -23,7 +24,7 @@ export default function AIMentor() {
 
     setLoading(true)
     let options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: user.user_id, message: { content: input, role: 'user' }, mentor: user.mentor }) };
-    let res = await fetch('https://mental-health-server-w9lq.onrender.com/mentor/chat', options)
+    let res = await fetch('http://localhost:3000/mentor/chat', options)
 
     let response = await res.json();
 
@@ -49,7 +50,7 @@ export default function AIMentor() {
     let cachedChat = localStorage.getItem('mentorChat');
 
     const getMentors = async () => {
-      let response = await fetch('https://mental-health-server-w9lq.onrender.com/mentor/info')
+      let response = await fetch('http://localhost:3000/mentor/info')
       let mentorData = await response.json();
       let historyData;
 
@@ -57,7 +58,7 @@ export default function AIMentor() {
         let data = JSON.parse(cachedChat);
         setHistory(data)
       } else {
-        let response2 = await fetch('https://mental-health-server-w9lq.onrender.com/mentor/init', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: user.user_id, mentor: user.mentor }) })
+        let response2 = await fetch('http://localhost:3000/mentor/init', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: user.user_id, mentor: user.mentor }) })
 
         historyData = await response2.json()
       }
@@ -107,15 +108,23 @@ export default function AIMentor() {
     }
   }
 
+  function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
   const handleChangeMentor = async (mentor) => {
-    await updateMentor(mentor)
+    setChangeHistory(true)
+    let history = await updateMentor(mentor);
+    await delay(500);
+    setHistory(history);
+    setChangeHistory(false)
   }
 
   return (
     <div className="layout">
       <div className={styles["container"]}>
 
-        <Conversation {...{ history, messagesEndRef }} />
+        <Conversation {...{ history, messagesEndRef, user, changeHistory }} />
 
         <div className={styles["input-box"]} onSubmit={handleSendMessage}>
           <div className={styles["options"]}>
@@ -153,13 +162,15 @@ export default function AIMentor() {
   )
 }
 
-function Conversation({ history = [], messagesEndRef }) {
-  console.log(history);
+function Conversation({ history = [], messagesEndRef, user, changeHistory }) {
   return (
-    <div className={styles["messages-container"]}>
-      {history ? history.map(m => <Message key={m.id} isYou={m.role == 'user'} message={m.content} loading={m.loading} user={user} />) : <Loading />}
+    <>
+      {!changeHistory ? <div className={styles["messages-container"]}>
+      {history ? history.map((m, i) => <Message key={i} isYou={m.role == 'user'} message={m.content} loading={m.loading} user={user} />) : <Loading />}
       <div ref={messagesEndRef} />
-    </div>
+    </div> : <div className={styles["loading-container"]}><Loading2 /></div>}
+    </>
+    
   )
 }
 
@@ -178,7 +189,7 @@ function Message({ isYou, message, loading, user }) {
             colors={["#9A9FDD", "#DEEFFE", "#E2FFFF"]}
           />}
         </div>
-        <p>{user.mentor} {message}</p>
+        <p>{!isYou ? user.mentor + ":" : null} {message}</p>
       </div>}
     </>
   )
