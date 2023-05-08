@@ -13,7 +13,7 @@ export default function Discussions() {
 
   useEffect(() => {
     async function fetchForums() {
-      const response = await fetch('http://localhost:3000/forums');
+      const response = await fetch('https://mental-health-server-w9lq.onrender.com/forums');
       const data = await response.json();
 
       if (response.ok) {

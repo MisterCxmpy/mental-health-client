@@ -31,7 +31,7 @@ export default function Login() {
         <div className={styles["login-form"]}>
           <div className={styles["heading"]}>
             <h1>Login</h1>
-            <p>Welcome back to the MHM app</p>
+            <p>Welcome back to the SerenityAI app</p>
           </div>
           <form onSubmit={submitForm}>
             <div className={styles["input"]}>
