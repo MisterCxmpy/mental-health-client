@@ -12,7 +12,7 @@ export default function BlotChart({ index }) {
   useEffect(() => {
     const initiateGame = async () => {
       setIsLoading(true);
-      const response = await fetch("https://mental-health-server-w9lq.onrender.com/games/initiateGame");
+      const response = await fetch("http://localhost:3000/games/initiateGame");
       const image = await response.json();
       const imageURL = image.url;
       setImage(imageURL);
@@ -22,7 +22,7 @@ export default function BlotChart({ index }) {
   }, []);
   const getImage = async (prompt) => {
     setIsLoading(true);
-    const response = await fetch("https://mental-health-server-w9lq.onrender.com/games/createImage", {
+    const response = await fetch("http://localhost:3000/games/createImage", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -39,7 +39,7 @@ export default function BlotChart({ index }) {
     event.preventDefault();
     setIsFormSubmitted(true);
     setIsLoading(true);
-    const response = await fetch("https://mental-health-server-w9lq.onrender.com/games/checkAnswer", {
+    const response = await fetch("http://localhost:3000/games/checkAnswer", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
