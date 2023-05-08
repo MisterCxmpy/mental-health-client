@@ -45,15 +45,41 @@ export default function DiscussionForum() {
 
   const { id } = useParams();
 
+  function detectURLs(message) {
+    var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
+    return message.match(urlRegex);
+  }
+
+  function parseUrl(comment) {
+    let urls = detectURLs(comment);
+    if (urls?.length) {
+      if (urls[0].slice(-3) == "mp4") {
+        return {
+          comment: comment.replace(/(https?:\/\/[^\s]+)/g, ""),
+          url: urls[0],
+          video: true,
+        };
+      }
+      return {
+        comment: comment.replace(/(https?:\/\/[^\s]+)/g, ""),
+        url: urls[0],
+      };
+    } else {
+      return {
+        comment,
+      };
+    }
+  }
+
   async function getForum() {
-    const response = await fetch(
-      `https://mental-health-server-w9lq.onrender.com/forums/forum/${id}`
-    );
+    const response = await fetch(`http://localhost:3000/forums/forum/${id}`);
 
     const data = await response.json();
 
     if (response.ok) {
-      setForum(data);
+      const parsed = parseUrl(data.content);
+
+      setForum({ ...data, content: parsed });
     } else {
       console.log("Failed to fetch forum data");
     }
@@ -63,9 +89,7 @@ export default function DiscussionForum() {
   }
 
   async function getUsername({ user_id }) {
-    const response = await fetch(
-      `https://mental-health-server-w9lq.onrender.com/user/${user_id}`
-    );
+    const response = await fetch(`http://localhost:3000/user/${user_id}`);
 
     const { username } = await response.json();
 
@@ -77,9 +101,7 @@ export default function DiscussionForum() {
   }
 
   async function getComments() {
-    const response = await fetch(
-      `https://mental-health-server-w9lq.onrender.com/comments/${id}`
-    );
+    const response = await fetch(`http://localhost:3000/comments/${id}`);
 
     const data = await response.json();
 
@@ -104,7 +126,7 @@ export default function DiscussionForum() {
     };
 
     const response = await fetch(
-      `https://mental-health-server-w9lq.onrender.com/comments/${id}`,
+      `http://localhost:3000/comments/${id}`,
       options
     );
 
@@ -137,7 +159,7 @@ export default function DiscussionForum() {
                 {owners.includes(forum.user_id) ? <BsFillShieldFill /> : null}
               </span>
             </p>
-            <p>{forum.content}</p>
+            <ForumDetails forum={forum} />
           </div>
           <div className={styles["options"]}>
             <p className={styles["options-list"]}>
@@ -225,11 +247,40 @@ function CreateComment({ forum_id, user_id, username, comment, url, video }) {
         </p>
         <div ref={messageRef} className={styles.message}>
           <p>{comment}</p>
-          {!video ? (
+          {url ? (
+            !video ? (
+              <img
+                className={styles.url}
+                draggable={false}
+                src={url}
+                alt="Image Error"
+              />
+            ) : (
+              <video
+                controls={true}
+                className={styles.url}
+                draggable={false}
+                src={url}
+                alt="Image Error"
+              />
+            )
+          ) : null}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ForumDetails({forum}) {
+  return (
+    <>
+      {forum.content ? (
+        forum.content.url ? (
+          !forum.content.video ? (
             <img
               className={styles.url}
               draggable={false}
-              src={url}
+              src={forum.content.url}
               alt="Image Error"
             />
           ) : (
@@ -237,12 +288,14 @@ function CreateComment({ forum_id, user_id, username, comment, url, video }) {
               controls={true}
               className={styles.url}
               draggable={false}
-              src={url}
+              src={forum.content.url}
               alt="Image Error"
             />
-          )}
-        </div>
-      </div>
-    </div>
+          )
+        ) : (
+          "No body specified for this post"
+        )
+      ) : null}
+    </>
   );
 }

@@ -4,13 +4,14 @@ import styles from "./index.module.css"
 import { useAuth } from "../../contexts/authContext";
 import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "boring-avatars";
-import { Loading } from "../../components";
+import { Loading, Loading2 } from "../../components";
 
 export default function AIMentor() {
   const { user, updateMentor } = useAuth()
   const [history, setHistory] = useState([]);
   const [mentors, setMentors] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [changeHistory, setChangeHistory] = useState(false)
   const [input, setInput] = useState("");
   const textareaRef = useRef()
 
@@ -37,7 +38,7 @@ export default function AIMentor() {
     let userMessage = { id: Math.floor(Math.random() * 7863), content: input, role: 'user' }; // save to db
 
     setHistory(prev => {
-      if(prev.length) {
+      if(prev?.length) {
         return [...prev, userMessage]
       } else {
         return [userMessage]
@@ -49,7 +50,7 @@ export default function AIMentor() {
     let cachedChat = localStorage.getItem('mentorChat');
 
     const getMentors = async () => {
-      let response = await fetch('https://mental-health-server-w9lq.onrender.com/mentor/info')
+      let response = await fetch('http://localhost:3000/mentor/info')
       let mentorData = await response.json();
       let historyData;
 
@@ -107,15 +108,23 @@ export default function AIMentor() {
     }
   }
 
+  function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
   const handleChangeMentor = async (mentor) => {
-    await updateMentor(mentor)
+    setChangeHistory(true)
+    let history = await updateMentor(mentor);
+    await delay(500);
+    setHistory(history);
+    setChangeHistory(false)
   }
 
   return (
     <div className="layout">
       <div className={styles["container"]}>
 
-        <Conversation {...{ history, messagesEndRef }} />
+        <Conversation {...{ history, messagesEndRef, user, changeHistory }} />
 
         <div className={styles["input-box"]} onSubmit={handleSendMessage}>
           <div className={styles["options"]}>
@@ -153,17 +162,19 @@ export default function AIMentor() {
   )
 }
 
-function Conversation({ history = [], messagesEndRef }) {
-  console.log(history);
+function Conversation({ history = [], messagesEndRef, user, changeHistory }) {
   return (
-    <div className={styles["messages-container"]}>
-      {history ? history.map(m => <Message key={m.id} isYou={m.role == 'user'} message={m.content} loading={m.loading} />) : <Loading />}
+    <>
+      {!changeHistory ? <div className={styles["messages-container"]}>
+      {history ? history.map((m, i) => <Message key={i} isYou={m.role == 'user'} message={m.content} loading={m.loading} user={user} />) : <Loading />}
       <div ref={messagesEndRef} />
-    </div>
+    </div> : <div className={styles["loading-container"]}><Loading2 /></div>}
+    </>
+    
   )
 }
 
-function Message({ isYou, message, loading }) {
+function Message({ isYou, message, loading, user }) {
   return (
     <>
       {loading ? <div> <Loading />  </div> : <div className={`${styles[isYou ? "user-message" : "ai-message"]} ${styles["message"]}`}>
@@ -178,7 +189,7 @@ function Message({ isYou, message, loading }) {
             colors={["#9A9FDD", "#DEEFFE", "#E2FFFF"]}
           />}
         </div>
-        <p>{message}</p>
+        <p>{!isYou ? user.mentor + ":" : null} {message}</p>
       </div>}
     </>
   )
