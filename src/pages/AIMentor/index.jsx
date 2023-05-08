@@ -23,7 +23,7 @@ export default function AIMentor() {
 
     setLoading(true)
     let options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: user.user_id, message: { content: input, role: 'user' }, mentor: user.mentor }) };
-    let res = await fetch('http://localhost:3000/mentor/chat', options)
+    let res = await fetch('https://mental-health-server-w9lq.onrender.com/mentor/chat', options)
 
     let response = await res.json();
 
@@ -37,7 +37,7 @@ export default function AIMentor() {
     let userMessage = { id: Math.floor(Math.random() * 7863), content: input, role: 'user' }; // save to db
 
     setHistory(prev => {
-      if(prev.length) {
+      if(prev?.length) {
         return [...prev, userMessage]
       } else {
         return [userMessage]
@@ -57,7 +57,7 @@ export default function AIMentor() {
         let data = JSON.parse(cachedChat);
         setHistory(data)
       } else {
-        let response2 = await fetch('http://localhost:3000/mentor/init', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: user.user_id, mentor: user.mentor }) })
+        let response2 = await fetch('https://mental-health-server-w9lq.onrender.com/mentor/init', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: user.user_id, mentor: user.mentor }) })
 
         historyData = await response2.json()
       }
