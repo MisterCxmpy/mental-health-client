@@ -35,8 +35,8 @@ export default function Navbar() {
               <svg width="0" height="0">
                 <defs>
                   <linearGradient id="gradient" y1="0" y2="1">
-                    <stop stop-color="#9A9FDD" offset="0" />
-                    <stop stop-color="#bA9FDD" offset="1" />
+                    <stop stopColor="#9A9FDD" offset="0" />
+                    <stop stopColor="#bA9FDD" offset="1" />
                   </linearGradient>
                 </defs>
               </svg>

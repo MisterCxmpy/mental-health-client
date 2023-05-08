@@ -142,7 +142,7 @@ function moveDown(grid) {
 export default function GameOne() {
   const [grid, setGrid] = useState(getInitialGrid());
   const [scoreInt, setScoreInt] = useState(score);
-  const { updatePoints } = useAuth();
+  const { updatePoints, user } = useAuth();
 
   useEffect(() => {
     setScoreInt(score)
@@ -150,9 +150,22 @@ export default function GameOne() {
 
 
   const handleStashPoints = async () => { // add fetch request here
-    await updatePoints(Math.floor(scoreInt))
+    if (user && user.st_goals) {
+      let allGoalsCompleted = true;
+      for (let i = 0; i < user.st_goals.length; i++) {
+        if (!user.st_goals[i].completed) {
+          allGoalsCompleted = false;
+          break;
+        }
+      }
+      if (allGoalsCompleted) {
+        await updatePoints(Math.floor(scoreInt) * 2);
+      } else {
+        await updatePoints(Math.floor(scoreInt));
+      }
+    }
+
     setGrid(getInitialGrid())
-    console.log(score)
     setScoreInt(0)
     score = 0;
   }
