@@ -4,11 +4,13 @@ import styles from "./index.module.css"
 import { useAuth } from "../../contexts/authContext";
 import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "boring-avatars";
+import { Loading } from "../../components";
 
 export default function AIMentor() {
   const { user, updateMentor } = useAuth()
   const [history, setHistory] = useState([]);
   const [mentors, setMentors] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [input, setInput] = useState("");
 
   const messagesEndRef = useRef(null);
@@ -18,12 +20,14 @@ export default function AIMentor() {
     e.preventDefault()
     handleSendUserMessage(e)
 
-    let options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: user.user_id ,message: { content: input, role: 'user' }, mentor: user.mentor }) };
+    setLoading(true)
+    let options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: user.user_id, message: { content: input, role: 'user' }, mentor: user.mentor }) };
     let res = await fetch('https://mental-health-server-w9lq.onrender.com/mentor/chat', options)
 
     let response = await res.json();
     let assistantMessage = { id: Math.floor(Math.random() * 7863), isYou: false, message: response.message, role: 'assistant' } // save to db
     setHistory(prev => [...prev, assistantMessage]);
+    setLoading(false)
   }
 
   const handleSendUserMessage = async () => {
@@ -52,6 +56,15 @@ export default function AIMentor() {
     messagesEndRef.current.scrollIntoView()
   }, [history])
 
+  useEffect(() => { // fetch chat history from db
+    if (loading) {
+      setHistory(prev => [...prev, { message: 'Loading', loading: true }])
+    } else {
+      setHistory(prev => prev.filter(p => !p.loading))
+    }
+
+  }, [loading])
+
   const enterSubmit = (e) => {
     if (e.keyCode == 13 && e.shiftKey == false) {
       e.preventDefault()
@@ -60,14 +73,13 @@ export default function AIMentor() {
   }
 
   const handleChangeMentor = async (mentor) => {
-    console.log(mentor);
     await updateMentor(mentor)
   }
 
   return (
     <div className="layout">
       <div className={styles["container"]}>
-      
+
         <Conversation {...{ history, messagesEndRef }} />
 
         <div className={styles["input-box"]} onSubmit={handleSendMessage}>
@@ -81,6 +93,7 @@ export default function AIMentor() {
           <form className={styles["input-form"]}>
             <div className={styles["input"]}>
               <textarea
+                disabled={loading}
                 className={styles["input-bar"]}
                 value={input}
                 type="text"
@@ -107,28 +120,30 @@ export default function AIMentor() {
 function Conversation({ history, messagesEndRef }) {
   return (
     <div className={styles["messages-container"]}>
-      {history.map(m => <Message key={m.id} isYou={m.isYou} message={m.message} />)}
+      {history.map(m => <Message key={m.id} isYou={m.isYou} message={m.message} loading={m.loading} />)}
       <div ref={messagesEndRef} />
     </div>
   )
 }
 
-function Message({ isYou, message }) {
+function Message({ isYou, message, loading }) {
   return (
-    <div className={`${styles[isYou ? "user-message" : "ai-message"]} ${styles["message"]}`}>
-      <div className={styles["profile-picture"]}>
-      {isYou ? <Avatar
-        size={54}
-        variant="marble"
-        colors={["#9A9FDD", "#DEEFFE", "#E2FFFF"]}
-      /> : <Avatar
-      size={54}
-      variant="pixel"
-      colors={["#9A9FDD", "#DEEFFE", "#E2FFFF"]}
-    />} 
-      </div>
-      <p>{message}</p>
-    </div>
+    <>
+      {loading ? <div> <Loading />  </div> : <div className={`${styles[isYou ? "user-message" : "ai-message"]} ${styles["message"]}`}>
+        <div className={styles["profile-picture"]}>
+          {isYou ? <Avatar
+            size={54}
+            variant="marble"
+            colors={["#9A9FDD", "#DEEFFE", "#E2FFFF"]}
+          /> : <Avatar
+            size={54}
+            variant="pixel"
+            colors={["#9A9FDD", "#DEEFFE", "#E2FFFF"]}
+          />}
+        </div>
+        <p>{message}</p>
+      </div>}
+    </>
   )
 }
 
