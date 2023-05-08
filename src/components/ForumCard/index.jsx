@@ -7,7 +7,7 @@ import { BsFillShieldFill } from "react-icons/bs"
 
 const owners = [1, 2]
 
-export default function ForumCard({ title, content, user_id, forum_id}) {
+export default function ForumCard({ title, content, user_id, forum_id, urls}) {
 
   const [username, setUsername] = useState("")
   const [comments, setComments] = useState([])
@@ -41,13 +41,35 @@ export default function ForumCard({ title, content, user_id, forum_id}) {
     getComments()
   }, [])
 
+  console.log(urls)
+
   return (
     <Link to={`/discussions/${forum_id}`}>
       <div className={styles["post"]}>
         <div className={styles["content"]}>
           <h1>{title}</h1>
           <p className={styles["post-op"]}>{username} <span className="admin-icon">{owners.includes(user_id) ? <BsFillShieldFill /> : null}</span></p>
-          <p>{content}</p>
+          <div className={styles["inner-content"]}>
+            <p>{urls.comment || content ? urls.comment : "No body specified for this post"}</p>
+            {urls.url ? (
+              !urls.video ? (
+                <img
+                  className={styles.url}
+                  draggable={false}
+                  src={urls.url}
+                  alt="Image Error"
+                />
+              ) : (
+                <video
+                  controls={true}
+                  className={styles.url}
+                  draggable={false}
+                  src={urls.url}
+                  alt="Image Error"
+                />
+              )
+            ) : null}
+          </div>
         </div>
         <div className={styles["options"]}>
           <p className={styles["options-list"]}>

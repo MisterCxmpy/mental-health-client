@@ -81,14 +81,15 @@ export const AuthProvider = ({ children }) => {
     const updatedUser = await res.json();
 
     if (res.ok) {
-      saveUser(updatedUser)
+      saveUser(updatedUser.user)
+      return updatedUser.history
     } else {
       console.log(updatedUser);
     }
   }
 
   const completeStGoal = async (id) => {
-    let options = { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ goal_id: id, user_id: user.user_id }) }
+    let options =  { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ goal_id: id, user_id: user.user_id }) }
     const res = await fetch('http://localhost:3000/user/st/goals', options);
     const updatedUser = await res.json();
 

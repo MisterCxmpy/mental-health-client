@@ -18,6 +18,14 @@ function detectURLs(message) {
 function parseUrl(data) {
   let urls = detectURLs(data.comment);
   if (urls?.length) {
+    if (urls[0].slice(-3) == "mp4") {
+      return {
+        ...data,
+        comment: data.comment.replace(/(https?:\/\/[^\s]+)/g, ""),
+        url: urls[0],
+        video: true,
+      };
+    }
     return {
       ...data,
       comment: data.comment.replace(/(https?:\/\/[^\s]+)/g, ""),
@@ -37,13 +45,41 @@ export default function DiscussionForum() {
 
   const { id } = useParams();
 
+  function detectURLs(message) {
+    var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
+    return message.match(urlRegex);
+  }
+
+  function parseUrl(comment) {
+    let urls = detectURLs(comment);
+    if (urls?.length) {
+      if (urls[0].slice(-3) == "mp4") {
+        return {
+          comment: comment.replace(/(https?:\/\/[^\s]+)/g, ""),
+          url: urls[0],
+          video: true,
+        };
+      }
+      return {
+        comment: comment.replace(/(https?:\/\/[^\s]+)/g, ""),
+        url: urls[0],
+      };
+    } else {
+      return {
+        comment,
+      };
+    }
+  }
+
   async function getForum() {
     const response = await fetch(`http://localhost:3000/forums/forum/${id}`);
 
     const data = await response.json();
 
     if (response.ok) {
-      setForum(data);
+      const parsed = parseUrl(data.content);
+
+      setForum({ ...data, content: parsed });
     } else {
       console.log("Failed to fetch forum data");
     }
@@ -123,11 +159,12 @@ export default function DiscussionForum() {
                 {owners.includes(forum.user_id) ? <BsFillShieldFill /> : null}
               </span>
             </p>
-            <p>{forum.content}</p>
+            <ForumDetails forum={forum} />
           </div>
           <div className={styles["options"]}>
             <p className={styles["options-list"]}>
-              <VscComment />&nbsp;
+              <VscComment />
+              &nbsp;
               {comments.length} Comments
             </p>
           </div>
@@ -156,6 +193,7 @@ export default function DiscussionForum() {
                 username={c.username}
                 comment={c.comment}
                 url={c.url || null}
+                video={c.video}
               />
             ))}
           </div>
@@ -165,21 +203,23 @@ export default function DiscussionForum() {
   );
 }
 
-function CreateComment({ forum_id, user_id, username, comment, url }) {
-
-  const messageRef = useRef()
-  const [isCollapse, setIsCollapse] = useState(false)
+function CreateComment({ forum_id, user_id, username, comment, url, video }) {
+  const messageRef = useRef();
+  const [isCollapse, setIsCollapse] = useState(false);
 
   function collapseMessage(state) {
-    messageRef.current.style.display = state ? "none" : "block"
-    setIsCollapse(!isCollapse)
+    messageRef.current.style.display = state ? "none" : "block";
+    setIsCollapse(!isCollapse);
   }
 
   return (
     <div className={styles["comment"]}>
       <div className={styles["profile"]}>
         <div className={styles["profile-picture"]}>
-          <button onClick={() => collapseMessage(!isCollapse)} className={styles["toggle-collapse"]}>
+          <button
+            onClick={() => collapseMessage(!isCollapse)}
+            className={styles["toggle-collapse"]}
+          >
             <Avatar
               size={54}
               variant="marble"
@@ -192,20 +232,70 @@ function CreateComment({ forum_id, user_id, username, comment, url }) {
         ></div>
       </div>
       <div className={styles["content"]}>
-        <p className={`${styles.username} ${forum_id === user_id ? styles.op : ""}`}>
+        <p
+          className={`${styles.username} ${
+            forum_id === user_id ? styles.op : ""
+          }`}
+        >
           {username}{" "}
           <span className="admin-icon">
             {owners.includes(user_id) ? <BsFillShieldFill /> : null}
           </span>{" "}
-          {isCollapse && <span className={styles["collapse-message"]}>(collapsed)</span>}
+          {isCollapse && (
+            <span className={styles["collapse-message"]}>(collapsed)</span>
+          )}
         </p>
         <div ref={messageRef} className={styles.message}>
           <p>{comment}</p>
-          {url && (
-            <img className={styles.url} draggable={false} src={url} alt="Image Error" />
-          )}
+          {url ? (
+            !video ? (
+              <img
+                className={styles.url}
+                draggable={false}
+                src={url}
+                alt="Image Error"
+              />
+            ) : (
+              <video
+                controls={true}
+                className={styles.url}
+                draggable={false}
+                src={url}
+                alt="Image Error"
+              />
+            )
+          ) : null}
         </div>
       </div>
     </div>
+  );
+}
+
+function ForumDetails({forum}) {
+  return (
+    <>
+      {forum.content ? (
+        forum.content.url ? (
+          !forum.content.video ? (
+            <img
+              className={styles.url}
+              draggable={false}
+              src={forum.content.url}
+              alt="Image Error"
+            />
+          ) : (
+            <video
+              controls={true}
+              className={styles.url}
+              draggable={false}
+              src={forum.content.url}
+              alt="Image Error"
+            />
+          )
+        ) : (
+          "No body specified for this post"
+        )
+      ) : null}
+    </>
   );
 }

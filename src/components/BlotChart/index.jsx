@@ -1,3 +1,4 @@
+import Loading2 from "../Loading2";
 import styles from "./index.module.css";
 import React, { useState, useEffect } from "react";
 
@@ -69,7 +70,7 @@ export default function BlotChart({ index }) {
   return (
     <>
       {isLoading ? (
-        <div className={styles["loading"]}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        <Loading2 />
       ) : (
         <div className={styles[`blotChart`]}>
           <h2>Expression Exercise</h2>
