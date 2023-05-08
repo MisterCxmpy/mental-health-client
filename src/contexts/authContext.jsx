@@ -49,6 +49,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem('user');
+    localStorage.removeItem('mentorChat');
     setUser(null)
     navigate('/authenticate/login');
   }
