@@ -12,6 +12,7 @@ export default function AIMentor() {
   const [mentors, setMentors] = useState([]);
   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState("");
+  const textareaRef = useRef()
 
   const messagesEndRef = useRef(null);
 
@@ -61,6 +62,7 @@ export default function AIMentor() {
       setHistory(prev => [...prev, { message: 'Loading', loading: true }])
     } else {
       setHistory(prev => prev.filter(p => !p.loading))
+      textareaRef.current.focus();
     }
 
   }, [loading])
@@ -93,6 +95,7 @@ export default function AIMentor() {
           <form className={styles["input-form"]}>
             <div className={styles["input"]}>
               <textarea
+                ref={textareaRef}
                 disabled={loading}
                 className={styles["input-bar"]}
                 value={input}

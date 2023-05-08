@@ -126,6 +126,10 @@
   border-radius: 6px;
 }
 
+.url::-webkit-media-controls-panel {
+  background-image: linear-gradient(transparent, transparent) !important;
+}
+
 .collapse-message {
   color: var(--primary-font-color) !important;
   font-size: 14px;
