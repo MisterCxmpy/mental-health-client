@@ -28,7 +28,7 @@ export default function MindStore() {
 
       if (response.ok) {
         let all = data.filter(i => {
-          if (user?.owned_mentors?.findIndex(m => m.toLowerCase() !== i.name.toLowerCase()) < 0) {
+          if (user?.owned_mentors?.findIndex(m => m.toLowerCase() == i.name.toLowerCase()) < 0) {
             return i
           }
         })
@@ -44,6 +44,7 @@ export default function MindStore() {
   useEffect(() => {
     if (filter.query == "") {
       setFilter(prev => {
+        console.log(prev);
         let all = items.filter(i => {
           if (user.owned_mentors.findIndex(m => m.toLowerCase() == i.name.toLowerCase()) < 0) {
             return i
@@ -90,11 +91,6 @@ export default function MindStore() {
 
   const handleBuyMentor = async ({ name, price }) => {
     await buyMentor({ name, price })
-    let newMentors = filter.items.filter(i => {
-      return i.name !== name
-    });
-
-    setFilter(prev => ({ ...prev, items: newMentors }))
   }
 
 

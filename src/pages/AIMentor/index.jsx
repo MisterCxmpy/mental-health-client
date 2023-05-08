@@ -66,7 +66,7 @@ export default function AIMentor() {
 
       if (response.ok) {
         setHistory(historyData.history)
-        
+
         if (historyData) {
           localStorage.setItem('mentorChat', JSON.stringify(historyData.history))
         }
@@ -166,11 +166,11 @@ function Conversation({ history = [], messagesEndRef, user, changeHistory }) {
   return (
     <>
       {!changeHistory ? <div className={styles["messages-container"]}>
-      {history ? history.map((m, i) => <Message key={i} isYou={m.role == 'user'} message={m.content} loading={m.loading} user={user} />) : <Loading />}
-      <div ref={messagesEndRef} />
-    </div> : <div className={styles["loading-container"]}><Loading2 /></div>}
+        {history.length ? history.map((m, i) => <Message key={i} isYou={m.role == 'user'} message={m.content} loading={m.loading} user={user} />) : <Message isYou={true} message={`Start chatting to ${user.mentor} now! Just send a message.`} user={user} />}
+        <div ref={messagesEndRef} />
+      </div> : <div className={styles["loading-container"]}><Loading2 /></div>}
     </>
-    
+
   )
 }
 
