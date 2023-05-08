@@ -9,17 +9,23 @@ expect.extend(matchers);
 import MeditationList from ".";
 
 describe("MeditationList Component", () => {
+
+  const items = [
+    { type: "meditation1", title: "Meditation 1" },
+    { type: "meditation2", title: "Meditation 2" },
+    { type: "meditation3", title: "Meditation 3" },
+  ];
+
   beforeEach(() => {
-    render(<MeditationList />);
+    render(<MeditationList items={items}/>);
   });
 
   afterEach(() => {
     cleanup();
   });
 
-  it("Displays a MeditationList with 5 links", () => {
-    const nav = screen.getByRole("meditation-list");
-    expect(nav).toBeInTheDocument();
-    expect(nav.childNodes.length).toBe(5);
+  it("renders the correct number of child elements", () => {
+    const meditationList = screen.getAllByRole("meditation-list");
+    expect(meditationList[0].children.length).toEqual(items.length);
   });
 });

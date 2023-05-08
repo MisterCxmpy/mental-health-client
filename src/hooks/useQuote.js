@@ -7,9 +7,11 @@ function useQuote() {
     const getRandomQuote = () => {
       let quote = quotes[Math.floor(Math.random() * quotes.length)]
       
-      if(quote.q.length > 60) getRandomQuote()
-
-      return quote
+      if(quote.q.length > 60) {
+        return getRandomQuote();
+      }
+    
+      return quote;
     }
 
     useEffect(() => {

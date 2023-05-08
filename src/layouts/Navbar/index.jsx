@@ -3,6 +3,7 @@ import { NavLink, Outlet } from "react-router-dom";
 import useQuote from "../../hooks/useQuote.js";
 import { useAuth } from "../../contexts/authContext";
 import styles from "./index.module.css";
+import { Line, Circle } from "rc-progress";
 
 import { BiHome, BiGlassesAlt, BiLogOut } from "react-icons/bi/";
 import { HiOutlinePuzzle, HiOutlineChat } from "react-icons/hi";
@@ -16,19 +17,36 @@ export default function Navbar() {
   const { user } = useAuth();
   const { quote } = useQuote();
 
-  const userCompletedGoals = user.st_goals.filter(g => g.completed == true).length / 5 * 100;
+  const userCompletedGoals =
+    (user.st_goals.filter((g) => g.completed == true).length / 5) * 100;
 
   return (
     <>
       <nav className={styles["navbar"]}>
         <div className={styles["profile"]}>
           <div className={styles["profile-info"]}>
-            <div className={styles["profile-picture"]}>
-              <Avatar
-                size={72}
-                variant="marble"
-                colors={["#9A9FDD", "#DEEFFE", "#E2FFFF"]}
+            <div className={styles["profile-progress"]}>
+              <Circle
+                percent={userCompletedGoals}
+                strokeWidth={12}
+                strokeColor="url(#gradient)"
+                trailColor="transparent"
               />
+              <svg width="0" height="0">
+                <defs>
+                  <linearGradient id="gradient" y1="0" y2="1">
+                    <stop stopColor="#9A9FDD" offset="0" />
+                    <stop stopColor="#bA9FDD" offset="1" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div className={styles["profile-picture"]}>
+                <Avatar
+                  size={72}
+                  variant="marble"
+                  colors={["#9A9FDD", "#DEEFFE", "#E2FFFF"]}
+                />
+              </div>
             </div>
             <div className={styles["profile-name"]}>
               {user.username}{" "}
@@ -36,7 +54,9 @@ export default function Navbar() {
                 {user.is_admin ? <BsFillShieldFill /> : null}
               </span>
             </div>
-            <div className={styles["progress"]}>{userCompletedGoals}% Completed</div>
+            <div className={styles["progress"]}>
+              {userCompletedGoals}% Completed
+            </div>
             <div className={styles["points"]}>
               {user.dabloons.toLocaleString("en-US")} Dabloons
             </div>
