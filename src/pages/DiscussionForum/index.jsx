@@ -5,8 +5,10 @@ import { useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../../contexts/authContext";
 import { BsFillShieldFill } from "react-icons/bs";
+import { GoSmiley } from "react-icons/go";
 import GifPicker from 'gif-picker-react'
 import Avatar from "boring-avatars";
+import { ChangeFace } from "../../components";
 
 const owners = [1, 2];
 
@@ -178,13 +180,15 @@ export default function DiscussionForum() {
               onChange={(e) => setComment(e.target.value)}
               required
             ></textarea>
-            <div className={styles['textarea-toolbar']}>
-              <button onClick={() => setShowGif(prev => !prev)}>gif</button>
-              {showGif ? <GifPicker onGifClick={(({ url }) => setComment(url))} tenorApiKey={"AIzaSyA2-t1Z34mEI3lUpj2LhZ6v4EK_fdth07I"} /> : null}
+            <div className={styles["toolbar"]}>
+              <div className={styles['textarea-toolbar']}>
+                <button className={styles['gif-btn']} onClick={() => setShowGif(prev => !prev)}><ChangeFace /></button>
+                {showGif ? <GifPicker onGifClick={(({ url }) => setComment(url))} tenorApiKey={"AIzaSyA2-t1Z34mEI3lUpj2LhZ6v4EK_fdth07I"} /> : null}
+              </div>
+              <button type="submit" className={`${styles["submit-btn"]} btn`}>
+                Comment
+              </button>
             </div>
-            <button type="submit" className={`${styles["submit-btn"]} btn`}>
-              Comment
-            </button>
           </form>
         </div>
 

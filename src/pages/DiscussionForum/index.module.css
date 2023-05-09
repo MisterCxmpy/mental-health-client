@@ -153,3 +153,32 @@
   top: 22px;
   right: 90px;
 }
+
+.toolbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  float: right;
+}
+
+.gif-btn {
+  height: 50px;
+  width: 50px;
+  border-radius: 6px;
+  border: none;
+  background: #9A9FDD;
+  color: #ffffff;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.gif-btn > div {
+  transition: 150ms;
+  filter: grayscale(1);
+}
+
+.gif-btn:hover > div {
+  scale: 1.15;
+  filter: grayscale(0);
+}

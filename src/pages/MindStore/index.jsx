@@ -127,7 +127,7 @@ export default function MindStore() {
         <div className={styles["tags"]}>
           {categories.map(c => <Tag activeCategory={activeCategory} tag={c} key={c} select={() => handleSelectCategory(c)} />)}
         </div>
-
+        {console.log(filter.items)}
         <MarketplaceList handleBuyMentor={handleBuyMentor} items={filter.items} />
       </div>
     </div>
