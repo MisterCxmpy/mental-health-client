@@ -12,7 +12,6 @@ export default function MarketplaceList({ items = [], handleBuyMentor }) {
 }
 
 function Item({ name, price, category, colorIndex, thumbnail, handleBuyMentor }) {
-
   return (
     <div className={`${styles["item"]} ${styles[`color-${colorIndex}`]}`} role="item">
       <img style={{ objectFit: 'cover' }} src={thumbnail ? thumbnail : "https://www.johnstonehigh.co.uk/wp-content/uploads/2022/12/via.placeholder.png"} alt="" draggable={false} />
