@@ -116,7 +116,7 @@ export const AuthProvider = ({ children }) => {
     if (user?.owned_mentors?.findIndex(n => n == name) >= 0 || user.dabloons < price) return
     await updatePoints(-price)
     await updateOwnedMentors(name)
-    
+
     let newMentors = user.owned_mentors;
     newMentors.push(name)
 
@@ -150,5 +150,5 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
+  
 export const useAuth = () => useContext(AuthContext);
