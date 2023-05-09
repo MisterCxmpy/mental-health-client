@@ -3,6 +3,7 @@ import { MarketplaceList, Tag } from "../../components"
 import styles from "./index.module.css"
 import { AiOutlineSearch, AiOutlineArrowUp, AiOutlineArrowDown } from "react-icons/ai"
 import { useAuth } from "../../contexts/authContext"
+import { MindStoreIntroComponent } from "../../components"
 
 function filterCategories(array) {
   let cats = array.map(i => i.category)
@@ -20,6 +21,20 @@ export default function MindStore() {
   const [filter, setFilter] = useState({ query: "", items: [] });
   const [categories, setCategories] = useState([]);
   const [activeCategory, setActiveCategory] = useState(null);
+  const [showIntro, setShowIntro] = useState(false);
+
+
+  useEffect(() => {
+    const introShown = localStorage.getItem('mindstoreIntroShown');
+    if (introShown === 'true') {
+      setShowIntro(true);
+      localStorage.setItem('mindstoreIntroShown', 'false');
+    }
+  }, []); // Run once on component mount to show the intro
+
+  const handleIntroExit = () => {
+    setShowIntro(false);
+  };
 
   useEffect(() => {
     const getMarketplaceItems = async () => {
@@ -96,6 +111,7 @@ export default function MindStore() {
 
   return (
     <div className="layout">
+      {showIntro && <MindStoreIntroComponent onExit={handleIntroExit} />}
       <div className={styles["header"]}>
         <div className={styles["header-content"]}>
           <h1 className={styles["welcome-message"]}>Marketplace</h1>
