@@ -150,8 +150,8 @@
 .textarea-toolbar aside {
   position: absolute !important;
   z-index: 99999;
-  top: 22px;
-  right: 90px;
+  top: -100px;
+  right: 75px;
 }
 
 .toolbar {
