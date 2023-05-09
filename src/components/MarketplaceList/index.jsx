@@ -11,7 +11,9 @@ export default function MarketplaceList({ items = [], handleBuyMentor }) {
   );
 }
 
+
 function Item({ name, price, category, colorIndex, thumbnail, handleBuyMentor, id  }) {
+
 
   return (
     <div className={`${styles["item"]} ${styles[`color-${colorIndex}`]}`} role="item" id={id}>
