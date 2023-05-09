@@ -182,3 +182,9 @@
   scale: 1.15;
   filter: grayscale(0);
 }
+
+.delete-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}

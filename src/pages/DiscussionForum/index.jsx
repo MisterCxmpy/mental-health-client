@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { VscComment } from "react-icons/vsc";
 import styles from "./index.module.css";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../../contexts/authContext";
 import { BsFillShieldFill } from "react-icons/bs";
@@ -67,6 +67,7 @@ export default function DiscussionForum() {
   const [comment, setComment] = useState("");
   const [showGif, setShowGif] = useState(false);
   const { user } = useAuth();
+  const navigate = useNavigate()
 
   const { id } = useParams();
 
@@ -108,7 +109,18 @@ export default function DiscussionForum() {
       let parsed = data.map((c) => parseUrl(c));
       setComments(parsed);
     } else {
-      console.log("Failed to fetch username");
+      console.log("Failed to fetch comments");
+    }
+  }
+
+  async function deleteForum(id) {
+    const response = await fetch(`http://localhost:3000/forums/${id}`, {method: "DELETE"});
+
+    if (response.ok) {
+      console.log("Successfully deleted forum");
+      navigate("/discussions")
+    } else {
+      console.log("Failed to delete forum");
     }
   }
 
@@ -155,9 +167,16 @@ export default function DiscussionForum() {
           <div className={styles["content"]}>
             <h1>{forum.title}</h1>
             <p className={styles["post-op"]}>
-              {username}{" "}
+
+              {owners.includes(user.user_id) || forum.user_id == user.user_id ? (
+              <>
+                <button className={styles["delete-btn"]} onClick={() => deleteForum(forum.forum_id)}>Delete post</button> {" "}•{" "} 
+              </>
+              ): null}
+
+              {username}
               <span className="admin-icon">
-                {owners.includes(forum.user_id) ? <BsFillShieldFill /> : null}
+                {" "}{owners.includes(forum.user_id) ? <BsFillShieldFill /> : null}
               </span>
             </p>
             <ForumDetails forum={forum} />
