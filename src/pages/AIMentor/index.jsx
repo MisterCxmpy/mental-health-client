@@ -20,7 +20,7 @@ export default function AIMentor() {
   const handleSendMessage = async e => {
     if (!input) return;
     e.preventDefault()
-    handleSendUserMessage(e)
+    appendUserMessage(e)
 
     setLoading(true)
     let options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: user.user_id, message: { content: input, role: 'user' }, mentor: user.mentor }) };
@@ -33,7 +33,7 @@ export default function AIMentor() {
     setLoading(false)
   }
 
-  const handleSendUserMessage = async () => {
+  const appendUserMessage = () => {
     setInput("")
     let userMessage = { id: Math.floor(Math.random() * 7863), content: input, role: 'user' }; // save to db
 
@@ -46,9 +46,26 @@ export default function AIMentor() {
     });
   }
 
+  const handleClearChat = async () => {
+    setInput("")
+
+    let response = await fetch('http://localhost:3000/mentor/chat/clear', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: user.user_id, mentor: user.mentor })
+    })
+
+    let data = await response.json()
+
+    if (response.ok) {
+      setHistory(data)
+    }
+    console.log(data);
+  }
+
   useEffect(() => { // fetch chat history from db
     let cachedChat = localStorage.getItem('mentorChat');
-    setMentors([...user.owned_mentors, 'Morgan'])
+    setMentors([...user.owned_mentors])
 
     const getMentors = async () => {
       let historyData;
@@ -151,7 +168,11 @@ export default function AIMentor() {
                 }}
                 onKeyDown={(e) => enterSubmit(e)}
               ></textarea>
+
+              <div style={{ display: 'flex', alignItems:'center', gap: '1em' }}>
               <button className={`${styles["submit"]} btn`}>Send Message</button>
+              <button style={{ height: '65px'}} type="button" className="btn" onClick={() => handleClearChat()}>Clear Chat</button>
+              </div>
             </div>
           </form>
 

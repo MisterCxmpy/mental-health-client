@@ -23,17 +23,12 @@ export default function MindStore() {
 
   useEffect(() => {
     const getMarketplaceItems = async () => {
-      let response = await fetch('http://localhost:3000/mentor/prices')
+      let options = { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({user_id: user.user_id})}
+      let response = await fetch('http://localhost:3000/mentor/store', options)
       let data = await response.json()
 
       if (response.ok) {
-        let all = data.filter(i => {
-          if (user?.owned_mentors?.findIndex(m => m.toLowerCase() == i.name.toLowerCase()) < 0) {
-            return i
-          }
-        })
-
-        setItems(all)
+        setItems(data)
         setCategories(filterCategories(data))
       }
     }
@@ -43,40 +38,37 @@ export default function MindStore() {
 
   useEffect(() => {
     if (filter.query == "") {
-      setFilter(prev => {
-        console.log(prev);
-        let all = items.filter(i => {
-          if (user.owned_mentors.findIndex(m => m.toLowerCase() == i.name.toLowerCase()) < 0) {
-            return i
-          }
-        })
-
-        return { ...prev, res: all }
+      let all = items.filter(i => {
+        let hit = user.owned_mentors.findIndex(m => m == i.name)
+        if (hit < 0) return i
       })
+
+      setFilter(prev => ({ ...prev, items: all }))
     }
 
     if (activeCategory) {
-      setFilter(prev => ({ // sort mentors based on category
-        ...prev, items: items.filter(item => {
-          let name = item.name.toLowerCase();
-          let query = filter.query.toLowerCase()
+      const categorySort = items.filter(item => {
+        let name = item.name.toLowerCase();
+        let query = filter.query.toLowerCase()
 
-          const hit = name.includes(query) && activeCategory == item.category;
-          return hit
+        const hit = name.includes(query) && activeCategory == item.category;
 
-        })
-      }))
+        return hit
+
+      })
+
+      setFilter(prev => ({ ...prev, items: [...categorySort] }))
     } else {
-      setFilter(prev => ({ // sort mentors based on query
-        ...prev, items: items.filter(item => {
-          let name = item.name.toLowerCase();
-          let query = filter.query.toLowerCase()
+      const querySort = items.filter(item => { // sort mentors based on query
+        let name = item.name.toLowerCase();
+        let query = filter.query.toLowerCase()
 
-          const hit = name.includes(query)
-          return hit
+        const hit = name.includes(query)
+        return hit
 
-        })
-      }))
+      })
+
+      setFilter(prev => ({ ...prev, items: [...querySort] }))
     }
 
   }, [filter?.query, items, activeCategory, user?.owned_mentors])
@@ -91,6 +83,14 @@ export default function MindStore() {
 
   const handleBuyMentor = async ({ name, price }) => {
     await buyMentor({ name, price })
+    setFilter(prev => {
+      let all = items.filter(i => {
+        let hit = user.owned_mentors.findIndex(m => m != i.name)
+        if (hit >= 0) return i
+      })
+
+      return { ...prev, items: all }
+    })
   }
 
 

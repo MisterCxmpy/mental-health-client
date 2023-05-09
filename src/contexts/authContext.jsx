@@ -113,13 +113,14 @@ export const AuthProvider = ({ children }) => {
   }
 
   const buyMentor = async ({ name, price }) => {
-    if (user?.owned_mentors?.findIndex(n => n == name) >= 0) return
+    if (user?.owned_mentors?.findIndex(n => n == name) >= 0 || user.dabloons < price) return
     await updatePoints(-price)
-    let newMentors = user.owned_mentors;
-
-    newMentors.push(name)
-    saveUser({...user, owned_mentors: newMentors})
     await updateOwnedMentors(name)
+    
+    let newMentors = user.owned_mentors;
+    newMentors.push(name)
+
+    saveUser({...user, owned_mentors: newMentors})
   }
 
   useEffect(() => { // check for cachedUser data to login and redirect user
