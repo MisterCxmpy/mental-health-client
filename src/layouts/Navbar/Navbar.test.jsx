@@ -11,7 +11,6 @@ import { AuthProvider, AuthContext, useAuth } from "../../contexts/authContext";
 
 describe("Navbar Component", () => {
   beforeEach(() => {
-    const { setUser } = useAuth();
 
     render(
       <BrowserRouter>
