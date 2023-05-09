@@ -79,23 +79,27 @@ function NavigationList() {
         to={"/my-ai-mentor"}
         icon={<BiGlassesAlt />}
         name={"My AIMentor"}
+        id={"my-ai-mentor"}
       />
       <div className={styles["content"]}>
-        <NavButton to={"/"} icon={<BiHome />} name={"Home"} />
+        <NavButton to={"/"} icon={<BiHome />} name={"Home"} id={"home"} />
         <NavButton
           to={"/activities"}
           icon={<HiOutlinePuzzle />}
           name={"Activities"}
+          id={"activities"}
         />
         <NavButton
           to={"/discussions"}
           icon={<HiOutlineChat />}
           name={"Discussions"}
+          id={"discussions"}
         />
         <NavButton
           to={"/mindstore"}
           icon={<AiOutlineDollarCircle />}
           name={"MindStore"}
+          id={"mindstore"}
         />
         <button
           className={`${styles["btn"]} ${styles["logout"]}`}
@@ -109,10 +113,11 @@ function NavigationList() {
   );
 }
 
-function NavButton({ to, icon, name }) {
+function NavButton({ to, icon, name, id }) {
   return (
     <NavLink
       to={to}
+      id={id}
       className={styles["btn"]}
       style={({ isActive }) =>
         isActive
