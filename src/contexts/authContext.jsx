@@ -85,22 +85,20 @@ export const AuthProvider = ({ children }) => {
 
     if (res.ok) {
       saveUser(updatedUser.user)
-      return updatedUser.history
+      return { history: updatedUser.history, mentor_details: updatedUser.mentor_details }
     } else {
       console.log(updatedUser);
     }
+
   }
 
   const updateOwnedMentors = async (mentor) => {
-    console.log(mentor);
     let options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mentor, user_id: user.user_id }) }
     const res = await fetch('http://localhost:3000/mentor/store/buy', options);
     const updatedUser = await res.json();
 
     if (res.ok) {
-      console.log(updatedUser);
       saveUser(updatedUser.updatedUser)
-
       return updatedUser.items
     } else {
       console.log(updatedUser);

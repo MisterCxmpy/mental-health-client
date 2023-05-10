@@ -14,6 +14,15 @@
   margin-bottom: auto;
 }
 
+.profile-picture > img {
+  min-height: 54px;
+  min-width: 54px;
+  max-height: 54px;
+  max-width: 54px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 .messages-container {
   flex: 2 ;
   overflow: auto;
@@ -147,10 +156,26 @@
   z-index: 2;
   border-radius: 0.25rem;
   display: none;
-  overflow: hidden;
 }
 
-.menu-list > li > button {
+.menu-list > p {
+  display: block;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  color: #FFFFFF;
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  background: #8183b9;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+  cursor: default;
+}
+
+.sub-category > li, .menu-list > li {
   display: block;
   padding: 0.5rem 1rem;
   text-decoration: none;
@@ -177,6 +202,10 @@
   font-size: 16px;
 }
 
+.menu-list > li {
+  position: relative;
+}
+
 .menu:hover .menu-list, .menu-list:hover {
   display: block;
 }
@@ -185,3 +214,16 @@
   background-color: #b3b7f3;
 }
 
+.menu-list li:hover > .sub-category {
+  display: block;
+}
+
+.sub-category {
+  position: absolute;
+  width: max-content;
+  left: 100%;
+  display: none;
+  top: 0px;
+  height: max-content;
+  background: #9A9FDD;
+}

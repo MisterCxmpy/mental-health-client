@@ -56,7 +56,6 @@ export default function MindStore() {
   useEffect(() => {
     if (filter.query == "") {
       setFilter(prev => ({ ...prev, filter }))
-      console.log('run');
     }
 
     if (activeCategory) {

@@ -5,15 +5,16 @@ import { useAuth } from "../../contexts/authContext";
 import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "boring-avatars";
 import { Loading, Loading2 } from "../../components";
+import useMarketplaceCategories from "../../hooks/useMarketplaceCategories";
 
 export default function AIMentor({ loadChatOnly = false }) {
   const { user, updateMentor } = useAuth();
   const [history, setHistory] = useState([]);
+  const [thumbnail, setThumbnail] = useState("")
   const [mentors, setMentors] = useState([]);
   const [loading, setLoading] = useState(false);
   const [changeHistory, setChangeHistory] = useState(false);
   const [input, setInput] = useState("");
-  const [error, setError] = useState("");
   const textareaRef = useRef();
 
   const messagesEndRef = useRef(null);
@@ -161,11 +162,21 @@ export default function AIMentor({ loadChatOnly = false }) {
 
   const handleChangeMentor = async (mentor) => {
     setChangeHistory(true);
-    let history = await updateMentor(mentor);
+    let {history, mentor_details} = await updateMentor(mentor);
     await delay(500);
+    setThumbnail(mentor_details)
     setHistory(history);
     setChangeHistory(false);
   };
+
+  useEffect(() => {
+    async function getProfilePicture() {
+      let { mentor_details } = await updateMentor(user.mentor);
+      setThumbnail(mentor_details)
+    }
+
+    getProfilePicture()
+  }, [])
 
   return (
     <>
@@ -180,6 +191,7 @@ export default function AIMentor({ loadChatOnly = false }) {
                 messagesEndRef,
                 user,
                 changeHistory,
+                thumbnail
               }}
             />
 
@@ -190,8 +202,7 @@ export default function AIMentor({ loadChatOnly = false }) {
                     <AiOutlineMenu />
                   </button>
                   <MentorSelect
-                    mentors={mentors}
-                    handleChangeMentor={handleChangeMentor}
+                    categories={<Categories user={user} handleChangeMentor={handleChangeMentor} history={history}/>}
                   />
                 </div>
               </div>
@@ -243,7 +254,8 @@ export default function AIMentor({ loadChatOnly = false }) {
   );
 }
 
-function Conversation({ history = [], messagesEndRef, user, changeHistory }) {
+function Conversation({ history = [], messagesEndRef, user, changeHistory, thumbnail }) {
+
   return (
     <>
       {!changeHistory ? (
@@ -256,6 +268,8 @@ function Conversation({ history = [], messagesEndRef, user, changeHistory }) {
                 message={m.content}
                 loading={m.loading}
                 user={user}
+                error={m.error}
+                thumbnail={thumbnail}
               />
             ))
           ) : (
@@ -276,7 +290,7 @@ function Conversation({ history = [], messagesEndRef, user, changeHistory }) {
   );
 }
 
-function Message({ isYou, message, loading, user }) {
+function Message({ isYou, message, loading, user, error = false, thumbnail }) {
   return (
     <>
       {loading ? (
@@ -298,14 +312,10 @@ function Message({ isYou, message, loading, user }) {
                 colors={["#9A9FDD", "#DEEFFE", "#E2FFFF"]}
               />
             ) : (
-              <Avatar
-                size={54}
-                variant="pixel"
-                colors={["#9A9FDD", "#DEEFFE", "#E2FFFF"]}
-              />
+              <img src={thumbnail} alt="" />
             )}
           </div>
-          <p>
+          <p style={error ? {color: "red"} : {color: "#202020"}}>
             {!isYou ? user.mentor + ":" : null} {message}
           </p>
         </div>
@@ -314,24 +324,38 @@ function Message({ isYou, message, loading, user }) {
   );
 }
 
-function MentorSelect({ mentors, handleChangeMentor }) {
-  const { user } = useAuth();
-
+function MentorSelect({ categories }) {
   return (
     <ul className={styles["menu-list"]}>
-      <li>
-        <p>Unlocked Mentors</p>
-      </li>
-      {mentors.map((m) => (
-        <li key={m}>
-          <button
-            className={user.mentor == m ? styles["active"] : null}
-            onClick={() => handleChangeMentor(m)}
-          >
-            {m}
-          </button>
-        </li>
-      ))}
+      <p>Unlocked Mentors</p>
+      {categories}
     </ul>
   );
+}
+
+function Categories({ user, handleChangeMentor }) {
+
+  const { categories } = useMarketplaceCategories()
+
+  return (
+    <>
+      <li style={{borderBottom: "1px solid #8183b9"}} onClick={() => handleChangeMentor("Morgan")}>Morgan</li>
+      {categories.map((c, i) => {
+        return (
+          <li key={i} className={styles["category"]}>
+            {c} ({user.owned_mentors.filter((m) => m.category == c).length})
+            <ul key={i} className={styles["sub-category"]}>
+              {user.owned_mentors.map((m, i) => {
+                return (
+                    m.category == c ? <li key={i} onClick={() => handleChangeMentor(m.name)}>{m.name}</li> : null
+                )
+              })}     
+            </ul>
+          </li>
+        )
+      })}
+    </>
+
+    
+  )
 }
