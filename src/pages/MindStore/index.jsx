@@ -39,8 +39,8 @@ export default function MindStore() {
 
   useEffect(() => {
     const getMarketplaceItems = async () => {
+      let options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: user.user_id }) }
 
-      let options = { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({user_id: user.user_id})}
       let response = await fetch('http://localhost:3000/mentor/store', options)
       let data = await response.json()
 
@@ -55,12 +55,8 @@ export default function MindStore() {
 
   useEffect(() => {
     if (filter.query == "") {
-      let all = items.filter(i => {
-        let hit = user.owned_mentors.findIndex(m => m == i.name)
-        if (hit < 0) return i
-      })
-
-      setFilter(prev => ({ ...prev, items: all }))
+      setFilter(prev => ({ ...prev, filter }))
+      console.log('run');
     }
 
     if (activeCategory) {
@@ -99,15 +95,8 @@ export default function MindStore() {
   }
 
   const handleBuyMentor = async ({ name, price }) => {
-    await buyMentor({ name, price })
-    setFilter(prev => {
-      let all = items.filter(i => {
-        let hit = user.owned_mentors.findIndex(m => m != i.name)
-        if (hit >= 0) return i
-      })
-
-      return { ...prev, items: all }
-    })
+    let items = await buyMentor({ name, price })
+    setItems(items)
   }
 
 
