@@ -29,7 +29,7 @@ export default function AIMentor() {
 
     let response = await res.json();
 
-    if (response.ok) {
+    if (res.ok) {
       localStorage.setItem('mentorChat', JSON.stringify(response.history))
       setHistory(response.history);
     } else {
