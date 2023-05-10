@@ -26,7 +26,7 @@ export default function Intro() {
   const [step, setStep] = useState(0);
   const [error, setError] = useState(0);
   const [selectedGoals, setSelectedGoals] = useState([]);
-  const { completeIntro, updateGoals } = useAuth();
+  const { user, completeIntro, updateGoals } = useAuth();
 
   const setSelected = (id) => {
     let inside = selectedGoals.includes(id);
@@ -82,7 +82,7 @@ export default function Intro() {
       {step == 0 ? (
         <div ref={intro1Ref} className={styles["container"]}>
           <IntroPart
-            {...{ message1Ref, message2Ref, continueBtnRef, switchInfo }}
+            {...{ message1Ref, message2Ref, continueBtnRef, switchInfo, user }}
           />
         </div>
       ) : null}
@@ -104,7 +104,13 @@ export default function Intro() {
   );
 }
 
-function IntroPart({ message1Ref, message2Ref, continueBtnRef, switchInfo }) {
+function IntroPart({
+  message1Ref,
+  message2Ref,
+  continueBtnRef,
+  switchInfo,
+  user,
+}) {
   let title = "SerenityAI!".split("");
   const TitleBtn = ({ letter }) => (
     <button className={styles["bounce"]} style={{ color: "#9A9FDD" }}>
@@ -116,28 +122,24 @@ function IntroPart({ message1Ref, message2Ref, continueBtnRef, switchInfo }) {
     <>
       <div className={styles["heading"]}>
         <h1>
-          Hello! Welcome to &#8203;
+          Hello, {user.username}! Welcome to &#8203;
           {title.map((l, i) => (
             <TitleBtn key={l + i} {...{ letter: l }} />
           ))}
         </h1>
-        <h3>Explain the goal of the app</h3>
       </div>
       <p ref={message1Ref} className={styles["message"]}>
-        Welcome to our mental health app, designed to help you achieve your
-        goals and improve your well-being. Our home page generates tasks based
-        on a five-year plan, while our meditation soundtracks and engaging
-        activities provide a break from stress. Join our community and get
-        personalized support from your own AI mentor.
+        SerenityAI generates tasks based on a five-year plan, meditation
+        soundtracks, engaging activities, and a forum for progress. Get
+        personalized support from your AI mentor to overcome obstacles and take
+        charge of your well-being.
       </p>
-      <p ref={message2Ref} className={styles["message"]}>
-        Our app includes a forum for users to discuss progress, a store for
-        different themes and AI personas, and a point system to keep you
-        engaged. With our app, you can take charge of your mental health and
-        overcome obstacles with confidence. Start your journey
-        to a happier, healthier you.
+      <p ref={message2Ref} className={`${styles["message"]} ${styles["para-2"]}`}>
+        SerenityAI has a store for themes and mentor personas, to guide you
+        along. Join our community and start your journey towards a healthier,
+        happier you.
       </p>
-      <div>
+      <div className={styles["btn-parent"]}>
         <button
           ref={continueBtnRef}
           className={`${styles["continue-btn"]} btn`}

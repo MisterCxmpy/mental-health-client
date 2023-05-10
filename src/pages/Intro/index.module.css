@@ -6,22 +6,26 @@
   justify-content: center;
   height: 100vh;
   flex-direction: column;
-  gap: 40px;
+  gap: 25px;
   transition: opacity 1s ease-in-out;
 }
 
 .heading {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   color: var(--primary-font-color);
 }
 
 .message {
   text-align: center;
-  width: 600px;
+  width: 643px;
   font-size: 17px;
   opacity: 0;
   transition: opacity 1s ease-in-out;
+}
+
+.para-2 {
+  width: 553px;
 }
 
 .continue-btn {
@@ -81,10 +85,15 @@
   align-items: center;
   padding: 6px 12px;
   transition: 200ms;
+  cursor: pointer;
 }
 
 .selection.active {
   background: #BEC2EE;
   color: white;
   font-weight: 500;
+}
+
+.btn-parent {
+  margin-top: 20px;
 }
