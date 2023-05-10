@@ -6,11 +6,11 @@ export default function UserStats() {
     const { user } = useAuth();
 
   return (
-    <div className={styles["header"]}>
-      <div className={styles["header-content"]}>
-        <h2 className={styles["welcome-message"]}>Long Term Goals</h2>
-        <div className={styles["task-list"]}>
-          {user.goals.length ? user.goals.map((g, i) => <Goals key={i} task={g} />) : null}
+    <div className={styles["header"]} role="header">
+      <div className={styles["header-content"]} role="header-content">
+        <h2 className={styles["welcome-message"]} role="welcome-message">Long Term Goals</h2>
+        <div className={styles["task-list"]} role="task-list">
+          {user.goals.length ? user.goals.map((g, i) => <Goals key={i} task={g} role="listitem"/>) : null}
         </div>
       </div>
     </div>
