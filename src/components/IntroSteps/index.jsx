@@ -7,40 +7,35 @@ const IntroComponent = ({ onExit }) => {
   const navigate = useNavigate();
 
   const [stepsEnabled, setStepsEnabled] = useState(true);
-  const [done, setDone] = useState(false);
-
-  const handleNextStep = () => {
-    setDone(true)
-  };
 
   const steps = [
     {
       element: '#home',
-      intro: 'This is the home page, here you can see your long term goals and daily goals',
+      intro: 'Here is the home page, you can see your progress and your goals here',
       position: 'bottom',
       disableInteraction: true,
     },
     {
       element: '#my-ai-mentor',
-      intro: 'This is the My AIMentor feature.',
+      intro: 'Your AI buddies can be found here, they are always happy to provide a safe space!',
       position: 'bottom',
       disableInteraction: true,
     },
     {
       element: '#activities',
-      intro: 'Here is another important feature.',
+      intro: 'This is the activities page, here you can find activities to help you on your journey to a better you',
       position: 'top',
       disableInteraction: true,
     },
     {
       element: '#discussions',
-      intro: 'Here is another important feature.',
+      intro: 'This is the discussion forum, here you can talk to other users about your goals and how you are doing',
       position: 'top',
       disableInteraction: true,
     },
     {
       element: '#mindstore',
-      intro: 'Here is another important feature.',
+      intro: 'And finally our final stop, the shop! Here you can buy items to help you on your road to success!',
       position: 'top',
       disableInteraction: true,
     }
@@ -61,7 +56,8 @@ const IntroComponent = ({ onExit }) => {
         initialStep={0}
         onExit={handleExitIntro}
         onComplete={() => navigate("/mindstore")}
-        options={{ hideNext: false }}
+        options={{ hideNext: false, exitOnOverlayClick: false, exitOnEsc: false
+        }}
       />
     </div>
   );
