@@ -2,10 +2,10 @@ import { useState } from "react";
 import styles from "./index.module.css";
 import { useAuth } from "../../contexts/authContext";
 import { Link } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import AIMentor from "../../pages/AIMentor";
 import Loading2 from "../Loading2";
-export default function CreateForum({ setOpen, setForums, ToastContainer }) {
+export default function CreateForum({ setOpen, setForums }) {
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
     const [depressedMessage, setDepressedMessage] = useState(false);
