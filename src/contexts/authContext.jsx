@@ -79,6 +79,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   const updateMentor = async (mentor) => {
+    console.log(mentor)
     let options = { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mentor, user_id: user.user_id }) }
     const res = await fetch('http://localhost:3000/user/mentor', options);
     const updatedUser = await res.json();
@@ -99,9 +100,7 @@ export const AuthProvider = ({ children }) => {
     const updatedUser = await res.json();
 
     if (res.ok) {
-      console.log(updatedUser);
       saveUser(updatedUser.updatedUser)
-
       return updatedUser.items
     } else {
       console.log(updatedUser);

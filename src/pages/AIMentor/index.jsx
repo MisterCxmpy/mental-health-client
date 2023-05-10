@@ -5,6 +5,7 @@ import { useAuth } from "../../contexts/authContext";
 import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "boring-avatars";
 import { Loading, Loading2 } from "../../components";
+import useMarketplaceCategories from "../../hooks/useMarketplaceCategories";
 
 export default function AIMentor({ loadChatOnly = false }) {
   const { user, updateMentor } = useAuth();
@@ -192,8 +193,7 @@ export default function AIMentor({ loadChatOnly = false }) {
                     <AiOutlineMenu />
                   </button>
                   <MentorSelect
-                    mentors={mentors}
-                    handleChangeMentor={handleChangeMentor}
+                    categories={<Categories user={user} handleChangeMentor={handleChangeMentor}/>}
                   />
                 </div>
               </div>
@@ -246,6 +246,7 @@ export default function AIMentor({ loadChatOnly = false }) {
 }
 
 function Conversation({ history = [], messagesEndRef, user, changeHistory, thumbnail }) {
+
   return (
     <>
       {!changeHistory ? (
@@ -314,24 +315,38 @@ function Message({ isYou, message, loading, user, error = false, thumbnail }) {
   );
 }
 
-function MentorSelect({ mentors, handleChangeMentor }) {
-  const { user } = useAuth();
-
+function MentorSelect({ categories }) {
   return (
     <ul className={styles["menu-list"]}>
-      <li>
-        <p>Unlocked Mentors</p>
-      </li>
-      {mentors.map((m) => (
-        <li key={m}>
-          <button
-            className={user.mentor == m ? styles["active"] : null}
-            onClick={() => handleChangeMentor(m)}
-          >
-            {m}
-          </button>
-        </li>
-      ))}
+      <p>Unlocked Mentors</p>
+      {categories}
     </ul>
   );
+}
+
+function Categories({ user, handleChangeMentor }) {
+
+  const { categories } = useMarketplaceCategories()
+
+  return (
+    <>
+      <li onClick={() => handleChangeMentor("Morgan")}>Morgan</li>
+      {categories.map((c) => {
+        return (
+          <li className={styles["category"]}>
+            {c} {user.owned_mentors.filter((m) => m.category == c).length}
+            <ul className={styles["sub-category"]}>
+              {user.owned_mentors.map((m) => {
+                return (
+                    m.category == c ? <li onClick={() => handleChangeMentor(m.name)}>{m.name}</li> : null
+                )
+              })}     
+            </ul>
+          </li>
+        )
+      })}
+    </>
+
+    
+  )
 }
