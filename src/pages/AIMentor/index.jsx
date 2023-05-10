@@ -9,11 +9,11 @@ import { Loading, Loading2 } from "../../components";
 export default function AIMentor({ loadChatOnly = false }) {
   const { user, updateMentor } = useAuth();
   const [history, setHistory] = useState([]);
+  const [thumbnail, setThumbnail] = useState("")
   const [mentors, setMentors] = useState([]);
   const [loading, setLoading] = useState(false);
   const [changeHistory, setChangeHistory] = useState(false);
   const [input, setInput] = useState("");
-  const [error, setError] = useState("");
   const textareaRef = useRef();
 
   const messagesEndRef = useRef(null);
@@ -161,8 +161,9 @@ export default function AIMentor({ loadChatOnly = false }) {
 
   const handleChangeMentor = async (mentor) => {
     setChangeHistory(true);
-    let history = await updateMentor(mentor);
+    let {history, mentor_details} = await updateMentor(mentor);
     await delay(500);
+    setThumbnail(mentor_details)
     setHistory(history);
     setChangeHistory(false);
   };
@@ -180,6 +181,7 @@ export default function AIMentor({ loadChatOnly = false }) {
                 messagesEndRef,
                 user,
                 changeHistory,
+                thumbnail
               }}
             />
 
@@ -243,7 +245,7 @@ export default function AIMentor({ loadChatOnly = false }) {
   );
 }
 
-function Conversation({ history = [], messagesEndRef, user, changeHistory }) {
+function Conversation({ history = [], messagesEndRef, user, changeHistory, thumbnail }) {
   return (
     <>
       {!changeHistory ? (
@@ -256,6 +258,8 @@ function Conversation({ history = [], messagesEndRef, user, changeHistory }) {
                 message={m.content}
                 loading={m.loading}
                 user={user}
+                error={m.error}
+                thumbnail={thumbnail}
               />
             ))
           ) : (
@@ -276,7 +280,7 @@ function Conversation({ history = [], messagesEndRef, user, changeHistory }) {
   );
 }
 
-function Message({ isYou, message, loading, user }) {
+function Message({ isYou, message, loading, user, error = false, thumbnail }) {
   return (
     <>
       {loading ? (
@@ -298,14 +302,10 @@ function Message({ isYou, message, loading, user }) {
                 colors={["#9A9FDD", "#DEEFFE", "#E2FFFF"]}
               />
             ) : (
-              <Avatar
-                size={54}
-                variant="pixel"
-                colors={["#9A9FDD", "#DEEFFE", "#E2FFFF"]}
-              />
+              <img src={thumbnail} alt="" />
             )}
           </div>
-          <p>
+          <p style={error ? {color: "red"} : {color: "#202020"}}>
             {!isYou ? user.mentor + ":" : null} {message}
           </p>
         </div>

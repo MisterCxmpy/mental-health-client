@@ -85,10 +85,11 @@ export const AuthProvider = ({ children }) => {
 
     if (res.ok) {
       saveUser(updatedUser.user)
-      return updatedUser.history
+      return { history: updatedUser.history, mentor_details: updatedUser.mentor_details }
     } else {
       console.log(updatedUser);
     }
+
   }
 
   const updateOwnedMentors = async (mentor) => {

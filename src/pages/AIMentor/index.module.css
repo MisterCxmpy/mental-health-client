@@ -14,6 +14,15 @@
   margin-bottom: auto;
 }
 
+.profile-picture > img {
+  min-height: 54px;
+  min-width: 54px;
+  max-height: 54px;
+  max-width: 54px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 .messages-container {
   flex: 2 ;
   overflow: auto;
