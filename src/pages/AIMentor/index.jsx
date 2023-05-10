@@ -108,7 +108,8 @@ export default function AIMentor({ loadChatOnly = false }) {
       } else {
         historyData = [];
       }
-
+      
+      
       if (response.ok) {
         setHistory(historyData.history);
 
@@ -120,12 +121,20 @@ export default function AIMentor({ loadChatOnly = false }) {
         }
       }
     };
-    if (cachedChat !== "undefined") {
+    
+    if (cachedChat !== null) {
       let data = JSON.parse(cachedChat);
       setHistory(data);
     } else {
       getMentors();
     }
+
+    async function getProfilePicture() {
+      let { mentor_details } = await updateMentor(user.mentor);
+      setThumbnail(mentor_details)
+    }
+
+    getProfilePicture()
   }, []);
 
   useEffect(() => {
@@ -168,15 +177,6 @@ export default function AIMentor({ loadChatOnly = false }) {
     setHistory(history);
     setChangeHistory(false);
   };
-
-  useEffect(() => {
-    async function getProfilePicture() {
-      let { mentor_details } = await updateMentor(user.mentor);
-      setThumbnail(mentor_details)
-    }
-
-    getProfilePicture()
-  }, [])
 
   return (
     <>
