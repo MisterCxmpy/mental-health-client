@@ -18,7 +18,7 @@ export default function ChangeFace() {
   } 
 
   return (
-    <div style={{width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center"}} onMouseOver={getRandomFace}>
+    <div role="face" style={{width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center"}} onMouseOver={getRandomFace}>
       {face}
     </div>
   )

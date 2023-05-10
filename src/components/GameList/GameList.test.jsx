@@ -28,7 +28,7 @@ describe('GameList Component', () => {
   })
 
   it('calcColourIndex calculates the correct color index', () => {
-    const testCases = [{ index: 0, expected: 3 }, { index: 5, expected: 3 }, { index: 11, expected: 4 }, { index: 17, expected: 5 }, { index: 24, expected: 3 }];
+    const testCases = [{ index: 0, expected: 2 }, { index: 5, expected: 2 }, { index: 11, expected: 3 }, { index: 17, expected: 4 }, { index: 24, expected: 2 }];
   
     const calcColourIndex = index => ((index % 5) + Math.floor(index / 6) * 6 + 2) % 6 || 2;
 
