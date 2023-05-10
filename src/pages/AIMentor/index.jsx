@@ -4,7 +4,7 @@ import styles from "./index.module.css";
 import { useAuth } from "../../contexts/authContext";
 import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "boring-avatars";
-import { Loading, Loading2 } from "../../components";
+import { AIMentorIntro, Loading, Loading2 } from "../../components";
 import useMarketplaceCategories from "../../hooks/useMarketplaceCategories";
 
 export default function AIMentor({ loadChatOnly = false }) {
@@ -15,6 +15,7 @@ export default function AIMentor({ loadChatOnly = false }) {
   const [loading, setLoading] = useState(false);
   const [changeHistory, setChangeHistory] = useState(false);
   const [input, setInput] = useState("");
+  const [showIntro, setShowIntro] = useState(false);
   const textareaRef = useRef();
 
   const messagesEndRef = useRef(null);
@@ -92,6 +93,10 @@ export default function AIMentor({ loadChatOnly = false }) {
     localStorage.removeItem("mentorChat");
   };
 
+  const handleIntroExit = () => {
+    setShowIntro(false);
+  };
+
   useEffect(() => {
     // fetch chat history from db
     let cachedChat = localStorage.getItem("mentorChat");
@@ -134,6 +139,12 @@ export default function AIMentor({ loadChatOnly = false }) {
     async function getProfilePicture() {
       let { mentor_details } = await updateMentor(user.mentor);
       setThumbnail(mentor_details)
+    }
+
+    const introShown = localStorage.getItem('aiMentorIntroShown');
+    if (introShown === 'true') {
+      setShowIntro(true);
+      localStorage.setItem('aiMentorIntroShown', 'false');
     }
 
     getProfilePicture()
@@ -197,10 +208,10 @@ export default function AIMentor({ loadChatOnly = false }) {
               }}
             />
 
-            <div className={styles["input-box"]} onSubmit={handleSendMessage}>
+            <div className={styles["input-box"]} onSubmit={handleSendMessage} id="input-field">
               <div className={styles["options"]}>
                 <div className={styles["menu"]}>
-                  <button className={styles["menu-button"]}>
+                  <button className={styles["menu-button"]} id="menu-btn">
                     <AiOutlineMenu />
                   </button>
                   <MentorSelect
@@ -252,6 +263,7 @@ export default function AIMentor({ loadChatOnly = false }) {
           </div>
         </div>
       )}
+      {showIntro && <AIMentorIntro onExit={handleIntroExit} />}
     </>
   );
 }

@@ -52,6 +52,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('mentorChat');
     localStorage.removeItem('introShown')
     localStorage.removeItem('mindstoreIntroShown')
+    localStorage.removeItem('aiMentorIntroShown')
     setUser(null)
     navigate('/authenticate/login');
   }
