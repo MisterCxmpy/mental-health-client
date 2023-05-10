@@ -27,7 +27,7 @@ body {
   padding: 24px 36px;
 }
 
-.btn {
+.btn, .introjs-button {
   width: 200px;
   height: 50px;
   border-radius: 6px;
@@ -37,6 +37,23 @@ body {
   color: #ffffff;
   cursor: pointer;
   transition: 300ms;
+  
+}
+
+.introjs-button {
+  width: max-content;
+  height: max-content;
+  text-shadow: none;
+}
+
+.introjs-button:hover {
+  background: #8b8fca;
+  color: white;
+}
+
+.introjs-button:focus {
+  background: #8b8fca;
+  color: white;
 }
 
 a {

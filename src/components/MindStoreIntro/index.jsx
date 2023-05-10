@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Steps } from 'intro.js-react';
 import 'intro.js/introjs.css';
+import { useNavigate } from 'react-router-dom';
 
 const MindStoreIntroComponent = ({ onExit }) => {
+
+  const navigate = useNavigate()
+
   const [stepsEnabled, setStepsEnabled] = useState(true);
   const [loading, setLoading] = useState(false)
 
@@ -44,6 +48,7 @@ const MindStoreIntroComponent = ({ onExit }) => {
         steps={steps}
         initialStep={0}
         onExit={handleExitIntro}
+        onComplete={() => navigate("/my-ai-mentor")}
         options={{ hideNext: false }}
       /> : null}
     </div>
