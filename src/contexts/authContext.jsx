@@ -66,6 +66,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   const updatePoints = async (points) => {
+    console.log(points)
     let options = { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ points, user_id: user.user_id }) }
     const res = await fetch('http://localhost:3000/user/pts', options);
     const updatedUser = await res.json();

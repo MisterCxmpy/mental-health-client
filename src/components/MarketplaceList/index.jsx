@@ -6,14 +6,13 @@ const calcColourIndex = index => ((index % 5) + Math.floor(index / 6) * 6 + 2) %
 export default function MarketplaceList({ items = [], handleBuyMentor }) {
   return (
     <div className={styles["marketplace-list"]} role="marketplace-list">
-      {items.map((item, i) => <Item  {...item} handleBuyMentor={handleBuyMentor} colorIndex={calcColourIndex(i)} key={item.name + i} id={`card-${i + 1}`}/>)}
+      {items.map((item, i) => <Item  {...item} handleBuyMentor={handleBuyMentor} colorIndex={calcColourIndex(i)} key={item.name + i} id={item.name}/>)}
     </div>
   );
 }
 
 
 function Item({ name, price, category, colorIndex, thumbnail, handleBuyMentor, id  }) {
-
 
   return (
     <div className={`${styles["item"]} ${styles[`color-${colorIndex}`]}`} role="item" id={id}>
