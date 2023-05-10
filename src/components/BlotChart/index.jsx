@@ -21,7 +21,7 @@ export default function BlotChart({ index }) {
         const initiateGame = async () => {
             setIsLoading(true);
             const response = await fetch(
-                "http://localhost:3000/games/initiateGame"
+                "https://mental-health-server-w9lq.onrender.com/games/initiateGame"
             );
             const image = await response.json();
             if (image.error) return toast.error("Something went wrong, please try again!");
@@ -36,7 +36,7 @@ export default function BlotChart({ index }) {
     const getImage = async (prompt) => {
         setIsLoading(true);
         const response = await fetch(
-            "http://localhost:3000/games/createImage",
+            "https://mental-health-server-w9lq.onrender.com/games/createImage",
             {
                 method: "POST",
                 headers: {
@@ -59,7 +59,7 @@ export default function BlotChart({ index }) {
         setIsFormSubmitted(true);
         setIsLoading(true);
         const response = await fetch(
-            "http://localhost:3000/games/checkAnswer",
+            "https://mental-health-server-w9lq.onrender.com/games/checkAnswer",
             {
                 method: "POST",
                 headers: {
@@ -100,7 +100,7 @@ export default function BlotChart({ index }) {
                 mentor: user.mentor,
             }),
         };
-        let res = await fetch("http://localhost:3000/mentor/chat", options);
+        let res = await fetch("https://mental-health-server-w9lq.onrender.com/mentor/chat", options);
         let response = await res.json();
         localStorage.setItem("mentorChat", JSON.stringify(response.history));
         setChatButton(true);

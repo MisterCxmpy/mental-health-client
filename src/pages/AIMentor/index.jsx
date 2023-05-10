@@ -34,7 +34,7 @@ export default function AIMentor({ loadChatOnly = false }) {
         mentor: user.mentor,
       }),
     };
-    let res = await fetch("http://localhost:3000/mentor/chat", options);
+    let res = await fetch("https://mental-health-server-w9lq.onrender.com/mentor/chat", options);
 
     let response = await res.json();
 
@@ -74,7 +74,7 @@ export default function AIMentor({ loadChatOnly = false }) {
   const handleClearChat = async () => {
     setInput("");
 
-    let response = await fetch("http://localhost:3000/mentor/chat/clear", {
+    let response = await fetch("https://mental-health-server-w9lq.onrender.com/mentor/chat/clear", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ user_id: user.user_id, mentor: user.mentor }),
@@ -97,7 +97,7 @@ export default function AIMentor({ loadChatOnly = false }) {
 
     const getMentors = async () => {
       let historyData;
-      let response = await fetch("http://localhost:3000/mentor/init", {
+      let response = await fetch("https://mental-health-server-w9lq.onrender.com/mentor/init", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ user_id: user.user_id, mentor: user.mentor }),

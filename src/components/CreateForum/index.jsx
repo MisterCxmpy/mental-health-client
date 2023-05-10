@@ -24,7 +24,7 @@ export default function CreateForum({ setOpen, setForums }) {
                 mentor: user.mentor,
             }),
         };
-        let res = await fetch("http://localhost:3000/mentor/chat", options);
+        let res = await fetch("https://mental-health-server-w9lq.onrender.com/mentor/chat", options);
 
         let response = await res.json();
         setDepressedMessage(true);
@@ -35,7 +35,7 @@ export default function CreateForum({ setOpen, setForums }) {
     async function handleSubmit(e) {
         e.preventDefault();
         setIsLoading(true);
-        const moderation = await fetch("http://localhost:3000/games/moderate", {
+        const moderation = await fetch("https://mental-health-server-w9lq.onrender.com/games/moderate", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -56,7 +56,7 @@ export default function CreateForum({ setOpen, setForums }) {
             handleDepressingMessage();
             return;
         }
-        const response = await fetch("http://localhost:3000/forums", {
+        const response = await fetch("https://mental-health-server-w9lq.onrender.com/forums", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

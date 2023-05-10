@@ -72,7 +72,7 @@ export default function DiscussionForum() {
   const { id } = useParams();
 
   async function getForum() {
-    const response = await fetch(`http://localhost:3000/forums/forum/${id}`);
+    const response = await fetch(`https://mental-health-server-w9lq.onrender.com/forums/forum/${id}`);
 
     const data = await response.json();
 
@@ -89,7 +89,7 @@ export default function DiscussionForum() {
   }
 
   async function getUsername({ user_id }) {
-    const response = await fetch(`http://localhost:3000/user/${user_id}`);
+    const response = await fetch(`https://mental-health-server-w9lq.onrender.com/user/${user_id}`);
 
     const { username } = await response.json();
 
@@ -101,7 +101,7 @@ export default function DiscussionForum() {
   }
 
   async function getComments() {
-    const response = await fetch(`http://localhost:3000/comments/${id}`);
+    const response = await fetch(`https://mental-health-server-w9lq.onrender.com/comments/${id}`);
 
     const data = await response.json();
 
@@ -114,7 +114,7 @@ export default function DiscussionForum() {
   }
 
   async function deleteForum(id) {
-    const response = await fetch(`http://localhost:3000/forums/${id}`, {method: "DELETE"});
+    const response = await fetch(`https://mental-health-server-w9lq.onrender.com/forums/${id}`, {method: "DELETE"});
 
     if (response.ok) {
       console.log("Successfully deleted forum");
@@ -137,7 +137,7 @@ export default function DiscussionForum() {
     };
 
     const response = await fetch(
-      `http://localhost:3000/comments/${id}`,
+      `https://mental-health-server-w9lq.onrender.com/comments/${id}`,
       options
     );
 
