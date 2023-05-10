@@ -13,6 +13,7 @@ export default function AIMentor() {
   const [loading, setLoading] = useState(false);
   const [changeHistory, setChangeHistory] = useState(false)
   const [input, setInput] = useState("");
+  const [error, setError] = useState("");
   const textareaRef = useRef()
 
   const messagesEndRef = useRef(null);
@@ -28,8 +29,14 @@ export default function AIMentor() {
 
     let response = await res.json();
 
-    localStorage.setItem('mentorChat', JSON.stringify(response.history))
-    setHistory(response.history);
+    if (response.ok) {
+      localStorage.setItem('mentorChat', JSON.stringify(response.history))
+      setHistory(response.history);
+    } else {
+      let assistantMessage = { id: Math.floor(Math.random() * 7863), content: response.error, role: 'assistant', error: true }; // save to db
+      setHistory(prev => [...prev, assistantMessage] )
+    }
+
     setLoading(false)
   }
 
