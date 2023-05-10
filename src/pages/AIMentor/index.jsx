@@ -7,73 +7,94 @@ import Avatar from "boring-avatars";
 import { Loading, Loading2 } from "../../components";
 
 export default function AIMentor({ loadChatOnly = false }) {
-    const { user, updateMentor } = useAuth();
-    const [history, setHistory] = useState([]);
-    const [mentors, setMentors] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [changeHistory, setChangeHistory] = useState(false);
-    const [input, setInput] = useState("");
-    const textareaRef = useRef(null);
+  const { user, updateMentor } = useAuth()
+  const [history, setHistory] = useState([]);
+  const [mentors, setMentors] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [changeHistory, setChangeHistory] = useState(false)
+  const [input, setInput] = useState("");
+  const [error, setError] = useState("");
+  const textareaRef = useRef()
 
-    const messagesEndRef = useRef(null);
+  const messagesEndRef = useRef(null);
 
-    const handleSendMessage = async (e) => {
-        if (!input) return;
-        e.preventDefault();
-        appendUserMessage(e);
+  const handleSendMessage = async e => {
+    if (!input) return;
+    e.preventDefault()
+    appendUserMessage(e)
 
-        setLoading(true);
-        let options = {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                user_id: user.user_id,
-                message: { content: input, role: "user" },
-                mentor: user.mentor,
-            }),
-        };
-        let res = await fetch("http://localhost:3000/mentor/chat", options);
+    setLoading(true)
+    let options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: user.user_id, message: { content: input, role: 'user' }, mentor: user.mentor }) };
+    let res = await fetch('http://localhost:3000/mentor/chat', options)
 
-        let response = await res.json();
+    let response = await res.json();
 
-        localStorage.setItem("mentorChat", JSON.stringify(response.history));
-        setHistory(response.history);
-        setLoading(false);
-    };
+    if (res.ok) {
+      localStorage.setItem('mentorChat', JSON.stringify(response.history))
+      setHistory(response.history);
+    } else {
+      let assistantMessage = { id: Math.floor(Math.random() * 7863), content: response.error, role: 'assistant', error: true }; // save to db
+      setHistory(prev => [...prev, assistantMessage] )
+    }
 
-    const appendUserMessage = () => {
-        setInput("");
-        let userMessage = {
-            id: Math.floor(Math.random() * 7863),
-            content: input,
-            role: "user",
-        }; // save to db
+    setLoading(false)
+  }
 
-        setHistory((prev) => {
-            if (prev?.length) {
-                return [...prev, userMessage];
-            } else {
-                return [userMessage];
-            }
-        });
-    };
+  const appendUserMessage = () => {
+    setInput("")
+    let userMessage = { id: Math.floor(Math.random() * 7863), content: input, role: 'user' }; // save to db
 
-    const handleClearChat = async () => {
-        setInput("");
+    setHistory(prev => {
+      if (prev?.length) {
+        return [...prev, userMessage]
+      } else {
+        return [userMessage]
+      }
+    });
+  }
 
-        let response = await fetch("http://localhost:3000/mentor/chat/clear", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                user_id: user.user_id,
-                mentor: user.mentor,
-            }),
-        });
+  const handleClearChat = async () => {
+    setInput("")
 
-        let data = await response.json();
+    let response = await fetch('http://localhost:3000/mentor/chat/clear', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: user.user_id, mentor: user.mentor })
+    })
 
-        if (response.ok) {
-            setHistory(data);
+    let data = await response.json()
+
+    if (response.ok) {
+      setHistory(data)
+    }
+    console.log(data);
+
+    localStorage.removeItem("mentorChat")
+  }
+
+  useEffect(() => { // fetch chat history from db
+    let cachedChat = localStorage.getItem('mentorChat');
+    setMentors([...user.owned_mentors])
+
+    const getMentors = async () => {
+      let historyData;
+      let response = await fetch('http://localhost:3000/mentor/init', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: user.user_id, mentor: user.mentor })
+      })
+
+      if (response.ok) {
+        historyData = await response.json()
+      } else {
+        historyData = []
+      }
+
+      if (response.ok) {
+        setHistory(historyData.history)
+
+        if (historyData) {
+          localStorage.setItem('mentorChat', JSON.stringify(historyData.history))
         }
         console.log(data);
 

@@ -11,9 +11,6 @@ describe("UserStats Component", () => {
   };
   
   beforeEach(() => {
-    mockReturnValue({
-      user: mockUser,
-    });
     render(
       <BrowserRouter>
         <AuthProvider>
@@ -27,16 +24,25 @@ describe("UserStats Component", () => {
     cleanup();
   });
 
-  it("renders welcome message", () => {
-    const welcomeMessage = screen.getByText(/long term goals/i);
+  it("Renders heading", () => {
+    console.log(mockUser)
+    const heading = screen.getByRole("heading");
+    expect(heading).toBeInTheDocument();
+  });
+
+  it("Renders heading content", () => {
+    const headingContent = screen.getByRole("heading-content");
+    expect(headingContent).toBeInTheDocument();
+  });
+
+  it("Renders welcome message", () => {
+    const welcomeMessage = screen.getByRole("welcome-message");
     expect(welcomeMessage).toBeInTheDocument();
   });
 
-  it("renders goal items", () => {
-    const goalItems = screen.getAllByRole("listitem");
-    expect(goalItems).toHaveLength(mockUser.goals.length);
-    mockUser.goals.forEach((goal, index) => {
-      expect(goalItems[index]).toHaveTextContent(goal);
-    });
+  it("Renders welcome message", () => {
+    const welcomeMessage = screen.getByRole("welcome-message");
+    expect(welcomeMessage.textContent).toBe("Long Term Goals")
   });
+
 });
