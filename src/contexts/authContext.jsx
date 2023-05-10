@@ -91,12 +91,16 @@ export const AuthProvider = ({ children }) => {
   }
 
   const updateOwnedMentors = async (mentor) => {
-    let options = { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mentor, user_id: user.user_id }) }
-    const res = await fetch('http://localhost:3000/user/mentor/buy', options);
+    console.log(mentor);
+    let options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mentor, user_id: user.user_id }) }
+    const res = await fetch('http://localhost:3000/mentor/store/buy', options);
     const updatedUser = await res.json();
 
     if (res.ok) {
-      saveUser(updatedUser)
+      console.log(updatedUser);
+      saveUser(updatedUser.updatedUser)
+
+      return updatedUser.items
     } else {
       console.log(updatedUser);
     }
@@ -116,13 +120,9 @@ export const AuthProvider = ({ children }) => {
 
   const buyMentor = async ({ name, price }) => {
     if (user?.owned_mentors?.findIndex(n => n == name) >= 0 || user.dabloons < price) return
-    await updatePoints(-price)
-    await updateOwnedMentors(name)
+    let items = await updateOwnedMentors(name);
 
-    let newMentors = user.owned_mentors;
-    newMentors.push(name)
-
-    saveUser({...user, owned_mentors: newMentors})
+    return items;
   }
 
   useEffect(() => { // check for cachedUser data to login and redirect user
