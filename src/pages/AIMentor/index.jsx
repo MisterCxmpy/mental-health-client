@@ -341,10 +341,11 @@ function Categories({ user, handleChangeMentor }) {
     <>
       <li style={{borderBottom: "1px solid #8183b9"}} onClick={() => handleChangeMentor("Morgan")}>Morgan</li>
       {categories.map((c, i) => {
+        const isLastCategory = i === categories.length - 1
         return (
           <li key={i} className={styles["category"]}>
             {c} ({user.owned_mentors.filter((m) => m.category == c).length})
-            <ul key={i} className={styles["sub-category"]}>
+            <ul key={i} className={styles["sub-category"]} style={isLastCategory ? {transform: "translateY(-80%)"} : null}>
               {user.owned_mentors.map((m, i) => {
                 return (
                     m.category == c ? <li key={i} onClick={() => handleChangeMentor(m.name)}>{m.name}</li> : null

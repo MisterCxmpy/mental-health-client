@@ -18,9 +18,9 @@ function App() {
           <Route path="/discussions" element={<Discussions />} />
           <Route path="/discussions/:id" element={<DiscussionForum />} />
           <Route path="/mindstore" element={<MindStore />} />
-          <Route path="*" element={<ErrorPage />} />
         </Route>
       </Route>
+      <Route path="*" element={<ErrorPage />} />
     </Routes>
   );
 }
