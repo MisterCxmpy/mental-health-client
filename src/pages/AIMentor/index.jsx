@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useRef, useState } from "react";
-import styles from "./index.module.css"
+import styles from "./index.module.css";
 import { useAuth } from "../../contexts/authContext";
 import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "boring-avatars";
 import { Loading, Loading2 } from "../../components";
 
-export default function AIMentor() {
+export default function AIMentor({ loadChatOnly = false }) {
   const { user, updateMentor } = useAuth()
   const [history, setHistory] = useState([]);
   const [mentors, setMentors] = useState([]);
@@ -96,142 +96,264 @@ export default function AIMentor() {
         if (historyData) {
           localStorage.setItem('mentorChat', JSON.stringify(historyData.history))
         }
-      }
-    }
-    if (cachedChat !== 'undefined') {
-      let data = JSON.parse(cachedChat);
-      setHistory(data)
-    } else {
-      getMentors()
-    }
+        console.log(data);
 
-  }, [])
+        localStorage.removeItem("mentorChat");
+    };
 
-  useEffect(() => { // fetch chat history from db
-    messagesEndRef.current.scrollIntoView()
-  }, [history])
+    useEffect(() => {
+        // fetch chat history from db
+        let cachedChat = localStorage.getItem("mentorChat");
+        setMentors([...user.owned_mentors]);
 
-  useEffect(() => { // fetch chat history from db
-    if (loading) {
-      setHistory(prev => {
-        if (prev.length) {
-          return [...prev, { message: 'Loading', loading: true }]
+        const getMentors = async () => {
+            let historyData;
+            let response = await fetch("http://localhost:3000/mentor/init", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    user_id: user.user_id,
+                    mentor: user.mentor,
+                }),
+            });
+
+            if (response.ok) {
+                historyData = await response.json();
+            } else {
+                historyData = [];
+            }
+
+            if (response.ok) {
+                setHistory(historyData.history);
+
+                if (historyData) {
+                    localStorage.setItem(
+                        "mentorChat",
+                        JSON.stringify(historyData.history)
+                    );
+                }
+            }
+        };
+        if (cachedChat !== "undefined") {
+            let data = JSON.parse(cachedChat);
+            setHistory(data);
         } else {
-          return [{ message: 'Loading', loading: true }]
+            getMentors();
         }
-      })
-    } else {
-      setHistory(prev => prev?.filter(p => !p.loading))
-      textareaRef.current.focus();
+    }, []);
+
+    useEffect(() => {
+        // fetch chat history from db
+        messagesEndRef.current.scrollIntoView();
+    }, [history]);
+
+    useEffect(() => {
+        // fetch chat history from db
+        if (loading) {
+            setHistory((prev) => {
+                if (prev.length) {
+                    return [...prev, { message: "Loading", loading: true }];
+                } else {
+                    return [{ message: "Loading", loading: true }];
+                }
+            });
+        } else {
+            setHistory((prev) => prev?.filter((p) => !p.loading));
+            if (!loadChatOnly) textareaRef.current.focus();
+        }
+    }, [loading, loadChatOnly]);
+
+    const enterSubmit = (e) => {
+        if (e.keyCode == 13 && e.shiftKey == false) {
+            e.preventDefault();
+            handleSendMessage(e);
+        }
+    };
+
+    function delay(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
-  }, [loading])
+    const handleChangeMentor = async (mentor) => {
+        setChangeHistory(true);
+        let history = await updateMentor(mentor);
+        await delay(500);
+        setHistory(history);
+        setChangeHistory(false);
+    };
 
-  const enterSubmit = (e) => {
-    if (e.keyCode == 13 && e.shiftKey == false) {
-      e.preventDefault()
-      handleSendMessage(e)
-    }
-  }
+    return (
+        <>
+            {loadChatOnly ? (
+                <Conversation
+                    {...{ history, messagesEndRef, user, changeHistory }}
+                />
+            ) : (
+                <div className="layout">
+                    <div className={styles["container"]}>
+                        <Conversation
+                            {...{
+                                history,
+                                messagesEndRef,
+                                user,
+                                changeHistory,
+                            }}
+                        />
 
-  function delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
+                        <div
+                            className={styles["input-box"]}
+                            onSubmit={handleSendMessage}
+                        >
+                            <div className={styles["options"]}>
+                                <div className={styles["menu"]}>
+                                    <button className={styles["menu-button"]}>
+                                        <AiOutlineMenu />
+                                    </button>
+                                    <MentorSelect
+                                        mentors={mentors}
+                                        handleChangeMentor={handleChangeMentor}
+                                    />
+                                </div>
+                            </div>
 
-  const handleChangeMentor = async (mentor) => {
-    setChangeHistory(true)
-    let history = await updateMentor(mentor);
-    await delay(500);
-    setHistory(history);
-    setChangeHistory(false)
-  }
+                            <form className={styles["input-form"]}>
+                                <div className={styles["input"]}>
+                                    <textarea
+                                        ref={textareaRef}
+                                        disabled={loading}
+                                        className={styles["input-bar"]}
+                                        value={input}
+                                        type="text"
+                                        placeholder="Enter your message here"
+                                        required
+                                        onChange={(e) => {
+                                            setInput(e.target.value);
+                                            e.target.style.height = "50px";
+                                            e.target.style.height = `${e.target.scrollHeight}px`;
+                                        }}
+                                        onKeyDown={(e) => enterSubmit(e)}
+                                    ></textarea>
 
-  return (
-    <div className="layout">
-      <div className={styles["container"]}>
-
-        <Conversation {...{ history, messagesEndRef, user, changeHistory }} />
-
-        <div className={styles["input-box"]} onSubmit={handleSendMessage}>
-          <div className={styles["options"]}>
-            <div className={styles["menu"]}>
-              <button className={styles["menu-button"]}><AiOutlineMenu /></button>
-              <MentorSelect mentors={mentors} handleChangeMentor={handleChangeMentor} />
-            </div>
-          </div>
-
-          <form className={styles["input-form"]}>
-            <div className={styles["input"]}>
-              <textarea
-                ref={textareaRef}
-                disabled={loading}
-                className={styles["input-bar"]}
-                value={input}
-                type="text"
-                placeholder="Enter your message here"
-                required
-                onChange={(e) => {
-                  setInput(e.target.value)
-                  e.target.style.height = "50px"
-                  e.target.style.height = `${e.target.scrollHeight}px`;
-                }}
-                onKeyDown={(e) => enterSubmit(e)}
-              ></textarea>
-
-              <div style={{ display: 'flex', alignItems:'center', gap: '1em' }}>
-              <button className={`${styles["submit"]} btn`}>Send Message</button>
-              <button style={{ height: '65px'}} type="button" className="btn" onClick={() => handleClearChat()}>Clear Chat</button>
-              </div>
-            </div>
-          </form>
-
-        </div>
-      </div>
-
-    </div>
-  )
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: "1em",
+                                        }}
+                                    >
+                                        <button
+                                            className={`${styles["submit"]} btn`}
+                                        >
+                                            Send Message
+                                        </button>
+                                        <button
+                                            style={{ height: "65px" }}
+                                            type="button"
+                                            className="btn"
+                                            onClick={() => handleClearChat()}
+                                        >
+                                            Clear Chat
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </>
+    );
 }
 
 function Conversation({ history = [], messagesEndRef, user, changeHistory }) {
-  return (
-    <>
-      {!changeHistory ? <div className={styles["messages-container"]}>
-        {history.length ? history.map((m, i) => <Message key={i} isYou={m.role == 'user'} message={m.content} loading={m.loading} user={user} />) : <Message isYou={true} message={`Start chatting to ${user.mentor} now! Just send a message.`} user={user} />}
-        <div ref={messagesEndRef} />
-      </div> : <div className={styles["loading-container"]}><Loading2 /></div>}
-    </>
-
-  )
+    return (
+        <>
+            {!changeHistory ? (
+                <div className={styles["messages-container"]}>
+                    {history.length ? (
+                        history.map((m, i) => (
+                            <Message
+                                key={i}
+                                isYou={m.role == "user"}
+                                message={m.content}
+                                loading={m.loading}
+                                user={user}
+                            />
+                        ))
+                    ) : (
+                        <Message
+                            isYou={true}
+                            message={`Start chatting to ${user.mentor} now! Just send a message.`}
+                            user={user}
+                        />
+                    )}
+                    <div ref={messagesEndRef} />
+                </div>
+            ) : (
+                <div className={styles["loading-container"]}>
+                    <Loading2 />
+                </div>
+            )}
+        </>
+    );
 }
 
 function Message({ isYou, message, loading, user }) {
-  return (
-    <>
-      {loading ? <div> <Loading />  </div> : <div className={`${styles[isYou ? "user-message" : "ai-message"]} ${styles["message"]}`}>
-        <div className={styles["profile-picture"]}>
-          {isYou ? <Avatar
-            size={54}
-            variant="marble"
-            colors={["#9A9FDD", "#DEEFFE", "#E2FFFF"]}
-          /> : <Avatar
-            size={54}
-            variant="pixel"
-            colors={["#9A9FDD", "#DEEFFE", "#E2FFFF"]}
-          />}
-        </div>
-        <p>{!isYou ? user.mentor + ":" : null} {message}</p>
-      </div>}
-    </>
-  )
+    return (
+        <>
+            {loading ? (
+                <div>
+                    {" "}
+                    <Loading />{" "}
+                </div>
+            ) : (
+                <div
+                    className={`${
+                        styles[isYou ? "user-message" : "ai-message"]
+                    } ${styles["message"]}`}
+                >
+                    <div className={styles["profile-picture"]}>
+                        {isYou ? (
+                            <Avatar
+                                size={54}
+                                variant="marble"
+                                colors={["#9A9FDD", "#DEEFFE", "#E2FFFF"]}
+                            />
+                        ) : (
+                            <Avatar
+                                size={54}
+                                variant="pixel"
+                                colors={["#9A9FDD", "#DEEFFE", "#E2FFFF"]}
+                            />
+                        )}
+                    </div>
+                    <p>
+                        {!isYou ? user.mentor + ":" : null} {message}
+                    </p>
+                </div>
+            )}
+        </>
+    );
 }
 
 function MentorSelect({ mentors, handleChangeMentor }) {
-  const { user } = useAuth()
+    const { user } = useAuth();
 
-  return (
-    <ul className={styles["menu-list"]}>
-      <li><p>Unlocked Mentors</p></li>
-      {mentors.map((m) => (<li key={m} ><button className={user.mentor == m ? styles["active"] : null} onClick={() => handleChangeMentor(m)}>{m}</button></li>))}
-    </ul>
-  )
+    return (
+        <ul className={styles["menu-list"]}>
+            <li>
+                <p>Unlocked Mentors</p>
+            </li>
+            {mentors.map((m) => (
+                <li key={m}>
+                    <button
+                        className={user.mentor == m ? styles["active"] : null}
+                        onClick={() => handleChangeMentor(m)}
+                    >
+                        {m}
+                    </button>
+                </li>
+            ))}
+        </ul>
+    );
 }

@@ -16,6 +16,7 @@
   transform: translate(-50%, -50%);
   border-radius: 6px;
   padding: 40px;
+  overflow:auto;
 }
 
 .close-btn {
