@@ -17,27 +17,32 @@ const IntroComponent = ({ onExit }) => {
     {
       element: '#home',
       intro: 'This is the home page, here you can see your long term goals and daily goals',
-      position: 'bottom'
+      position: 'bottom',
+      disableInteraction: true,
     },
     {
       element: '#my-ai-mentor',
       intro: 'This is the My AIMentor feature.',
-      position: 'bottom'
+      position: 'bottom',
+      disableInteraction: true,
     },
     {
       element: '#activities',
       intro: 'Here is another important feature.',
-      position: 'top'
+      position: 'top',
+      disableInteraction: true,
     },
     {
       element: '#discussions',
       intro: 'Here is another important feature.',
-      position: 'top'
+      position: 'top',
+      disableInteraction: true,
     },
     {
       element: '#mindstore',
       intro: 'Here is another important feature.',
-      position: 'top'
+      position: 'top',
+      disableInteraction: true,
     }
   ];
 
