@@ -51,7 +51,9 @@ export default function AIMentor({ loadChatOnly = false }) {
       setHistory((prev) => [...prev, assistantMessage]);
     }
 
-    setLoading(false);
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
   };
 
   const appendUserMessage = () => {
@@ -121,7 +123,7 @@ export default function AIMentor({ loadChatOnly = false }) {
         }
       }
     };
-    
+
     if (cachedChat !== null) {
       let data = JSON.parse(cachedChat);
       setHistory(data);
