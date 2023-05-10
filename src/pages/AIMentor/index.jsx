@@ -4,7 +4,7 @@ import styles from "./index.module.css";
 import { useAuth } from "../../contexts/authContext";
 import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "boring-avatars";
-import { Loading, Loading2 } from "../../components";
+import { AIMentorIntro, Loading, Loading2 } from "../../components";
 import useMarketplaceCategories from "../../hooks/useMarketplaceCategories";
 
 export default function AIMentor({ loadChatOnly = false }) {
@@ -15,6 +15,7 @@ export default function AIMentor({ loadChatOnly = false }) {
   const [loading, setLoading] = useState(false);
   const [changeHistory, setChangeHistory] = useState(false);
   const [input, setInput] = useState("");
+  const [showIntro, setShowIntro] = useState(false);
   const textareaRef = useRef();
 
   const messagesEndRef = useRef(null);
@@ -51,7 +52,9 @@ export default function AIMentor({ loadChatOnly = false }) {
       setHistory((prev) => [...prev, assistantMessage]);
     }
 
-    setLoading(false);
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
   };
 
   const appendUserMessage = () => {
@@ -90,6 +93,10 @@ export default function AIMentor({ loadChatOnly = false }) {
     localStorage.removeItem("mentorChat");
   };
 
+  const handleIntroExit = () => {
+    setShowIntro(false);
+  };
+
   useEffect(() => {
     // fetch chat history from db
     let cachedChat = localStorage.getItem("mentorChat");
@@ -108,7 +115,8 @@ export default function AIMentor({ loadChatOnly = false }) {
       } else {
         historyData = [];
       }
-
+      
+      
       if (response.ok) {
         setHistory(historyData.history);
 
@@ -120,12 +128,26 @@ export default function AIMentor({ loadChatOnly = false }) {
         }
       }
     };
-    if (cachedChat !== "undefined") {
+
+    if (cachedChat !== null) {
       let data = JSON.parse(cachedChat);
       setHistory(data);
     } else {
       getMentors();
     }
+
+    async function getProfilePicture() {
+      let { mentor_details } = await updateMentor(user.mentor);
+      setThumbnail(mentor_details)
+    }
+
+    const introShown = localStorage.getItem('aiMentorIntroShown');
+    if (introShown === 'true') {
+      setShowIntro(true);
+      localStorage.setItem('aiMentorIntroShown', 'false');
+    }
+
+    getProfilePicture()
   }, []);
 
   useEffect(() => {
@@ -169,15 +191,6 @@ export default function AIMentor({ loadChatOnly = false }) {
     setChangeHistory(false);
   };
 
-  useEffect(() => {
-    async function getProfilePicture() {
-      let { mentor_details } = await updateMentor(user.mentor);
-      setThumbnail(mentor_details)
-    }
-
-    getProfilePicture()
-  }, [])
-
   return (
     <>
       {loadChatOnly ? (
@@ -195,10 +208,10 @@ export default function AIMentor({ loadChatOnly = false }) {
               }}
             />
 
-            <div className={styles["input-box"]} onSubmit={handleSendMessage}>
+            <div className={styles["input-box"]} onSubmit={handleSendMessage} id="input-field">
               <div className={styles["options"]}>
                 <div className={styles["menu"]}>
-                  <button className={styles["menu-button"]}>
+                  <button className={styles["menu-button"]} id="menu-btn">
                     <AiOutlineMenu />
                   </button>
                   <MentorSelect
@@ -250,6 +263,7 @@ export default function AIMentor({ loadChatOnly = false }) {
           </div>
         </div>
       )}
+      {showIntro && <AIMentorIntro onExit={handleIntroExit} />}
     </>
   );
 }
