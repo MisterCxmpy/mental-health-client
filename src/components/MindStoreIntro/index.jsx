@@ -14,17 +14,20 @@ const MindStoreIntroComponent = ({ onExit }) => {
     {
       element: '#Morgan', // Target the first item in the marketplace list
       intro: 'This is the first item in the Mind Store.',
-      position: 'bottom'
+      position: 'bottom',
+      disableInteraction: true,
+      
     },
     {
       element: '#Morgan button', // Target the buy button of the first item
       intro: 'Click here to buy the item.',
-      position: 'bottom'
+      position: 'bottom',
     },
     {
       element: '#my-ai-mentor',
       intro: 'This is the My AIMentor feature.',
-      position: 'bottom'
+      position: 'bottom',
+      disableInteraction: true,
     }
   ];
 
