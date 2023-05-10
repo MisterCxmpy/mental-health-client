@@ -150,6 +150,41 @@
 .textarea-toolbar aside {
   position: absolute !important;
   z-index: 99999;
-  top: 22px;
-  right: 90px;
+  top: -100px;
+  right: 75px;
+}
+
+.toolbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  float: right;
+}
+
+.gif-btn {
+  height: 50px;
+  width: 50px;
+  border-radius: 6px;
+  border: none;
+  background: #9A9FDD;
+  color: #ffffff;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.gif-btn > div {
+  transition: 150ms;
+  filter: grayscale(1);
+}
+
+.gif-btn:hover > div {
+  scale: 1.15;
+  filter: grayscale(0);
+}
+
+.delete-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
 }

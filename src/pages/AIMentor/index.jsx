@@ -61,6 +61,8 @@ export default function AIMentor() {
       setHistory(data)
     }
     console.log(data);
+
+    localStorage.removeItem("mentorChat")
   }
 
   useEffect(() => { // fetch chat history from db

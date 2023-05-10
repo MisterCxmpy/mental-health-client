@@ -22,6 +22,7 @@ export default function MindStore() {
   const [categories, setCategories] = useState([]);
   const [activeCategory, setActiveCategory] = useState(null);
   const [showIntro, setShowIntro] = useState(false);
+  const [loading, setLoading] = useState(true);
 
 
   useEffect(() => {
@@ -39,6 +40,7 @@ export default function MindStore() {
   useEffect(() => {
     const getMarketplaceItems = async () => {
       let options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: user.user_id }) }
+
       let response = await fetch('http://localhost:3000/mentor/store', options)
       let data = await response.json()
 
@@ -100,7 +102,6 @@ export default function MindStore() {
 
   return (
     <div className="layout">
-      {showIntro && <MindStoreIntroComponent onExit={handleIntroExit} />}
       <div className={styles["header"]}>
         <div className={styles["header-content"]}>
           <h1 className={styles["welcome-message"]}>Marketplace</h1>
@@ -132,8 +133,8 @@ export default function MindStore() {
         <div className={styles["tags"]}>
           {categories.map(c => <Tag activeCategory={activeCategory} tag={c} key={c} select={() => handleSelectCategory(c)} />)}
         </div>
-
         <MarketplaceList handleBuyMentor={handleBuyMentor} items={filter.items} />
+        {showIntro && <MindStoreIntroComponent onExit={handleIntroExit} loading={loading} />}
       </div>
     </div>
   )
