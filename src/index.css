@@ -46,6 +46,10 @@ body {
   text-shadow: none;
 }
 
+.introjs-tooltip {
+  max-width: none;
+}
+
 .introjs-button:hover {
   background: #8b8fca;
   color: white;
