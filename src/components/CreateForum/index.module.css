@@ -73,3 +73,14 @@
 .submit-btn:active {
   transform: scale(0.97)
 }
+
+.link{
+  display:flex;
+  justify-content: center;
+}
+.loading{
+  display:flex;
+  position:fixed;
+  right:45%;
+  top:45%;
+}

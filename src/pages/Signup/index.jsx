@@ -16,6 +16,8 @@ export default function Signup() {
 
     try {
       await register(payload)
+      localStorage.setItem("introShown", "true");
+      localStorage.setItem("mindstoreIntroShown", "true");
       navigate('/authenticate/intro')
     } catch (error) {
       setError(error.message);

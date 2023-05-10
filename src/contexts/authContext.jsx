@@ -50,6 +50,8 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     localStorage.removeItem('user');
     localStorage.removeItem('mentorChat');
+    localStorage.removeItem('introShown')
+    localStorage.removeItem('mindstoreIntroShown')
     setUser(null)
     navigate('/authenticate/login');
   }
@@ -64,6 +66,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   const updatePoints = async (points) => {
+    console.log(points)
     let options = { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ points, user_id: user.user_id }) }
     const res = await fetch('https://mental-health-server-w9lq.onrender.com/user/pts', options);
     const updatedUser = await res.json();
@@ -81,7 +84,22 @@ export const AuthProvider = ({ children }) => {
     const updatedUser = await res.json();
 
     if (res.ok) {
-      saveUser(updatedUser)
+      saveUser(updatedUser.user)
+      return { history: updatedUser.history, mentor_details: updatedUser.mentor_details }
+    } else {
+      console.log(updatedUser);
+    }
+
+  }
+
+  const updateOwnedMentors = async (mentor) => {
+    let options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mentor, user_id: user.user_id }) }
+    const res = await fetch('https://mental-health-server-w9lq.onrender.com/mentor/store/buy', options);
+    const updatedUser = await res.json();
+
+    if (res.ok) {
+      saveUser(updatedUser.updatedUser)
+      return updatedUser.items
     } else {
       console.log(updatedUser);
     }
@@ -97,6 +115,13 @@ export const AuthProvider = ({ children }) => {
     } else {
       console.log(updatedUser);
     }
+  }
+
+  const buyMentor = async ({ name, price }) => {
+    if (user?.owned_mentors?.findIndex(n => n == name) >= 0 || user.dabloons < price) return
+    let items = await updateOwnedMentors(name);
+
+    return items;
   }
 
   useEffect(() => { // check for cachedUser data to login and redirect user
@@ -121,10 +146,10 @@ export const AuthProvider = ({ children }) => {
   }, [user])
 
   return (
-    <AuthContext.Provider value={{ user, saveUser, login, register, logout, completeIntro, updatePoints, updateGoals, updateMentor, completeStGoal }}>
+    <AuthContext.Provider value={{ user, saveUser, login, register, logout, completeIntro, updatePoints, updateGoals, updateMentor, completeStGoal, buyMentor }}>
       {children}
     </AuthContext.Provider>
   );
 };
-
+  
 export const useAuth = () => useContext(AuthContext);

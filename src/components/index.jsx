@@ -11,3 +11,7 @@ export {default as CreateForum} from "./CreateForum"
 export {default as BlotChart} from "./BlotChart"
 export {default as MeditationModal} from "./MeditationModal"
 export {default as Loading} from "./Loading"
+export {default as Loading2} from "./Loading2"
+export { default as IntroComponent } from "./IntroSteps";
+export { default as MindStoreIntroComponent } from "./MindStoreIntro";
+export {default as ChangeFace} from "./ChangeFace"
