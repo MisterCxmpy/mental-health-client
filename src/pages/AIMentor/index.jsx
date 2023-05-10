@@ -169,6 +169,15 @@ export default function AIMentor({ loadChatOnly = false }) {
     setChangeHistory(false);
   };
 
+  useEffect(() => {
+    async function getProfilePicture() {
+      let { mentor_details } = await updateMentor(user.mentor);
+      setThumbnail(mentor_details)
+    }
+
+    getProfilePicture()
+  }, [])
+
   return (
     <>
       {loadChatOnly ? (
@@ -193,7 +202,7 @@ export default function AIMentor({ loadChatOnly = false }) {
                     <AiOutlineMenu />
                   </button>
                   <MentorSelect
-                    categories={<Categories user={user} handleChangeMentor={handleChangeMentor}/>}
+                    categories={<Categories user={user} handleChangeMentor={handleChangeMentor} history={history}/>}
                   />
                 </div>
               </div>
@@ -330,15 +339,15 @@ function Categories({ user, handleChangeMentor }) {
 
   return (
     <>
-      <li onClick={() => handleChangeMentor("Morgan")}>Morgan</li>
-      {categories.map((c) => {
+      <li style={{borderBottom: "1px solid #8183b9"}} onClick={() => handleChangeMentor("Morgan")}>Morgan</li>
+      {categories.map((c, i) => {
         return (
-          <li className={styles["category"]}>
-            {c} {user.owned_mentors.filter((m) => m.category == c).length}
-            <ul className={styles["sub-category"]}>
-              {user.owned_mentors.map((m) => {
+          <li key={i} className={styles["category"]}>
+            {c} ({user.owned_mentors.filter((m) => m.category == c).length})
+            <ul key={i} className={styles["sub-category"]}>
+              {user.owned_mentors.map((m, i) => {
                 return (
-                    m.category == c ? <li onClick={() => handleChangeMentor(m.name)}>{m.name}</li> : null
+                    m.category == c ? <li key={i} onClick={() => handleChangeMentor(m.name)}>{m.name}</li> : null
                 )
               })}     
             </ul>

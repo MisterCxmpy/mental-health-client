@@ -79,7 +79,6 @@ export const AuthProvider = ({ children }) => {
   }
 
   const updateMentor = async (mentor) => {
-    console.log(mentor)
     let options = { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mentor, user_id: user.user_id }) }
     const res = await fetch('http://localhost:3000/user/mentor', options);
     const updatedUser = await res.json();
@@ -94,7 +93,6 @@ export const AuthProvider = ({ children }) => {
   }
 
   const updateOwnedMentors = async (mentor) => {
-    console.log(mentor);
     let options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mentor, user_id: user.user_id }) }
     const res = await fetch('http://localhost:3000/mentor/store/buy', options);
     const updatedUser = await res.json();
