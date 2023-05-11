@@ -13,13 +13,13 @@ const AIMentorIntro = ({ onExit }) => {
   const steps = [
     {
       element: '._user-message_1xrme_115', // Target the first item in the marketplace list
-      intro: 'This is the first item in the Mind Store.',
+      intro: 'This is your chat field, here you will see the messages you send.',
       position: 'bottom',
       disableInteraction: true,
     },
     {
       element: '#input-field', // Target the first item in the marketplace list
-      intro: 'This is the first item in the Mind Store.',
+      intro: 'This is the input bar where you will be able to create your messages.',
       position: 'top',
       disableInteraction: true,
     },
@@ -27,7 +27,7 @@ const AIMentorIntro = ({ onExit }) => {
       element: '#menu-btn', // Target the first item in the marketplace list
       intro: `
       <video src="https://cdn.discordapp.com/attachments/1080425253030862849/1105963273410596885/8fd450807dea29025a486655c147782a_online-video-cutter.com.mp4" style="border-radius: 6px;" loop autoplay></video>
-      <p>This is a test</p>
+      <p>This is the mentor selector, here you will be able to see all of the mentors that you own.</p>
       `,
       position: 'top',
       disableInteraction: true,
