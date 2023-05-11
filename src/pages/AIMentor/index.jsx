@@ -143,8 +143,10 @@ export default function AIMentor({ loadChatOnly = false }) {
 
     const introShown = localStorage.getItem('aiMentorIntroShown');
     if (introShown === 'true') {
-      setShowIntro(true);
-      localStorage.setItem('aiMentorIntroShown', 'false');
+      setTimeout(() => {
+        setShowIntro(true);
+        localStorage.setItem('aiMentorIntroShown', 'false');
+      }, 250);
     }
 
     getProfilePicture()
