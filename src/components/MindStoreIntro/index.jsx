@@ -25,7 +25,7 @@ const MindStoreIntroComponent = ({ onExit }) => {
     },
     {
       element: '#my-ai-mentor',
-      intro: 'This is the My AIMentor feature.',
+      intro: 'Head over to the AIMentor to chat to your mentor!',
       position: 'bottom',
       disableInteraction: true,
     }

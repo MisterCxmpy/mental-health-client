@@ -146,7 +146,7 @@ export default function AIMentor({ loadChatOnly = false }) {
       setTimeout(() => {
         setShowIntro(true);
         localStorage.setItem('aiMentorIntroShown', 'false');
-      }, 250);
+      }, 750);
     }
 
     getProfilePicture()
