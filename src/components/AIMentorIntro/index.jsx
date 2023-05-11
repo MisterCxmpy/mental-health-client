@@ -12,7 +12,7 @@ const AIMentorIntro = ({ onExit }) => {
 
   const steps = [
     {
-      element: '._user-message_1xrme_115', // Target the first item in the marketplace list
+      element: '._user-message_14aas_58', // Target the first item in the marketplace list
       intro: 'This is your chat field, here you will see the messages you send.',
       position: 'bottom',
       disableInteraction: true,
