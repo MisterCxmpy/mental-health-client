@@ -55,15 +55,15 @@ export default function Intro() {
 
     setTimeout(() => {
       message1Ref.current.style.opacity = 1;
-    }, 2000);
+    }, 1500);
 
     setTimeout(() => {
       message2Ref.current.style.opacity = 1;
-    }, 5000);
+    }, 3000);
 
     setTimeout(() => {
       continueBtnRef.current.style.opacity = 1;
-    }, 7000);
+    }, 4000);
   }, []);
 
   function switchInfo() {

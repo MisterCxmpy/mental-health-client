@@ -150,21 +150,7 @@ export default function GameOne() {
 
 
   const handleStashPoints = async () => { // add fetch request here
-    if (user && user.st_goals) {
-      let allGoalsCompleted = true;
-      for (let i = 0; i < user.st_goals.length; i++) {
-        if (!user.st_goals[i].completed) {
-          allGoalsCompleted = false;
-          break;
-        }
-      }
-      if (allGoalsCompleted) {
-        await updatePoints(Math.floor(scoreInt) * 2);
-      } else {
-        await updatePoints(Math.floor(scoreInt));
-      }
-    }
-
+    await updatePoints(Math.floor(scoreInt));
     setGrid(getInitialGrid())
     setScoreInt(0)
     score = 0;
