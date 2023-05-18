@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&family=Montserrat&family=Varela&display=swap');
+
+:root {
+  --primary-font-color: #202020;
+  --color-1: linear-gradient(137.46deg, rgba(154, 159, 221, 0.5) 0%, rgba(226, 255, 255, 0.5) 100%);
+  --color-2: linear-gradient(137.46deg, rgba(222, 239, 254, 0.5) 0%, rgba(154, 159, 221, 0.5) 100%);
+  --color-3: linear-gradient(135.85deg, #D2DAEC -0.03%, #c3d9d9 100.05%);
+  --color-4: linear-gradient(137.51deg, #BEC2EE 0%, #e4d8e1 85.44%);
+  --color-5: linear-gradient(137.46deg, rgba(183, 188, 255, 0.5) 0%, rgba(222, 239, 254, 0.5) 100%);
+  --color-6: linear-gradient(137.46deg, #e4d8e1 0%, #bfc3f6 100%);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  background: #F0F0F0;
+}
+
+.layout {
+  height: max-content;
+  margin-left: 258px;
+  padding: 24px 36px;
+}
+
+.btn, .introjs-button {
+  width: 200px;
+  height: 50px;
+  border-radius: 6px;
+  border: none;
+  background: #9A9FDD;
+  font-size: 20px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: 300ms;
+  
+}
+
+.introjs-button {
+  width: max-content;
+  height: max-content;
+  text-shadow: none;
+}
+
+.introjs-tooltip {
+  max-width: none;
+}
+
+.introjs-button:hover {
+  background: #8b8fca;
+  color: white;
+}
+
+.introjs-button:focus {
+  background: #8b8fca;
+  color: white;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.admin-icon {
+  color: rgb(100, 201, 100);
+}
+

@@ -1,0 +1,70 @@
+.task-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 358px;
+  background: #ffffff;
+  box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.04);
+  padding: 12px 24px;
+  gap: 20px;
+}
+
+.task-container > h2 {
+  font-size: 1.3em;
+  font-weight: 600;
+  opacity: 0.85;
+  text-transform: capitalize;
+}
+
+.task-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  color: var(--primary-font-color);
+}
+
+.task-list {
+  height: 227px;
+  overflow-y: auto;
+}
+
+.task-list::-webkit-scrollbar {
+  display: none;
+}
+
+.control-options {
+  height:50px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.prompt-task {
+  width: 100%;
+  height: 67px;
+  background: var(--color-3);
+  box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.04);
+  border-radius: 6px;
+  margin: 10px 0;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  color: var(--primary-font-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.prompt-task > h3{
+  font-weight: normal;
+  font-size: 1.4em;
+}
+
+.prompt-checkbox {
+  width: 30px;
+  height: 30px;
+}
+

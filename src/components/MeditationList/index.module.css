@@ -1,0 +1,7 @@
+.meditation-list {
+  width: 100%;
+  height: 214px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+}

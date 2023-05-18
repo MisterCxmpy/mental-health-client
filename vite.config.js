@@ -1,7 +1,19 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { configDefaults } from 'vitest/dist/config'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: 'src/setupTests.js'
+  },
+  exclude: [
+    ...configDefaults.exclude, ['./src/context/authContext.jsx']
+  ],
+  coverage: {
+    exclude: ['./src/context/authContext.jsx'],
+  },
 })
